@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">ParadoxIdealMaster</string>
+    <string name="sign_in">Sign In</string>
+    <string name="imex_group">&#169; 2016 IMEX GROUP</string>
+    <string name="all_right_reserved">ALL RIGHTS RESERVED</string>
+    <string name="welcome">WELCOME</string>
+    <string name="master">MASTER</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+
+    <string name="icon_username">&#xe90a;</string>
+    <string name="icon_lock">&#xe90b;</string>
+
+    <string-array name="menu_icons">
+        <item>&#xe910;</item>
+        <item>&#xe911;</item>
+        <item>&#xe90f;</item>
+        <item>&#xe90E;</item>
+        <item>&#xe90C;</item>
+        <item>&#xe90D;</item>
+    </string-array>
+
+    <string-array name="menu_titles">
+        <item>Mew Orders</item>
+        <item>My Orders</item>
+        <item>Finished Orders</item>
+        <item>Transactions</item>
+        <item>Settings</item>
+        <item>Logout</item>
+    </string-array>
+
+    <string-array name="menu_dashes">
+        <item>#FFD801</item>
+        <item>#2094FA</item>
+        <item>#8C88FF</item>
+        <item>#FCAB53</item>
+        <item>#0DEC6D</item>
+        <item>#FF3366</item>
+    </string-array>
+
+</resources>

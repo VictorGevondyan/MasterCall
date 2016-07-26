@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.flycode.paradoxidealmaster.layouts.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="@color/lighter_grey"
+            android:textSize="70sp"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+        <View
+            android:id="@+id/dash"
+            android:layout_width="20dp"
+            android:layout_height="3dp"
+            android:layout_margin="5dp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white_grey"/>
+
+    <View
+        android:id="@+id/right"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/white_grey"/>
+
+</com.flycode.paradoxidealmaster.layouts.SquareRelativeLayout>
