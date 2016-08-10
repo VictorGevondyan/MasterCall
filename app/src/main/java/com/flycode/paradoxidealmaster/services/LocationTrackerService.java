@@ -1,7 +1,6 @@
 package com.flycode.paradoxidealmaster.services;
 
 import android.Manifest;
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,9 +13,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.NotificationCompat;
 
-import com.flycode.paradoxidealmaster.api.APITalker;
+import com.flycode.paradoxidealmaster.api.APIBuilder;
+import com.flycode.paradoxidealmaster.api.body.LocationBody;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 
 import java.util.Timer;
@@ -98,7 +97,7 @@ public class LocationTrackerService extends Service implements LocationListener 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                pingServer(location, true);
+                pingServer(location);
             }
         }, 120000, 120000);
 
@@ -137,18 +136,19 @@ public class LocationTrackerService extends Service implements LocationListener 
         super.onTaskRemoved(rootIntent);
     }
 
-    private void pingServer(Location location, boolean doItSync) {
+    private void pingServer(Location location) {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
         if (AppSettings.sharedSettings(this).isUserLoggedIn() && isConnected && location != null) {
-//            APITalker.sharedTalker().pingLocation(
-//                    this,
-//                    AppSettings.sharedSettings(this).getOrderId(),
-//                    location,
-//                    doItSync);
+            APIBuilder
+                    .getIdealAPI()
+                    .updateLocation(
+                            AppSettings.sharedSettings(this).getBearerToken(),
+                            new LocationBody(location.getLatitude(), location.getLongitude(), this)
+                    ).enqueue(null);
         }
     }
 
@@ -216,7 +216,7 @@ public class LocationTrackerService extends Service implements LocationListener 
 
         this.location = location;
 
-        pingServer(location, false);
+        pingServer(location);
     }
 
     public void sendLocationBroadcast(double accuracy, double distance, double elapsedDistance, Location from, Location to) {

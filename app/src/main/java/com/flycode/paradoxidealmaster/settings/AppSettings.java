@@ -61,6 +61,10 @@ public class AppSettings {
         return token;
     }
 
+    public String getBearerToken() {
+        return "Bearer " + token;
+    }
+
     public void setToken(String token) {
         this.token = token;
         settingsPreferences

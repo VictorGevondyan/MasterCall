@@ -3,8 +3,7 @@ package com.flycode.paradoxidealmaster.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.flycode.paradoxidealmaster.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,31 +63,26 @@ public class UserData {
         balance = dataPreferences.getInt(BALANCE, 0);
         sex = dataPreferences.getBoolean(SEX, true);
 
-        try {
-            dateOfBirth = dateFormat.parse(dataPreferences.getString(DATE_OF_BIRTH, ""));
-        } catch (Exception e) {
-            e.printStackTrace();
+        long dateTime = dataPreferences.getInt(DATE_OF_BIRTH, -1);
+
+        if (dateTime >= 0) {
+            dateOfBirth = new Date(dateTime);
         }
     }
 
-    public boolean storeUser(JSONObject user, String requiredRole) throws JSONException {
-        if (!user.getString("role").equals(requiredRole)) {
+    public boolean storeUser(User user, String requiredRole) {
+        if (!user.getRole().equals(requiredRole)) {
             return false;
         }
 
         // TODO: Make username required
-        username = user.optString("username");
-        id = user.getString("_id");
-        name = user.optString("name");
-        surname = user.optString("surname");
-        balance = user.getInt("balance");
-        sex = user.getBoolean("sex");
-
-        try {
-            dateOfBirth = dateFormat.parse(user.optString("dateOfBirth"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        username = user.getUsername();
+        id = user.get_id();
+        name = user.getName();
+        surname = user.getSurname();
+        balance = user.getBalance();
+        sex = user.isSex();
+        dateOfBirth = user.getDateOfBirth();
 
         dataPreferences
                 .edit()
@@ -96,7 +90,7 @@ public class UserData {
                 .putString(USERNAME, username)
                 .putString(NAME, name)
                 .putString(SURNAME, surname)
-                .putString(DATE_OF_BIRTH, user.optString("dateOfBirth"))
+                .putLong(DATE_OF_BIRTH, dateOfBirth == null ? -1 : dateOfBirth.getTime())
                 .putInt(BALANCE, balance)
                 .putBoolean(SEX, sex)
                 .apply();

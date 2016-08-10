@@ -3,22 +3,27 @@ package com.flycode.paradoxidealmaster.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.flycode.paradoxidealmaster.R;
-import com.flycode.paradoxidealmaster.api.APITalker;
-import com.flycode.paradoxidealmaster.api.OnGetUserListener;
-import com.flycode.paradoxidealmaster.api.OnLoginListener;
+import com.flycode.paradoxidealmaster.api.APIBuilder;
+import com.flycode.paradoxidealmaster.api.body.LoginBody;
+import com.flycode.paradoxidealmaster.model.AuthToken;
+import com.flycode.paradoxidealmaster.model.User;
+import com.flycode.paradoxidealmaster.settings.AppSettings;
+import com.flycode.paradoxidealmaster.settings.UserData;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
-public class LoginActivity extends Activity implements OnLoginListener, OnGetUserListener {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class LoginActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,44 +54,62 @@ public class LoginActivity extends Activity implements OnLoginListener, OnGetUse
 
         Button signInButton = (Button) findViewById(R.id.sign_in);
         signInButton.setTypeface(avenirBlackTypeface);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText nameEditText = (EditText) findViewById(R.id.name);
-                EditText passwordEditText = (EditText) findViewById(R.id.password);
-
-                APITalker
-                        .sharedTalker()
-                        .login(
-                            LoginActivity.this,
-                            nameEditText.getText().toString(),
-                            passwordEditText.getText().toString(),
-                            LoginActivity.this);
-            }
-        });
+        signInButton.setOnClickListener(this);
     }
 
     @Override
-    public void onLoginSuccess() {
-        APITalker
-                .sharedTalker()
-                .getUser(getApplicationContext(), this);
+    public void onClick(View view) {
+        EditText nameEditText = (EditText) findViewById(R.id.name);
+        EditText passwordEditText = (EditText) findViewById(R.id.password);
+
+        LoginBody loginBody = new LoginBody(
+                nameEditText.getText().toString(),
+                passwordEditText.getText().toString());
+
+        APIBuilder
+                .getIdealAPI()
+                .login(loginBody)
+                .enqueue(new Callback<AuthToken>() {
+                    @Override
+                    public void onResponse(Call<AuthToken> call, Response<AuthToken> response) {
+                        if (response.isSuccessful()) {
+                            AppSettings appSettings = AppSettings.sharedSettings(LoginActivity.this);
+                            appSettings.setToken(response.body().getToken());
+                            appSettings.setIsUserLoggedIn(true);
+
+                            loadUser();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AuthToken> call, Throwable t) {
+
+                    }
+                });
     }
 
-    @Override
-    public void onLoginFailure(int status) {
+    private void loadUser() {
+        APIBuilder
+                .getIdealAPI()
+                .getUser(AppSettings.sharedSettings(this).getBearerToken())
+                .enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if (response.isSuccessful()) {
+                            boolean permittedUser = UserData.sharedData(LoginActivity.this).storeUser(response.body(), "master");
 
-    }
+                            if (permittedUser) {
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                finish();
+                            }
+                        }
+                    }
 
-    @Override
-    public void onGetUserSuccess() {
-        startActivity(new Intent(this, MainActivity.class));
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        finish();
-    }
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
 
-    @Override
-    public void onGetUserFailure(int status) {
-
+                    }
+                });
     }
 }

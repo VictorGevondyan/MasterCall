@@ -3,13 +3,17 @@ package com.flycode.paradoxidealmaster.gcm;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.provider.Settings;
 
-import com.flycode.paradoxidealmaster.api.APITalker;
-import com.flycode.paradoxidealmaster.api.OnGCMTokenRegisteredListener;
+import com.flycode.paradoxidealmaster.api.APIBuilder;
+import com.flycode.paradoxidealmaster.api.body.GCMBody;
+import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GCMSubscriber {
     public static void registerForGcm(final Activity activity) throws IOException {
@@ -54,18 +58,23 @@ public class GCMSubscriber {
     }
 
     public static void sendingToServer(final String registrationId, final Context context) {
-        APITalker.sharedTalker().registerGCMToken(
-                context,
-                registrationId,
-                new OnGCMTokenRegisteredListener() {
-                    @Override
-                    public void onGCMTokenRegistrationSuccess(String registrationId) {
-                        GCMUtils.storeRegistrationId(context, registrationId);
-                    }
+        APIBuilder
+                .getIdealAPI()
+                .registerGCMToken(
+                        AppSettings.sharedSettings(context).getBearerToken(),
+                        new GCMBody(registrationId, context)
+                ).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    GCMUtils.storeRegistrationId(context,registrationId);
+                }
+            }
 
-                    @Override
-                    public void onGCMTokenRegistrationFailure(int statusCode) {
-                    }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
         });
     }
 }
