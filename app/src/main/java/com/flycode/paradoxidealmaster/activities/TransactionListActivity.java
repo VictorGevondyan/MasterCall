@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.flycode.paradoxidealmaster.R;
 
-public class TransactionListActivity extends AppCompatActivity {
+public class TransactionListActivity extends SuperActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

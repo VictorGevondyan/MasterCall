@@ -15,6 +15,7 @@ public class TypefaceLoader {
     public static String AVENIR_BOOK = "AvenirLTStd-Book.otf";
     public static String AVENIR_LIGHT = "AvenirLTStd-Light.otf";
     public static String AVENIR_BLACK = "AvenirLTStd-Black.otf";
+    public static String AVENIR_MEDIUM = "AvenirLTStd-Medium.otf";
     public static String AVENIR_ROMAN = "AvenirLTStd-Roman.otf";
     public static String ICOMOON = "icomoon.ttf";
 

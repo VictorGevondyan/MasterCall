@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_vertical_margin"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.flycode.paradoxidealmaster.views.CircleView
+                android:id="@+id/balloon_outline"
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+
+            <com.flycode.paradoxidealmaster.views.CircleView
+                android:id="@+id/balloon"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_margin="5dp"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingRight="5dp"
+            android:textSize="16sp"
+            android:textColor="@color/info_title_grey"/>
+
+    </LinearLayout>
+
+    <include layout="@layout/section_details"
+        android:id="@+id/date_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp" />
+
+    <include layout="@layout/section_details"
+        android:id="@+id/location_section"/>
+
+</LinearLayout>

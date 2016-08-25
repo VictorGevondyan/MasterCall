@@ -63,7 +63,7 @@ public class UserData {
         balance = dataPreferences.getInt(BALANCE, 0);
         sex = dataPreferences.getBoolean(SEX, true);
 
-        long dateTime = dataPreferences.getInt(DATE_OF_BIRTH, -1);
+        long dateTime = dataPreferences.getLong(DATE_OF_BIRTH, -1);
 
         if (dateTime >= 0) {
             dateOfBirth = new Date(dateTime);
@@ -77,7 +77,7 @@ public class UserData {
 
         // TODO: Make username required
         username = user.getUsername();
-        id = user.get_id();
+        id = user.getId();
         name = user.getName();
         surname = user.getSurname();
         balance = user.getBalance();

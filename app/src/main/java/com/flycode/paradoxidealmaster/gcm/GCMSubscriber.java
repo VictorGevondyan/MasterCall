@@ -27,6 +27,8 @@ public class GCMSubscriber {
 
         if (registrationId.isEmpty()) {
             registerBackground(activity);
+        } else {
+            sendingToServer(registrationId, activity);
         }
     }
 

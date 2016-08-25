@@ -7,9 +7,21 @@
     <string name="master">MASTER</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
+    <string name="date">Date</string>
+    <string name="location">Location</string>
+    <string name="new_orders">New Orders</string>
+    <string name="my_orders">My Orders</string>
+    <string name="finished_orders">Finished Orders</string>
+    <string name="new_order">New Order</string>
+    <string name="details">Details</string>
 
     <string name="icon_username">&#xe90a;</string>
     <string name="icon_lock">&#xe90b;</string>
+    <string name="icon_back">&#xe91f;</string>
+    <string name="icon_calendar">&#xe906;</string>
+    <string name="icon_marker">&#xe905;</string>
+    <string name="icon_details">&#xe904;</string>
+    <string name="order">Order</string>
 
     <string-array name="menu_icons">
         <item>&#xe910;</item>
@@ -21,7 +33,7 @@
     </string-array>
 
     <string-array name="menu_titles">
-        <item>Mew Orders</item>
+        <item>New Orders</item>
         <item>My Orders</item>
         <item>Finished Orders</item>
         <item>Transactions</item>

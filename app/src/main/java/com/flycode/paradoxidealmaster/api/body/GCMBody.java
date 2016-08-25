@@ -17,7 +17,7 @@ public class GCMBody {
 
     public GCMBody(String token, Context context) {
         this.token = token;
-        this.deviceId = DeviceUtil.getDeviceId(context);
+        this.deviceId = DeviceUtil.getDeviceId(context) + "_master";
         this.type = "android";
         this.osVersion = Build.VERSION.RELEASE;
         this.deviceInfo = Build.MANUFACTURER + " " + Build.MODEL;

@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.flycode.paradoxidealmaster.R;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends SuperActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

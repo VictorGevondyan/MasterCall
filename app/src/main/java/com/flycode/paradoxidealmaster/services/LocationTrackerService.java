@@ -218,15 +218,4 @@ public class LocationTrackerService extends Service implements LocationListener 
 
         pingServer(location);
     }
-
-    public void sendLocationBroadcast(double accuracy, double distance, double elapsedDistance, Location from, Location to) {
-        Intent locationBroadcastIntent = new Intent(LOCATION_BROADCAST);
-        locationBroadcastIntent.putExtra(EXTRA_ACCURACY, accuracy);
-        locationBroadcastIntent.putExtra(EXTRA_DISTANCE, distance);
-        locationBroadcastIntent.putExtra(EXTRA_ELAPSED_DISTANCE, elapsedDistance);
-        locationBroadcastIntent.putExtra(EXTRA_FROM_LOCATION, from);
-        locationBroadcastIntent.putExtra(EXTRA_TO_LOCATION, to);
-
-        sendBroadcast(locationBroadcastIntent);
-    }
 }

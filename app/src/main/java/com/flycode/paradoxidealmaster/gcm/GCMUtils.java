@@ -12,7 +12,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GCMUtils {
-    public final static String SENDER_ID = "251424049357";
+    public final static String SENDER_ID = "1068283221866";
     private final static String PROPERTY_REG_ID = "propertyRegId";
     private final static String PROPERTY_APP_VERSION = "propertyAppVersion";
     private final static String GCM_PREFERENCES = "GCM_PREFERENCES";

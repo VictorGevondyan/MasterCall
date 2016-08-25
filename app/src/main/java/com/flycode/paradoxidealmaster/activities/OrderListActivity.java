@@ -1,15 +1,241 @@
 package com.flycode.paradoxidealmaster.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.flycode.paradoxidealmaster.R;
+import com.flycode.paradoxidealmaster.adapters.OrderAdapter;
+import com.flycode.paradoxidealmaster.api.APIBuilder;
+import com.flycode.paradoxidealmaster.api.response.OrderResponse;
+import com.flycode.paradoxidealmaster.api.response.OrdersListResponse;
+import com.flycode.paradoxidealmaster.constants.IntentConstants;
+import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
+import com.flycode.paradoxidealmaster.model.Order;
+import com.flycode.paradoxidealmaster.settings.AppSettings;
+import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
+import com.flycode.paradoxidealmaster.utils.threads.OrderUpdateThread;
 
-public class OrderListActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
+import io.realm.Sort;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class OrderListActivity extends SuperActivity implements RealmChangeListener<RealmResults<Order>>,OrderAdapter.OnOrderItemClickListener, View.OnClickListener {
+    private OrderUpdateThread orderUpdateThread;
+    private OrderAdapter adapter;
+    private String type;
+    private boolean alreadyUpdated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_list);
+
+        alreadyUpdated = false;
+
+        type = getIntent().getStringExtra(IntentConstants.EXTRA_ORDER_LIST_TYPE);
+
+        orderUpdateThread = new OrderUpdateThread(this);
+        orderUpdateThread.start();
+
+        ImageView actionBarBackgroundImageView = (ImageView) findViewById(R.id.action_background);
+//        actionBarBackgroundImageView.setImageResource(R.drawable.notifications_background);
+
+        TextView titleTextView = (TextView) findViewById(R.id.title);
+
+        if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
+            titleTextView.setText(R.string.new_orders);
+        } else if (type.equals(IntentConstants.VALUE_ORDER_LIST_HISTORY)) {
+            titleTextView.setText(R.string.my_orders);
+        } else if (type.equals(IntentConstants.VALUE_ORDER_LIST_TAKEN)) {
+            titleTextView.setText(R.string.finished_orders);
+        }
+
+        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_MEDIUM));
+
+        Button backButton = (Button) findViewById(R.id.back);
+        backButton.setOnClickListener(this);
+        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
+
+        adapter = new OrderAdapter(this, new ArrayList<Order>(), this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.notifications_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
+            loadOrdersViaServer();
+        } else {
+            loadOrdersViaDatabase();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        orderUpdateThread.quiteLooper();
+    }
+
+    @Override
+    public void onChange(RealmResults<Order> orderRealmResults) {
+        ArrayList<Order> orders = new ArrayList<>();
+
+        for (int index = 0 ; index < orderRealmResults.size() ; index++) {
+            orders.add(orderRealmResults.get(index));
+        }
+
+        adapter.setOrders(orders);
+
+        if (!alreadyUpdated) {
+            alreadyUpdated = true;
+            orderUpdateThread.updateOrders();
+        }
+    }
+
+    @Override
+    public void onOrderItemClick(Order order, int position) {
+        startActivity(new Intent(this, OrderDetailsActivity.class).putExtra(IntentConstants.EXTRA_ORDER, order));
+        overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.back) {
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, R.anim.slide_down_out);
+    }
+
+    @Override
+    public void onNewOrderReceived(Order order) {
+        super.onNewOrderReceived(order);
+
+        adapter.insertOrder(order);
+    }
+
+    private void loadOrdersViaServer() {
+        APIBuilder
+                .getIdealAPI()
+                .getOrders(
+                        AppSettings.sharedSettings(this).getBearerToken(),
+                        null, null,
+                        new String[] {OrderStatusConstants.NOT_TAKEN},
+                        false
+                )
+                .enqueue(new Callback<OrdersListResponse>() {
+                    @Override
+                    public void onResponse(Call<OrdersListResponse> call, final Response<OrdersListResponse> response) {
+                        if (!response.isSuccessful()) {
+                            return;
+                        }
+                        new AsyncTask<Void, Void, ArrayList<Order>>() {
+
+                            @Override
+                            protected ArrayList<Order> doInBackground(Void... args) {
+                                final ArrayList<Order> newOrders = new ArrayList<>();
+
+                                for (OrderResponse orderResponse : response.body().getObjs()) {
+                                    newOrders.add(Order.fromResponse(orderResponse));
+                                }
+
+                                return newOrders;
+                            }
+
+                            @Override
+                            protected void onPostExecute(ArrayList<Order> orders) {
+                                super.onPostExecute(orders);
+                                adapter.setOrders(orders);
+                            }
+                        }.execute();
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrdersListResponse> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    private void loadOrdersViaDatabase() {
+        RealmQuery<Order> query = Realm
+                .getDefaultInstance()
+                .where(Order.class);
+
+        if (type.equals(IntentConstants.VALUE_ORDER_LIST_HISTORY)) {
+            query
+                    .equalTo("status", "finished")
+                    .or()
+                    .equalTo("status", "canceled");
+        } else if (type.equals(IntentConstants.VALUE_ORDER_LIST_TAKEN)) {
+            query
+                    .equalTo("status", "started")
+                    .or()
+                    .equalTo("status", "paused");
+        }
+
+        query
+                .findAllSortedAsync("updated", Sort.DESCENDING)
+                .addChangeListener(this);
+    }
+
+    private class DividerItemDecoration extends RecyclerView.ItemDecoration {
+        private Context context;
+
+        public DividerItemDecoration(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
+            Paint paint = new Paint();
+            paint.setStrokeWidth(1);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(context.getResources().getColor(R.color.lighter_grey));
+            paint.setAlpha(30);
+
+            int childCount = parent.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View child = parent.getChildAt(i);
+
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+                int top = child.getBottom() + params.bottomMargin;
+                int left = 0;
+                int right = parent.getWidth();
+
+                canvas.drawLine(left, top, right, top, paint);
+            }
+        }
     }
 }

@@ -1,26 +1,30 @@
 package com.flycode.paradoxidealmaster.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 /**
  * Created by acerkinght on 7/28/16.
  */
 public class User {
-    private String _id;
+    @SerializedName("_id")
+    private String id;
     private String username;
     private String surname;
     private String name;
     private String role;
     private Date dateOfBirth;
+    private IdealService[] services;
     private int balance;
     private boolean sex;
 
-    public String get_id() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -61,6 +65,14 @@ public class User {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public IdealService[] getServices() {
+        return services;
+    }
+
+    public void setServices(IdealService[] services) {
+        this.services = services;
     }
 
     public int getBalance() {
