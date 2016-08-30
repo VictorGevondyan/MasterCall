@@ -7,6 +7,7 @@ import com.flycode.paradoxidealmaster.api.body.ProfileBody;
 import com.flycode.paradoxidealmaster.api.response.OrderResponse;
 import com.flycode.paradoxidealmaster.api.response.OrdersListResponse;
 import com.flycode.paradoxidealmaster.api.response.SimpleOrderResponse;
+import com.flycode.paradoxidealmaster.api.response.TransactionsListResponse;
 import com.flycode.paradoxidealmaster.model.AuthToken;
 import com.flycode.paradoxidealmaster.model.IdealService;
 import com.flycode.paradoxidealmaster.model.User;
@@ -51,4 +52,9 @@ public interface APIService {
 
     @PUT("/api/orders/{orderId}/{action}")
     Call<SimpleOrderResponse> makeOrderAction(@Header("Authorization") String authToken, @Path("orderId") String orderId, @Path("action") String action);
+
+    @GET ("/api/transactions")
+    Call<TransactionsListResponse> getTransactions(@Header("Authorization") String authToken,
+                                                   @Query("date[start]") Date startDate,
+                                                   @Query("date[end]") Date endDate);
 }

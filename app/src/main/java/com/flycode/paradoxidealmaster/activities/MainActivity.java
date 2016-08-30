@@ -180,6 +180,10 @@ public class MainActivity extends SuperActivity {
                         new Intent(MainActivity.this, OrderListActivity.class)
                                 .putExtra(IntentConstants.EXTRA_ORDER_LIST_TYPE, IntentConstants.VALUE_ORDER_LIST_HISTORY));
                 overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
+            } else if (position == 3) {
+                startActivity(new Intent(MainActivity.this, TransactionListActivity.class));
+                overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
+
             } else if (position == 5) {
                 AppSettings.sharedSettings(MainActivity.this).setIsUserLoggedIn(false);
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));

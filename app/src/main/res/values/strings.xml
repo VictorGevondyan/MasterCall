@@ -36,6 +36,10 @@
     <string name="waiting_favorite">Waiting Favorite</string>
     <string name="status">Status</string>
     <string name="cost">Cost</string>
+    <string name="transactions_list">Transactions</string>
+    <string name="to">To</string>
+    <string name="time">Time</string>
+    <string name="transactions">Transactions</string>
 
     <string name="icon_username">&#xe90a;</string>
     <string name="icon_lock">&#xe90b;</string>
@@ -44,6 +48,9 @@
     <string name="icon_marker">&#xe905;</string>
     <string name="icon_details">&#xe904;</string>
     <string name="icon_cost">&#xe902;</string>
+    <string name="icon_person">&#xe903;</string>
+    <string name="icon_clock">&#xe901;</string>
+    <string name="icon_comment">&#xe900;</string>
 
     <string name="order_was_started_long">Your order has been started and you can begin your work. Good luck!</string>
     <string name="order_was_paused_long">Your order has been paused and you can rest now. Cheers!</string>

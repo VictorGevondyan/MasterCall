@@ -18,4 +18,8 @@ public class DateUtils {
     public static String orderDateStringFromDate(Date date) {
         return orderDateFormat.format(date);
     }
+
+    public static String infoDateStringFromDate(Date date) {
+        return orderDateFormat.format(date);
+    }
 }
