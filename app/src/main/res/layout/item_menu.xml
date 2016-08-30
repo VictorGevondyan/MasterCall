@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.flycode.paradoxidealmaster.layouts.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/small_counter"
-        android:layout_width="wrap_content"
+        android:layout_width="25dp"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        android:gravity="center_horizontal"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
-        android:paddingRight="15dp"
-        android:paddingEnd="15dp"
-        android:paddingLeft="15dp"
-        android:paddingStart="15dp"
         android:textSize="12sp"
         android:textColor="@color/white"
         android:layout_alignParentEnd="true"
@@ -25,22 +22,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:paddingTop="20dp"
+        android:paddingBottom="25dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/icon"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textColor="@color/lighter_grey"
-            android:textSize="70sp"/>
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lighter_grey"
+                android:textSize="50sp"/>
+
+            <TextView
+                android:id="@+id/big_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/lighter_grey"
+                android:textSize="13sp"/>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="3dp"
             android:textColor="@color/black"
             android:textSize="15sp"/>
 
@@ -48,7 +61,7 @@
             android:id="@+id/dash"
             android:layout_width="20dp"
             android:layout_height="3dp"
-            android:layout_margin="5dp" />
+            android:layout_margin="3dp" />
 
     </LinearLayout>
 
@@ -67,4 +80,4 @@
         android:layout_alignParentEnd="true"
         android:background="@color/divider_grey"/>
 
-</com.flycode.paradoxidealmaster.layouts.SquareRelativeLayout>
+</RelativeLayout>

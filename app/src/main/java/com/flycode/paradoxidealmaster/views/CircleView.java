@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 
 /**
@@ -12,7 +14,6 @@ import android.view.View;
  */
 public class CircleView extends View {
     private Paint paint;
-    private boolean isOutlineOnly;
 
     public CircleView(Context context) {
         super(context);
@@ -30,16 +31,23 @@ public class CircleView extends View {
     }
 
     private void init() {
+        int dpSize =  1;
+        DisplayMetrics dm = getResources().getDisplayMetrics() ;
+        float strokeWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpSize, dm);
+
         paint = new Paint();
-        paint.setStrokeWidth(1);
+        paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setFilterBitmap(true);
     }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, getWidth() / 2, paint);
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, getWidth() / 2 - 10, paint);
     }
 
     @Override
@@ -55,8 +63,6 @@ public class CircleView extends View {
     }
 
     public void setIsOutlineOnly(boolean isOutlineOnly) {
-        this.isOutlineOnly = isOutlineOnly;
-
         if (isOutlineOnly) {
             paint.setStyle(Paint.Style.STROKE);
         } else {

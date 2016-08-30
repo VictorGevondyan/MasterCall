@@ -13,7 +13,7 @@ public class OrderResponse {
     @SerializedName("_id")
     private String id;
     private String description;
-    private User user;
+    private SimpleUserResponse user;
     private IdealService service;
     private Date orderTime;
     private Date updated;
@@ -37,11 +37,11 @@ public class OrderResponse {
         this.description = description;
     }
 
-    public User getUser() {
+    public SimpleUserResponse getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(SimpleUserResponse user) {
         this.user = user;
     }
 

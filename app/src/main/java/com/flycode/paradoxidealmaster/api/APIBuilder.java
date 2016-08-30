@@ -10,6 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by acerkinght on 7/28/16.
  */
 public class APIBuilder {
+    private static String BASE_URL = "http://192.168.0.111:1999";
+//    private static String BASE_URL = "http://fly.co.de:1994";
     private static APIService idealAPI;
 
     public static APIService getIdealAPI() {
@@ -20,7 +22,7 @@ public class APIBuilder {
 
             idealAPI = new Retrofit
                     .Builder()
-                    .baseUrl(APIService.BASE_URL)
+                    .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build()
                     .create(APIService.class);

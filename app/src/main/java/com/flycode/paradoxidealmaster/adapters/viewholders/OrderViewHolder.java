@@ -21,6 +21,7 @@ import java.util.Date;
  */
 public class OrderViewHolder extends SuperViewHolder implements View.OnTouchListener {
     private CircleView balloonCircleView;
+    private CircleView balloonOutlineCircleView;
     private TextView titleTextView;
     private TextView dateValueTextView;
     private TextView locationValueTextView;
@@ -48,9 +49,12 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
         this.listener = listener;
 
         balloonCircleView = (CircleView) itemView.findViewById(R.id.balloon);
+        balloonOutlineCircleView = (CircleView) itemView.findViewById(R.id.balloon_outline);
         titleTextView = (TextView) itemView.findViewById(R.id.title);
 
         balloonCircleView.setBackgroundColor(Color.GREEN);
+        balloonOutlineCircleView.setBackgroundColor(Color.GREEN);
+        balloonOutlineCircleView.setIsOutlineOnly(true);
 
         titleTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK));
 

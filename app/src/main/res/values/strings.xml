@@ -13,7 +13,29 @@
     <string name="my_orders">My Orders</string>
     <string name="finished_orders">Finished Orders</string>
     <string name="new_order">New Order</string>
+    <string name="order_was_started">Order was Started</string>
+    <string name="order_was_paused">Order was Paused</string>
+    <string name="pause_request_sent">Pause Request was sent</string>
+    <string name="finish_request_sent">Finish Request was sent</string>
     <string name="details">Details</string>
+    <string name="order">Order</string>
+    <string name="take">Take</string>
+    <string name="pause">Pause</string>
+    <string name="finish">Finish</string>
+    <string name="start">Start</string>
+    <string name="decline">Decline</string>
+    <string name="more">More</string>
+    <string name="ok">OK</string>
+    <string name="not_taken">Not Taken</string>
+    <string name="started">Started</string>
+    <string name="paused">Paused</string>
+    <string name="canceled">Canceled</string>
+    <string name="finished">Finished</string>
+    <string name="waiting_finished">Waiting Finished</string>
+    <string name="waiting_paused">Waiting Paused</string>
+    <string name="waiting_favorite">Waiting Favorite</string>
+    <string name="status">Status</string>
+    <string name="cost">Cost</string>
 
     <string name="icon_username">&#xe90a;</string>
     <string name="icon_lock">&#xe90b;</string>
@@ -21,7 +43,12 @@
     <string name="icon_calendar">&#xe906;</string>
     <string name="icon_marker">&#xe905;</string>
     <string name="icon_details">&#xe904;</string>
-    <string name="order">Order</string>
+    <string name="icon_cost">&#xe902;</string>
+
+    <string name="order_was_started_long">Your order has been started and you can begin your work. Good luck!</string>
+    <string name="order_was_paused_long">Your order has been paused and you can rest now. Cheers!</string>
+    <string name="pause_request_sent_long">Pause request was sent to client to approve. Please, be patient.</string>
+    <string name="finish_request_sent_long">Finish Request was sent to client. Please, wait until client approves the finish request.</string>
 
     <string-array name="menu_icons">
         <item>&#xe910;</item>

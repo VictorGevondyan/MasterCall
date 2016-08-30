@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.flycode.paradoxidealmaster.api.response.OrderResponse;
+import com.flycode.paradoxidealmaster.api.response.SimpleOrderResponse;
 
 import java.util.Date;
 
@@ -112,6 +113,15 @@ public class Order extends RealmObject implements Parcelable {
         order.updated = orderResponse.getUpdated();
 
         return order;
+    }
+
+    public void mergeSimpleResponse(SimpleOrderResponse orderResponse) {
+        if (!this.id.equals(orderResponse.getId())) {
+            return;
+        }
+
+        this.status = orderResponse.getStatus();
+        this.updated = orderResponse.getUpdated();
     }
 
     public String getId() {

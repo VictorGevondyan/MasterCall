@@ -1,24 +1,37 @@
 package com.flycode.paradoxidealmaster.activities;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
 import com.akexorcist.googledirection.model.Direction;
 import com.akexorcist.googledirection.model.Route;
 import com.flycode.paradoxidealmaster.R;
+import com.flycode.paradoxidealmaster.api.APIBuilder;
+import com.flycode.paradoxidealmaster.api.response.OrderResponse;
+import com.flycode.paradoxidealmaster.api.response.SimpleOrderResponse;
 import com.flycode.paradoxidealmaster.constants.IntentConstants;
+import com.flycode.paradoxidealmaster.constants.OrderActionConstants;
+import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
 import com.flycode.paradoxidealmaster.model.Order;
+import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.utils.DateUtils;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
+import com.flycode.paradoxidealmaster.views.CircleView;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,8 +46,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class OrderDetailsActivity extends SuperActivity implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMyLocationChangeListener {
-    private static final String HAS_BEEN_ZOOMED = "hasBeenZoomed";
+    private static final String HAS_SHOWN_PATH = "hasShownPath";
+    private static final String HAS_SHOWN_DESTINATION = "hasShownDestination";
+    private static final String MAP_VIEW_BUNDLE = "mapViewBundle";
 
     private Order order;
     private MapView mapView;
@@ -42,7 +63,11 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     private Marker masterMarker;
     private Polyline polyline;
     private Location masterLocation;
-    private boolean hasBeenZoomed;
+    private Button leftButton;
+    private Button rightButton;
+    private TextView statusValueTextView;
+    private boolean hasShownPath;
+    private boolean hasShownDestination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,33 +76,51 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         order = getIntent().getParcelableExtra(IntentConstants.EXTRA_ORDER);
 
+        Bundle mapViewBundle = new Bundle();
+
         if (savedInstanceState != null) {
             order = savedInstanceState.getParcelable(IntentConstants.EXTRA_ORDER);
-            hasBeenZoomed = savedInstanceState.getBoolean(HAS_BEEN_ZOOMED);
+            hasShownPath = savedInstanceState.getBoolean(HAS_SHOWN_PATH);
+            hasShownDestination = savedInstanceState.getBoolean(HAS_SHOWN_DESTINATION);
+            mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE);
         }
 
         mapView = (MapView) findViewById(R.id.map);
-        mapView.onCreate(savedInstanceState);
+        mapView.onCreate(mapViewBundle);
         MapsInitializer.initialize(this);
         mapView.getMapAsync(this);
 
+        leftButton = (Button) findViewById(R.id.left_button);
+        rightButton = (Button) findViewById(R.id.right_button);
+
+        leftButton.setOnClickListener(this);
+        rightButton.setOnClickListener(this);
+
         setupActionBar();
         setupOrderDetails();
+        reloadOrderUI();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
+
+        Bundle mapViewBundle = new Bundle();
+        mapView.onSaveInstanceState(mapViewBundle);
 
         outState.putParcelable(IntentConstants.EXTRA_ORDER, order);
-        outState.putBoolean(HAS_BEEN_ZOOMED, hasBeenZoomed);
+        outState.putBoolean(HAS_SHOWN_PATH, hasShownPath);
+        outState.putBoolean(HAS_SHOWN_DESTINATION, hasShownDestination);
+        outState.putBundle(MAP_VIEW_BUNDLE, mapViewBundle);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mapView.onResume();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(order.getId(), 0);
     }
 
     @Override
@@ -108,7 +151,17 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     public void onClick(View view) {
         if (view.getId() == R.id.back) {
             onBackPressed();
+        } else if (view.getId() == R.id.left_button) {
+            onLeftButtonClicked();
+        } else if (view.getId() == R.id.right_button) {
+            onRightButtonClicked();
         }
+    }
+
+    @Override
+    public void onOrderStartedReceived(Order order) {
+        this.order = order;
+        reloadOrderUI();
     }
 
     @Override
@@ -129,13 +182,18 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_user));
         googleMap.addMarker(markerOptions);
 
+        if (!hasShownDestination) {
+            hasShownDestination = true;
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(order.getLocationLatitude(), order.getLocationLongitude())));
+        }
+
         this.googleMap = googleMap;
     }
 
     @Override
     public void onMyLocationChange(Location location) {
         if (masterLocation != null
-                && masterLocation.distanceTo(location) < 50) {
+                && masterLocation.distanceTo(location) < 30) {
             return;
         }
 
@@ -150,8 +208,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             masterMarker = googleMap.addMarker(markerOptions);
         }
 
-        if (!hasBeenZoomed) {
-            hasBeenZoomed = true;
+        if (!hasShownPath) {
+            hasShownPath = true;
             LatLngBounds latLngBounds = new LatLngBounds.Builder()
                     .include(new LatLng(location.getLatitude(), location.getLongitude()))
                     .include(new LatLng(order.getLocationLatitude(), order.getLocationLongitude()))
@@ -205,38 +263,63 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     }
 
     private void setupOrderDetails() {
-        View orderDetailsView;
-        TextView titleTextView;
-        TextView commentsTextView;
-        TextView dateValueTextView;
-        TextView locationValueTextView;
-        TextView detailsValueTextView;
+        View orderDetailsView = findViewById(R.id.order_details);
 
-        orderDetailsView = findViewById(R.id.order_details);
+        TextView titleTextView = (TextView) orderDetailsView.findViewById(R.id.title);
+        TextView commentsTextView = (TextView) orderDetailsView.findViewById(R.id.details);
 
-        titleTextView = (TextView) orderDetailsView.findViewById(R.id.title);
-        commentsTextView = (TextView) orderDetailsView.findViewById(R.id.details);
-
-        dateValueTextView = processSection(orderDetailsView.findViewById(R.id.date_section), R.string.icon_calendar, R.string.date);
-        locationValueTextView = processSection(orderDetailsView.findViewById(R.id.location_section), R.string.icon_marker, R.string.location);
-        detailsValueTextView = processSection(orderDetailsView.findViewById(R.id.details_section), R.string.icon_details, R.string.details);
+        TextView dateValueTextView = processSection(orderDetailsView.findViewById(R.id.date_section), R.string.icon_calendar, R.string.date);
+        TextView locationValueTextView = processSection(orderDetailsView.findViewById(R.id.location_section), R.string.icon_marker, R.string.location);
+        statusValueTextView = processSection(orderDetailsView.findViewById(R.id.status_section), R.string.icon_details, R.string.status);
+        TextView costValueTextView = processSection(orderDetailsView.findViewById(R.id.cost_section), R.string.icon_cost, R.string.cost);
 
         titleTextView.setText(order.getServiceName());
         commentsTextView.setText(order.getDescription());
         dateValueTextView.setText(DateUtils.orderDateStringFromDate(order.getOrderTime()));
 
+        if (order.getDescription() == null || order.getDescription().isEmpty()) {
+            commentsTextView.setVisibility(View.GONE);
+        }
+
         String location = order.getLocationName();
         locationValueTextView.setText(location == null || location.isEmpty() ? "N/A" : location);
 
-        String details;
+        String cost;
 
         if (order.isServiceIsCountable()) {
-            details = order.getStatus() + " " + order.getServiceCost() + "AMD";
+            cost = order.getServiceCost() + "AMD";
         } else {
-            details = order.getStatus() + " " + order.getQuantity() + " / " + (order.getQuantity() * order.getServiceCost()) + "AMD";
+            cost = order.getQuantity() + " / " + (order.getQuantity() * order.getServiceCost()) + "AMD";
         }
 
-        detailsValueTextView.setText(details);
+        costValueTextView.setText(cost);
+
+        CircleView balloonCircleView = (CircleView) orderDetailsView.findViewById(R.id.balloon);
+        CircleView balloonOutlineCircleView = (CircleView) orderDetailsView.findViewById(R.id.balloon_outline);
+
+        balloonCircleView.setBackgroundColor(Color.GREEN);
+        balloonOutlineCircleView.setBackgroundColor(Color.GREEN);
+        balloonOutlineCircleView.setIsOutlineOnly(true);
+    }
+
+    private void setOrderStatus() {
+        if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)) {
+            statusValueTextView.setText(R.string.not_taken);
+        } else if (order.getStatus().equals(OrderStatusConstants.STARTED)) {
+            statusValueTextView.setText(R.string.started);
+        } else if (order.getStatus().equals(OrderStatusConstants.PAUSED)) {
+            statusValueTextView.setText(R.string.paused);
+        } else if (order.getStatus().equals(OrderStatusConstants.CANCELED)) {
+            statusValueTextView.setText(R.string.canceled);
+        } else if (order.getStatus().equals(OrderStatusConstants.FINISHED)) {
+            statusValueTextView.setText(R.string.finished);
+        } else if (order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)) {
+            statusValueTextView.setText(R.string.waiting_finished);
+        } else if (order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)) {
+            statusValueTextView.setText(R.string.waiting_paused);
+        } else if (order.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
+            statusValueTextView.setText(R.string.waiting_favorite);
+        }
     }
 
     private TextView processSection(View section, int icon, int title) {
@@ -252,5 +335,152 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         titleTextView.setText(title);
 
         return valueTextView;
+    }
+
+    private void reloadOrderUI() {
+        if (order.getStatus().equals(OrderStatusConstants.FINISHED)
+                || order.getStatus().equals(OrderStatusConstants.CANCELED)) {
+            leftButton.setVisibility(View.GONE);
+            rightButton.setVisibility(View.GONE);
+        } else if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)) {
+            leftButton.setText("");
+            rightButton.setText(R.string.take);
+        } else if (order.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
+            leftButton.setText(R.string.decline);
+            rightButton.setText(R.string.take);
+        } else if (order.getStatus().equals(OrderStatusConstants.STARTED)
+                || order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)
+                || order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)) {
+            leftButton.setText(R.string.pause);
+            rightButton.setText(R.string.finish);
+        } else if (order.getStatus().equals(OrderStatusConstants.PAUSED)) {
+            leftButton.setText(R.string.start);
+            rightButton.setText(R.string.finish);
+        }
+
+        setOrderStatus();
+    }
+
+    private void onLeftButtonClicked() {
+        String action;
+        final int successTitle;
+        final int successMessage;
+
+        if (order.getStatus().equals(OrderStatusConstants.STARTED)
+                || order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)
+                || order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)) {
+            action = OrderActionConstants.PAUSE_REQUEST;
+            successTitle = R.string.pause_request_sent;
+            successMessage = R.string.pause_request_sent_long;
+        } else if (order.getStatus().equals(OrderStatusConstants.PAUSED)) {
+            action = OrderActionConstants.START;
+            successTitle = R.string.order_was_started;
+            successMessage = R.string.order_was_started_long;
+        } else {
+            return;
+        }
+
+        APIBuilder
+                .getIdealAPI()
+                .makeOrderAction(
+                        AppSettings.sharedSettings(this).getBearerToken(),
+                        order.getId(),
+                        action
+                )
+                .enqueue(new Callback<SimpleOrderResponse>() {
+                    @Override
+                    public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
+                        if (!response.isSuccessful()) {
+                            return;
+                        }
+
+                        order.mergeSimpleResponse(response.body());
+
+                        Realm
+                                .getDefaultInstance()
+                                .executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        realm.insertOrUpdate(order);
+                                    }
+                                });
+
+                        new MaterialDialog.Builder(OrderDetailsActivity.this)
+                                .title(successTitle)
+                                .content(successMessage)
+                                .positiveText(R.string.ok)
+                                .show();
+
+                        reloadOrderUI();
+                    }
+
+                    @Override
+                    public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
+                        Log.d("Order update", "fuck you");
+                    }
+                });
+    }
+
+    private void onRightButtonClicked() {
+        if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)) {
+            APIBuilder
+                    .getIdealAPI()
+                    .makeOrderAction(
+                            AppSettings.sharedSettings(this).getBearerToken(),
+                            order.getId(),
+                            OrderActionConstants.ATTACH_MASTER
+                    )
+                    .enqueue(new Callback<SimpleOrderResponse>() {
+                        @Override
+                        public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
+                            if (!response.isSuccessful()) {
+                                return;
+                            }
+
+                            order.mergeSimpleResponse(response.body());
+                            reloadOrderUI();
+                        }
+
+                        @Override
+                        public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
+                            Log.d("Order update", "fuck you");
+                        }
+                    });
+        } else {
+            APIBuilder
+                    .getIdealAPI()
+                    .makeOrderAction(
+                            AppSettings.sharedSettings(this).getBearerToken(),
+                            order.getId(),
+                            OrderActionConstants.FINISH_REQUEST
+                    )
+                    .enqueue(new Callback<SimpleOrderResponse>() {
+                        @Override
+                        public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
+                            if (!response.isSuccessful()) {
+                                return;
+                            }
+
+                            order.mergeSimpleResponse(response.body());
+
+                            new MaterialDialog.Builder(OrderDetailsActivity.this)
+                                    .title(R.string.finish_request_sent)
+                                    .content(R.string.finish_request_sent_long)
+                                    .positiveText(R.string.ok)
+                                    .show();
+
+                            reloadOrderUI();
+                        }
+
+                        @Override
+                        public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
+                            Log.d("Order update", "fuck you");
+                        }
+                    });
+        }
+    }
+
+    public String getOrderId() {
+        return order.getId();
     }
 }

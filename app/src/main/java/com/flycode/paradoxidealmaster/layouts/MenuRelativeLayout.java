@@ -7,16 +7,16 @@ import android.widget.RelativeLayout;
 /**
  * Created by anhaytananun on 05.07.16.
  */
-public class SquareRelativeLayout extends RelativeLayout {
-    public SquareRelativeLayout(Context context) {
+public class MenuRelativeLayout extends RelativeLayout {
+    public MenuRelativeLayout(Context context) {
         super(context);
     }
 
-    public SquareRelativeLayout(Context context, AttributeSet attrs) {
+    public MenuRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SquareRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MenuRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

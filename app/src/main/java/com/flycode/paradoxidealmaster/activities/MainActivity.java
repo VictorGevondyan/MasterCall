@@ -4,9 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,26 +20,25 @@ import com.flycode.paradoxidealmaster.api.response.OrdersListResponse;
 import com.flycode.paradoxidealmaster.constants.IntentConstants;
 import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
 import com.flycode.paradoxidealmaster.gcm.GCMSubscriber;
-import com.flycode.paradoxidealmaster.model.IdealService;
 import com.flycode.paradoxidealmaster.model.Order;
+import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
+import com.flycode.paradoxidealmaster.settings.UserData;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
-import com.flycode.paradoxidealmaster.utils.threads.OrderUpdateThread;
 
 import java.io.IOException;
 
-import io.realm.Realm;
-import io.realm.RealmQuery;
-import io.realm.Sort;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends SuperActivity {
-    private static final String ORDERS_COUNT = "ordersCount";
+    private static final String NEW_ORDERS_COUNT = "newOrdersCount";
+    private static final String MY_ORDERS_COUNT = "myOrdersCount";
 
     private MenuAdapter adapter;
-    private int ordersCount;
+    private int newOrdersCount;
+    private int myOrdersCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +52,12 @@ public class MainActivity extends SuperActivity {
         menuGridView.setAdapter(adapter);
         menuGridView.setOnItemClickListener(menuClickListener);
 
-        ordersCount = 0;
+        newOrdersCount = 0;
+        myOrdersCount = 0;
 
         if (savedInstanceState != null) {
-            ordersCount = savedInstanceState.getInt(ORDERS_COUNT);
+            newOrdersCount = savedInstanceState.getInt(NEW_ORDERS_COUNT);
+            myOrdersCount = savedInstanceState.getInt(MY_ORDERS_COUNT);
         }
 
         try {
@@ -93,7 +93,34 @@ public class MainActivity extends SuperActivity {
                             return;
                         }
 
-                        ordersCount = response.body().getCount();
+                        newOrdersCount = response.body().getCount();
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrdersListResponse> call, Throwable t) {
+                        Log.d("Failed", "to load count of new orders");
+                    }
+                });
+
+        APIBuilder
+                .getIdealAPI()
+                .getOrders(
+                        AppSettings.sharedSettings(this).getBearerToken(),
+                        null, null,
+                        new String[] {OrderStatusConstants.PAUSED, OrderStatusConstants.STARTED, OrderStatusConstants.WAITING_FINISHED,
+                                OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.WAITING_PAUSED},
+                        true
+                )
+                .enqueue(new Callback<OrdersListResponse>() {
+                    @Override
+                    public void onResponse(Call<OrdersListResponse> call, Response<OrdersListResponse> response) {
+                        if (!response.isSuccessful()) {
+                            return;
+                        }
+
+                        myOrdersCount = response.body().getCount();
 
                         adapter.notifyDataSetChanged();
                     }
@@ -103,13 +130,36 @@ public class MainActivity extends SuperActivity {
 
                     }
                 });
+
+        APIBuilder
+                .getIdealAPI()
+                .getUser(AppSettings.sharedSettings(this).getBearerToken())
+                .enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if (!response.isSuccessful()) {
+                            return;
+                        }
+
+                        UserData
+                                .sharedData(MainActivity.this)
+                                .storeUser(response.body(), "master");
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+
+                    }
+                });
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(ORDERS_COUNT, ordersCount);
+        outState.putInt(NEW_ORDERS_COUNT, newOrdersCount);
     }
 
     AdapterView.OnItemClickListener menuClickListener = new AdapterView.OnItemClickListener() {
@@ -146,6 +196,7 @@ public class MainActivity extends SuperActivity {
         private String icons[];
         private Typeface icomoon;
         private Typeface avenirRoman;
+        private Typeface avenirLight;
 
         public MenuAdapter(Context context) {
             super(context, R.layout.item_menu);
@@ -156,6 +207,7 @@ public class MainActivity extends SuperActivity {
             this.icons = context.getResources().getStringArray(R.array.menu_icons);
             this.icomoon = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON);
             this.avenirRoman = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_ROMAN);
+            this.avenirLight = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT);
         }
 
         @Override
@@ -168,6 +220,7 @@ public class MainActivity extends SuperActivity {
             TextView iconTextView = (TextView) convertView.findViewById(R.id.icon);
             TextView titleTextView = (TextView) convertView.findViewById(R.id.title);
             TextView smallCounterTextView = (TextView) convertView.findViewById(R.id.small_counter);
+            TextView bigCounterTextView = (TextView) convertView.findViewById(R.id.big_counter);
             View dashView = convertView.findViewById(R.id.dash);
             View bottomView = convertView.findViewById(R.id.bottom);
             View rightView = convertView.findViewById(R.id.right);
@@ -185,10 +238,23 @@ public class MainActivity extends SuperActivity {
             if (position == 0) {
                 smallCounterTextView.setVisibility(View.VISIBLE);
                 smallCounterTextView.setBackgroundResource(R.drawable.rounded_rect_orange);
-                smallCounterTextView.setText(String.valueOf(ordersCount));
+                smallCounterTextView.setText(String.valueOf(newOrdersCount));
+                smallCounterTextView.setTypeface(avenirRoman);
+            } else if (position == 1) {
+                smallCounterTextView.setVisibility(View.VISIBLE);
+                smallCounterTextView.setBackgroundResource(R.drawable.rounded_rect_blue);
+                smallCounterTextView.setText(String.valueOf(myOrdersCount));
                 smallCounterTextView.setTypeface(avenirRoman);
             } else {
                 smallCounterTextView.setVisibility(View.GONE);
+            }
+
+            if (position == 3) {
+                bigCounterTextView.setVisibility(View.VISIBLE);
+                bigCounterTextView.setText(String.valueOf(UserData.sharedData(MainActivity.this).getBalance()));
+                bigCounterTextView.setTypeface(avenirLight);
+            } else {
+                bigCounterTextView.setVisibility(View.GONE);
             }
 
             return convertView;

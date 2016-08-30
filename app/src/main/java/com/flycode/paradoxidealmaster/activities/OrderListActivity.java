@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,7 +24,6 @@ import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
 import com.flycode.paradoxidealmaster.model.Order;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
-import com.flycode.paradoxidealmaster.utils.threads.OrderUpdateThread;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OrderListActivity extends SuperActivity implements RealmChangeListener<RealmResults<Order>>,OrderAdapter.OnOrderItemClickListener, View.OnClickListener {
-    private OrderUpdateThread orderUpdateThread;
     private OrderAdapter adapter;
     private String type;
     private boolean alreadyUpdated;
@@ -51,9 +50,6 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
 
         type = getIntent().getStringExtra(IntentConstants.EXTRA_ORDER_LIST_TYPE);
 
-        orderUpdateThread = new OrderUpdateThread(this);
-        orderUpdateThread.start();
-
         ImageView actionBarBackgroundImageView = (ImageView) findViewById(R.id.action_background);
 //        actionBarBackgroundImageView.setImageResource(R.drawable.notifications_background);
 
@@ -62,9 +58,9 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
             titleTextView.setText(R.string.new_orders);
         } else if (type.equals(IntentConstants.VALUE_ORDER_LIST_HISTORY)) {
-            titleTextView.setText(R.string.my_orders);
-        } else if (type.equals(IntentConstants.VALUE_ORDER_LIST_TAKEN)) {
             titleTextView.setText(R.string.finished_orders);
+        } else if (type.equals(IntentConstants.VALUE_ORDER_LIST_TAKEN)) {
+            titleTextView.setText(R.string.my_orders);
         }
 
         titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_MEDIUM));
@@ -74,7 +70,7 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
 
         adapter = new OrderAdapter(this, new ArrayList<Order>(), this);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.notifications_list);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.orders_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
@@ -84,8 +80,10 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
     protected void onResume() {
         super.onResume();
 
+        alreadyUpdated = false;
+
         if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
-            loadOrdersViaServer();
+            loadOrdersViaServer(new String[] {OrderStatusConstants.NOT_TAKEN});
         } else {
             loadOrdersViaDatabase();
         }
@@ -99,7 +97,6 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        orderUpdateThread.quiteLooper();
     }
 
     @Override
@@ -114,7 +111,9 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
 
         if (!alreadyUpdated) {
             alreadyUpdated = true;
-            orderUpdateThread.updateOrders();
+            loadOrdersViaServer(new String[] {OrderStatusConstants.STARTED, OrderStatusConstants.PAUSED,
+                            OrderStatusConstants.CANCELED, OrderStatusConstants.FINISHED,
+                            OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.WAITING_PAUSED, OrderStatusConstants.WAITING_FINISHED});
         }
     }
 
@@ -144,13 +143,13 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         adapter.insertOrder(order);
     }
 
-    private void loadOrdersViaServer() {
+    private void loadOrdersViaServer(final String[] statuses) {
         APIBuilder
                 .getIdealAPI()
                 .getOrders(
                         AppSettings.sharedSettings(this).getBearerToken(),
                         null, null,
-                        new String[] {OrderStatusConstants.NOT_TAKEN},
+                        statuses,
                         false
                 )
                 .enqueue(new Callback<OrdersListResponse>() {
@@ -159,13 +158,15 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
                         if (!response.isSuccessful()) {
                             return;
                         }
+
                         new AsyncTask<Void, Void, ArrayList<Order>>() {
 
                             @Override
                             protected ArrayList<Order> doInBackground(Void... args) {
                                 final ArrayList<Order> newOrders = new ArrayList<>();
+                                final ArrayList<OrderResponse> orderResponses = response.body().getObjs();
 
-                                for (OrderResponse orderResponse : response.body().getObjs()) {
+                                for (OrderResponse orderResponse : orderResponses) {
                                     newOrders.add(Order.fromResponse(orderResponse));
                                 }
 
@@ -173,16 +174,28 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
                             }
 
                             @Override
-                            protected void onPostExecute(ArrayList<Order> orders) {
+                            protected void onPostExecute(final ArrayList<Order> orders) {
                                 super.onPostExecute(orders);
-                                adapter.setOrders(orders);
+
+                                if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
+                                    adapter.setOrders(orders);
+                                } else {
+                                    Realm
+                                            .getDefaultInstance()
+                                            .executeTransactionAsync(new Realm.Transaction() {
+                                                @Override
+                                                public void execute(Realm realm) {
+                                                    realm.insertOrUpdate(orders);
+                                                }
+                                            });
+                                }
                             }
                         }.execute();
                     }
 
                     @Override
                     public void onFailure(Call<OrdersListResponse> call, Throwable t) {
-
+                        Log.d("can't load orders", "what a pity");
                     }
                 });
     }
@@ -194,14 +207,20 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
 
         if (type.equals(IntentConstants.VALUE_ORDER_LIST_HISTORY)) {
             query
-                    .equalTo("status", "finished")
+                    .equalTo("status", OrderStatusConstants.FINISHED)
                     .or()
-                    .equalTo("status", "canceled");
+                    .equalTo("status", OrderStatusConstants.CANCELED);
         } else if (type.equals(IntentConstants.VALUE_ORDER_LIST_TAKEN)) {
             query
-                    .equalTo("status", "started")
+                    .equalTo("status", OrderStatusConstants.STARTED)
                     .or()
-                    .equalTo("status", "paused");
+                    .equalTo("status", OrderStatusConstants.PAUSED)
+                    .or()
+                    .equalTo("status", OrderStatusConstants.WAITING_FAVORITE)
+                    .or()
+                    .equalTo("status", OrderStatusConstants.WAITING_FINISHED)
+                    .or()
+                    .equalTo("status", OrderStatusConstants.WAITING_PAUSED);
         }
 
         query

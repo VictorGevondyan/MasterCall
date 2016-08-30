@@ -1,6 +1,5 @@
 package com.flycode.paradoxidealmaster.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -83,7 +82,7 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
 
                     @Override
                     public void onFailure(Call<AuthToken> call, Throwable t) {
-
+                        Log.d("Logging", "Jogging");
                     }
                 });
     }
@@ -108,7 +107,7 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-
+                        Log.d("Bas Ass", "Very bad ass");
                     }
                 });
     }

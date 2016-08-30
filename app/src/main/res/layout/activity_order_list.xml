@@ -10,7 +10,7 @@
     <include layout="@layout/bar_action_simple"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/notifications_list"
+        android:id="@+id/orders_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">

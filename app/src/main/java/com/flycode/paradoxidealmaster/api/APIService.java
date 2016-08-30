@@ -6,6 +6,7 @@ import com.flycode.paradoxidealmaster.api.body.LoginBody;
 import com.flycode.paradoxidealmaster.api.body.ProfileBody;
 import com.flycode.paradoxidealmaster.api.response.OrderResponse;
 import com.flycode.paradoxidealmaster.api.response.OrdersListResponse;
+import com.flycode.paradoxidealmaster.api.response.SimpleOrderResponse;
 import com.flycode.paradoxidealmaster.model.AuthToken;
 import com.flycode.paradoxidealmaster.model.IdealService;
 import com.flycode.paradoxidealmaster.model.User;
@@ -26,8 +27,6 @@ import retrofit2.http.Query;
  * Created by acerkinght on 7/28/16.
  */
 public interface APIService {
-    String BASE_URL = "http://192.168.0.111:1999";
-
     @POST("auth/local")
     Call<AuthToken> login(@Body LoginBody loginBody);
 
@@ -40,12 +39,16 @@ public interface APIService {
     @POST("/api/points")
     Call<Void> updateLocation(@Header("Authorization") String authToken, @Body LocationBody locationBody);
 
-    @GET("/api/orders")
-    Call<OrdersListResponse> getOrders(@Header("Authorization") String authToken, @Query("updated[start]") Date startDate,
-                                                                                    @Query("updated[end]") Date endDate,
-                                                                                    @Query("status")String[] statuses,
-                                                                                    @Query("onlyCount") boolean onlyCount);
+    @GET("/api/orders/own")
+    Call<OrdersListResponse> getOrders(@Header("Authorization") String authToken,
+                                       @Query("updated[start]") Date startDate,
+                                       @Query("updated[end]") Date endDate,
+                                       @Query("status")String[] statuses,
+                                       @Query("onlyCount") boolean onlyCount);
 
     @GET("/api/orders/{orderId}")
     Call<OrderResponse> getOrder(@Header("Authorization") String authToken, @Path("orderId") String orderId);
+
+    @PUT("/api/orders/{orderId}/{action}")
+    Call<SimpleOrderResponse> makeOrderAction(@Header("Authorization") String authToken, @Path("orderId") String orderId, @Path("action") String action);
 }

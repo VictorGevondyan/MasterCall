@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -14,7 +15,7 @@ import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends AppCompatActivity {
     private Timer timer;
 
     @Override
