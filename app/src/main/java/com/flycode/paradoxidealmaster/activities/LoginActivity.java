@@ -90,6 +90,7 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                     @Override
                     public void onFailure(Call<AuthToken> call, Throwable t) {
                         Log.d("Logging", "Jogging");
+                        loading.dismiss();
                     }
                 });
     }
@@ -116,6 +117,7 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
                         Log.d("Bas Ass", "Very bad ass");
+                        loading.dismiss();
                     }
                 });
     }

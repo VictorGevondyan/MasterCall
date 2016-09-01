@@ -76,8 +76,8 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
     private void setupActionbarUI() {
         ViewGroup actionBar = (ViewGroup) findViewById(R.id.action_bar);
 
-
-
+        ImageView actionBarBackgroundImageView = (ImageView) actionBar.findViewById(R.id.action_background);
+        actionBarBackgroundImageView.setImageResource(R.drawable.transactions_background);
 
         TextView titleTextView = (TextView) actionBar.findViewById(R.id.title);
         titleTextView.setText(R.string.transactions);

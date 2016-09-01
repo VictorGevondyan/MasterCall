@@ -27,6 +27,7 @@ import com.flycode.paradoxidealmaster.api.response.SimpleOrderResponse;
 import com.flycode.paradoxidealmaster.constants.IntentConstants;
 import com.flycode.paradoxidealmaster.constants.OrderActionConstants;
 import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
+import com.flycode.paradoxidealmaster.dialogs.LoadinProgressDialog;
 import com.flycode.paradoxidealmaster.model.Order;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.utils.DateUtils;
@@ -57,6 +58,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     private static final String HAS_SHOWN_DESTINATION = "hasShownDestination";
     private static final String MAP_VIEW_BUNDLE = "mapViewBundle";
 
+    private LoadinProgressDialog loading;
+
     private Order order;
     private MapView mapView;
     private GoogleMap googleMap;
@@ -73,6 +76,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
+
+        loading = new LoadinProgressDialog(this);
 
         order = getIntent().getParcelableExtra(IntentConstants.EXTRA_ORDER);
 
@@ -366,6 +371,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         final int successTitle;
         final int successMessage;
 
+        loading.show();
+
         if (order.getStatus().equals(OrderStatusConstants.STARTED)
                 || order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)
                 || order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)) {
@@ -386,6 +393,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         AppSettings.sharedSettings(this).getBearerToken(),
                         order.getId(),
                         action
+
                 )
                 .enqueue(new Callback<SimpleOrderResponse>() {
                     @Override
@@ -395,6 +403,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         }
 
                         order.mergeSimpleResponse(response.body());
+                        loading.dismiss();
 
                         Realm
                                 .getDefaultInstance()
@@ -412,16 +421,21 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                                 .show();
 
                         reloadOrderUI();
+
                     }
 
                     @Override
                     public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
                         Log.d("Order update", "fuck you");
+                        loading.dismiss();
                     }
                 });
     }
 
     private void onRightButtonClicked() {
+
+        loading.show();
+
         if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)) {
             APIBuilder
                     .getIdealAPI()
@@ -438,12 +452,14 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                             }
 
                             order.mergeSimpleResponse(response.body());
+                            loading.dismiss();
                             reloadOrderUI();
                         }
 
                         @Override
                         public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
                             Log.d("Order update", "fuck you");
+                            loading.dismiss();
                         }
                     });
         } else {
@@ -460,6 +476,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                             if (!response.isSuccessful()) {
                                 return;
                             }
+                            loading.dismiss();
 
                             order.mergeSimpleResponse(response.body());
 
@@ -475,6 +492,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         @Override
                         public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
                             Log.d("Order update", "fuck you");
+                            loading.dismiss();
                         }
                     });
         }
