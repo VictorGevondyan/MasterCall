@@ -256,7 +256,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
     private void setupActionBar() {
         ImageView actionBarBackgroundImageView = (ImageView) findViewById(R.id.action_background);
-//        actionBarBackgroundImageView.setImageResource(R.drawable.notifications_background);
+        actionBarBackgroundImageView.setImageResource(R.drawable.new_orders_background);
 
         TextView titleTextView = (TextView) findViewById(R.id.title);
         titleTextView.setText(R.string.order);
