@@ -30,6 +30,7 @@ public class SuperActivity extends AppCompatActivity {
         localBroadcastManager.registerReceiver(newOrderBroadcastReceiver, new IntentFilter(IntentConstants.ACTION_NEW_ORDER));
         localBroadcastManager.registerReceiver(orderStartedBroadcastReceiver, new IntentFilter(IntentConstants.ACTION_ORDER_STARTED));
         localBroadcastManager.registerReceiver(orderPausedBroadcastReceiver, new IntentFilter(IntentConstants.ACTION_ORDER_PAUSED));
+        localBroadcastManager.registerReceiver(orderFinishedBroadcastReceiver, new IntentFilter(IntentConstants.ACTION_ORDER_FINISHED));
     }
 
     @Override
@@ -42,6 +43,7 @@ public class SuperActivity extends AppCompatActivity {
         localBroadcastManager.unregisterReceiver(newOrderBroadcastReceiver);
         localBroadcastManager.unregisterReceiver(orderStartedBroadcastReceiver);
         localBroadcastManager.unregisterReceiver(orderPausedBroadcastReceiver);
+        localBroadcastManager.unregisterReceiver(orderFinishedBroadcastReceiver);
     }
 
     private BroadcastReceiver newOrderBroadcastReceiver = new BroadcastReceiver() {
@@ -67,6 +69,15 @@ public class SuperActivity extends AppCompatActivity {
             final Order order = intent.getParcelableExtra(IntentConstants.EXTRA_ORDER);
             showOrderDialog(R.string.order_was_paused, R.string.order_was_paused_long, order);
             onOrderStartedReceived(order);
+        }
+    };
+
+    private BroadcastReceiver orderFinishedBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final Order order = intent.getParcelableExtra(IntentConstants.EXTRA_ORDER);
+            showOrderDialog(R.string.order_was_finished, R.string.order_was_finished_long, order);
+            onOrderFinishedReceived(order);
         }
     };
 
@@ -110,4 +121,5 @@ public class SuperActivity extends AppCompatActivity {
 
     public void onNewOrderReceived(Order order) {}
     public void onOrderStartedReceived(Order order) {}
+    public void onOrderFinishedReceived(Order order) {}
 }

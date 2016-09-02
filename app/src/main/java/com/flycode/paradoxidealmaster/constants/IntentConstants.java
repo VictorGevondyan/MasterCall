@@ -7,6 +7,7 @@ public class IntentConstants {
     public static final String ACTION_NEW_ORDER = IntentConstants.class.getName() + "_orderNew";
     public static final String ACTION_ORDER_STARTED = IntentConstants.class.getName() + "_orderStarted";
     public static final String ACTION_ORDER_PAUSED = IntentConstants.class.getName() + "_orderPaused";
+    public static final String ACTION_ORDER_FINISHED = IntentConstants.class.getName() + "_orderFinished";
 
     public static final String EXTRA_ORDER_LIST_TYPE = IntentConstants.class.getName() + "_orderListType";
     public static final String EXTRA_ORDER = IntentConstants.class.getName() + "_order";

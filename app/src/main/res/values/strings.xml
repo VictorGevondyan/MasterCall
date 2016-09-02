@@ -15,6 +15,7 @@
     <string name="new_order">New Order</string>
     <string name="order_was_started">Order was Started</string>
     <string name="order_was_paused">Order was Paused</string>
+    <string name="order_was_finished">Order was Finished</string>
     <string name="pause_request_sent">Pause Request was sent</string>
     <string name="finish_request_sent">Finish Request was sent</string>
     <string name="details">Details</string>
@@ -54,6 +55,7 @@
 
     <string name="order_was_started_long">Your order has been started and you can begin your work. Good luck!</string>
     <string name="order_was_paused_long">Your order has been paused and you can rest now. Cheers!</string>
+    <string name="order_was_finished_long">Your order has been finished. Congratulation!</string>
     <string name="pause_request_sent_long">Pause request was sent to client to approve. Please, be patient.</string>
     <string name="finish_request_sent_long">Finish Request was sent to client. Please, wait until client approves the finish request.</string>
 

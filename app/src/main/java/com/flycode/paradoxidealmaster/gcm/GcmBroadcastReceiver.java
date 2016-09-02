@@ -91,6 +91,13 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                     context.getString(R.string.order_was_paused),
                     IntentConstants.ACTION_ORDER_PAUSED
             );
+        } else if (title.equals("order_finished")) {
+            processOrder(
+                    context,
+                    intent.getStringExtra("message"),
+                    context.getString(R.string.order_was_finished),
+                    IntentConstants.ACTION_ORDER_FINISHED
+            );
         }
     }
 
