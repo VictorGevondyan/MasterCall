@@ -22,6 +22,7 @@ import com.flycode.paradoxidealmaster.api.response.TransactionResponse;
 import com.flycode.paradoxidealmaster.api.response.TransactionsListResponse;
 import com.flycode.paradoxidealmaster.model.IdealTransaction;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
+import com.flycode.paradoxidealmaster.utils.DeviceUtil;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
 import java.util.ArrayList;
@@ -191,8 +192,14 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
     private class DividerItemDecoration extends RecyclerView.ItemDecoration {
         private Context context;
 
+//___________must be edited this shitty magic_______________________________________________
+        int verticalDividerX = new Integer(0);
+        int magicDigit = new Integer(0);
+
         public DividerItemDecoration(Context context) {
             this.context = context;
+           verticalDividerX = (int) DeviceUtil.getPxForDp(context, 100);
+            magicDigit = (int) DeviceUtil.getPxForDp(context, 15);
         }
 
         @Override
@@ -214,6 +221,18 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
                 int right = parent.getWidth();
 
                 canvas.drawLine(left, top, right, top, paint);
+            }
+            for (int i = 0; i < childCount; i++  ) {
+                View child = parent.getChildAt(i);
+
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+                int top = child.getTop() + params.topMargin;
+                int left = verticalDividerX;
+                int bottom = child.getBottom() - magicDigit;
+
+                canvas.drawLine(left, top, left, bottom, paint);
+
             }
         }
 
