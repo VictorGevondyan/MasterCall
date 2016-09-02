@@ -19,13 +19,13 @@
 
             <com.flycode.paradoxidealmaster.views.CircleView
                 android:id="@+id/balloon_outline"
-                android:layout_width="26dp"
-                android:layout_height="26dp"/>
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
 
             <com.flycode.paradoxidealmaster.views.CircleView
                 android:id="@+id/balloon"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_margin="5dp"
                 android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"/>

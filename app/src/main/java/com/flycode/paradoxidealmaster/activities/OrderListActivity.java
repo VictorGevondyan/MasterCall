@@ -51,15 +51,18 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         type = getIntent().getStringExtra(IntentConstants.EXTRA_ORDER_LIST_TYPE);
 
         ImageView actionBarBackgroundImageView = (ImageView) findViewById(R.id.action_background);
-//        actionBarBackgroundImageView.setImageResource(R.drawable.notifications_background);
+       // actionBarBackgroundImageView.setImageResource(R.drawable.social_network_background);
 
         TextView titleTextView = (TextView) findViewById(R.id.title);
 
         if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
+            actionBarBackgroundImageView.setImageResource(R.drawable.new_orders_background);
             titleTextView.setText(R.string.new_orders);
         } else if (type.equals(IntentConstants.VALUE_ORDER_LIST_HISTORY)) {
+            actionBarBackgroundImageView.setImageResource(R.drawable.finished_orders_background);
             titleTextView.setText(R.string.finished_orders);
         } else if (type.equals(IntentConstants.VALUE_ORDER_LIST_TAKEN)) {
+            actionBarBackgroundImageView.setImageResource(R.drawable.my_orders_background);
             titleTextView.setText(R.string.my_orders);
         }
 
@@ -241,7 +244,6 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
             paint.setStrokeWidth(1);
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(context.getResources().getColor(R.color.lighter_grey));
-            paint.setAlpha(30);
 
             int childCount = parent.getChildCount();
             for (int i = 0; i < childCount; i++) {

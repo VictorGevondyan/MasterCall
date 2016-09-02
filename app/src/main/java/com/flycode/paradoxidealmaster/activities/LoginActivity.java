@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
 import com.flycode.paradoxidealmaster.api.body.LoginBody;
+import com.flycode.paradoxidealmaster.dialogs.LoadinProgressDialog;
 import com.flycode.paradoxidealmaster.model.AuthToken;
 import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
@@ -24,10 +25,14 @@ import retrofit2.Response;
 
 public class LoginActivity extends SuperActivity implements View.OnClickListener {
 
+    private LoadinProgressDialog loading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        loading = new LoadinProgressDialog(this);
 
         Typeface icomoonTypeface = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON);
         Typeface avenirLightTypeface = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT);
@@ -60,10 +65,12 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
     public void onClick(View view) {
         EditText nameEditText = (EditText) findViewById(R.id.name);
         EditText passwordEditText = (EditText) findViewById(R.id.password);
+        loading.show();
 
         LoginBody loginBody = new LoginBody(
                 nameEditText.getText().toString(),
                 passwordEditText.getText().toString());
+
 
         APIBuilder
                 .getIdealAPI()
@@ -83,6 +90,7 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                     @Override
                     public void onFailure(Call<AuthToken> call, Throwable t) {
                         Log.d("Logging", "Jogging");
+                        loading.dismiss();
                     }
                 });
     }
@@ -96,6 +104,7 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                     public void onResponse(Call<User> call, Response<User> response) {
                         if (response.isSuccessful()) {
                             boolean permittedUser = UserData.sharedData(LoginActivity.this).storeUser(response.body(), "master");
+                            loading.dismiss();
 
                             if (permittedUser) {
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -108,6 +117,7 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
                         Log.d("Bas Ass", "Very bad ass");
+                        loading.dismiss();
                     }
                 });
     }
