@@ -20,11 +20,11 @@
     <color name="menu_red">#FF3366</color>
 
     <integer-array name="transactions_right_colors">
-        <item>@color/yellow</item>
-        <item>@color/menu_red</item>
-        <item>@color/menu_blue</item>
-        <item>@color/menu_purple</item>
         <item>@color/menu_yellow</item>
+        <item>@color/menu_red</item>
+        <item>@color/menu_purple</item>
+        <item>@color/yellow</item>
+        <item>@color/menu_blue</item>
         <item>@color/menu_green</item>
     </integer-array>
 </resources>

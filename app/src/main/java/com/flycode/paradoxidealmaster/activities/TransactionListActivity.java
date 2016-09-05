@@ -230,7 +230,7 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
             for (int i = 0; i < childCount; i++) {
                 View child = parent.getChildAt(i);
 
-                int strokeWidth = new Integer(15);
+                int strokeWidth = 15;
                 paint.setStrokeWidth(strokeWidth);
                 RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
