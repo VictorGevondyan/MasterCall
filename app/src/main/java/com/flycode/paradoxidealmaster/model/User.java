@@ -2,6 +2,7 @@ package com.flycode.paradoxidealmaster.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -14,8 +15,9 @@ public class User {
     private String surname;
     private String name;
     private String role;
+    private String image;
     private Date dateOfBirth;
-    private IdealService[] services;
+    private ArrayList<IdealMasterService> services;
     private int balance;
     private boolean sex;
 
@@ -59,6 +61,14 @@ public class User {
         this.role = role;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -67,11 +77,11 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public IdealService[] getServices() {
+    public ArrayList<IdealMasterService> getServices() {
         return services;
     }
 
-    public void setServices(IdealService[] services) {
+    public void setServices(ArrayList<IdealMasterService> services) {
         this.services = services;
     }
 

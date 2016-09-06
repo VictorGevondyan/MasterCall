@@ -7,12 +7,17 @@
     <color name="yellow">#FFD801</color>
     <color name="black">#000000</color>
     <color name="ideal_red">#EC1C24</color>
+    <color name="green">#0DEC6D</color>
     <color name="white">#FFFFFF</color>
     <color name="darken_grey">#BBBBBD</color>
+    <color name="light_black">#333333</color>
     <color name="lighter_grey">#CCCCCC</color>
     <color name="divider_grey">#F4F4F4</color>
     <color name="info_title_grey">#A5AD88</color>
     <color name="info_text_grey">#808080</color>
+<<<<<<< HEAD
+    <color name="service_name_grey">#AFAFAF</color>
+=======
     <color name="menu_blue">#2094FA</color>
     <color name="menu_purple">#8C88FF</color>
     <color name="menu_yellow">#FCAB53</color>
@@ -27,4 +32,5 @@
         <item>@color/menu_blue</item>
         <item>@color/menu_green</item>
     </integer-array>
+>>>>>>> 6891319c24b32e3352be03ebe7f9995d3633903e
 </resources>

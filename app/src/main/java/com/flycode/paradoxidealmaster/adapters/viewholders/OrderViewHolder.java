@@ -68,7 +68,7 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
 
         titleTextView.setText(provider.getTitleForPosition(position));
         locationValueTextView.setText(location == null || location.isEmpty() ? "N/A" : location);
-        dateValueTextView.setText(DateUtils.orderDateStringFromDate(provider.getDateForPosition(position)));
+        dateValueTextView.setText(DateUtils.infoDateStringFromDate(provider.getDateForPosition(position)));
     }
 
     @Override

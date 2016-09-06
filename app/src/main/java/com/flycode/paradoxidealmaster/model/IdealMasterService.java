@@ -11,7 +11,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by acerkinght on 8/8/16.
  */
-public class IdealService extends RealmObject implements Parcelable {
+public class IdealMasterService extends RealmObject implements Parcelable {
     @SerializedName("_id")
     @PrimaryKey
     private String id;
@@ -23,11 +23,11 @@ public class IdealService extends RealmObject implements Parcelable {
     private boolean countable;
     private boolean isFinal;
 
-    public IdealService() {
+    public IdealMasterService() {
 
     }
 
-    protected IdealService(Parcel in) {
+    protected IdealMasterService(Parcel in) {
         id = in.readString();
         name = in.readString();
         superService = in.readString();
@@ -37,15 +37,15 @@ public class IdealService extends RealmObject implements Parcelable {
         isFinal = in.readByte() != 0;
     }
 
-    public static final Creator<IdealService> CREATOR = new Creator<IdealService>() {
+    public static final Creator<IdealMasterService> CREATOR = new Creator<IdealMasterService>() {
         @Override
-        public IdealService createFromParcel(Parcel in) {
-            return new IdealService(in);
+        public IdealMasterService createFromParcel(Parcel in) {
+            return new IdealMasterService(in);
         }
 
         @Override
-        public IdealService[] newArray(int size) {
-            return new IdealService[size];
+        public IdealMasterService[] newArray(int size) {
+            return new IdealMasterService[size];
         }
     };
 

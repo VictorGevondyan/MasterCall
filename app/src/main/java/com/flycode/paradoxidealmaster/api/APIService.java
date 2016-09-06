@@ -57,4 +57,7 @@ public interface APIService {
     Call<TransactionsListResponse> getTransactions(@Header("Authorization") String authToken,
                                                    @Query("date[start]") Date startDate,
                                                    @Query("date[end]") Date endDate);
+
+    @GET("api/services?noPopulate=true")
+    Call<ArrayList<IdealService>> getServices(@Header("Authorization") String authToken);
 }

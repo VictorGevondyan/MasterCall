@@ -17,6 +17,7 @@
     <string name="order_was_paused">Order was Paused</string>
     <string name="order_was_finished">Order was Finished</string>
     <string name="pause_request_sent">Pause Request was sent</string>
+    <string name="take_request_sent">Your offer was sent to client</string>
     <string name="finish_request_sent">Finish Request was sent</string>
     <string name="details">Details</string>
     <string name="order">Order</string>
@@ -41,6 +42,12 @@
     <string name="to">To</string>
     <string name="time">Time</string>
     <string name="transactions">Transactions</string>
+    <string name="certificate">Certificate</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="pricing">Pricing</string>
+    <string name="profile">Profile</string>
+    <string name="cost_formatted">%dAMD</string>
 
     <string name="icon_username">&#xe90a;</string>
     <string name="icon_lock">&#xe90b;</string>
@@ -52,12 +59,15 @@
     <string name="icon_person">&#xe903;</string>
     <string name="icon_clock">&#xe901;</string>
     <string name="icon_comment">&#xe900;</string>
+    <string name="icon_star">&#xe912;</string>
+    <string name="icon_empty_star">&#xe913;</string>
 
     <string name="order_was_started_long">Your order has been started and you can begin your work. Good luck!</string>
     <string name="order_was_paused_long">Your order has been paused and you can rest now. Cheers!</string>
     <string name="order_was_finished_long">Your order has been finished. Congratulation!</string>
     <string name="pause_request_sent_long">Pause request was sent to client to approve. Please, be patient.</string>
     <string name="finish_request_sent_long">Finish Request was sent to client. Please, wait until client approves the finish request.</string>
+    <string name="take_request_sent_long">Your offer was sent to client. Please, be patient and wait for response.</string>
 
     <string-array name="menu_icons">
         <item>&#xe910;</item>

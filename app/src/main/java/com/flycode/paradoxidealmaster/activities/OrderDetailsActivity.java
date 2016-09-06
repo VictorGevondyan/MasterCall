@@ -126,6 +126,39 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(order.getId(), 0);
+
+        APIBuilder
+                .getIdealAPI()
+                .getOrder(
+                        AppSettings.sharedSettings(this).getBearerToken(),
+                        order.getId()
+                )
+                .enqueue(new Callback<OrderResponse>() {
+                    @Override
+                    public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                        if (order.getUpdated().after(response.body().getUpdated())) {
+                            return;
+                        }
+
+                        order = Order.fromResponse(response.body());
+
+                        Realm
+                                .getDefaultInstance()
+                                .executeTransaction(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        realm.insertOrUpdate(order);
+                                    }
+                                });
+
+                        reloadOrderUI();
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderResponse> call, Throwable t) {
+
+                    }
+                });
     }
 
     @Override
@@ -280,7 +313,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         titleTextView.setText(order.getServiceName());
         commentsTextView.setText(order.getDescription());
-        dateValueTextView.setText(DateUtils.orderDateStringFromDate(order.getOrderTime()));
+        dateValueTextView.setText(DateUtils.infoDateStringFromDate(order.getOrderTime()));
 
         if (order.getDescription() == null || order.getDescription().isEmpty()) {
             commentsTextView.setVisibility(View.GONE);
@@ -433,69 +466,65 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     }
 
     private void onRightButtonClicked() {
+        String action;
+        final int successTitle;
+        final int successMessage;
 
         loading.show();
 
         if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)) {
-            APIBuilder
-                    .getIdealAPI()
-                    .makeOrderAction(
-                            AppSettings.sharedSettings(this).getBearerToken(),
-                            order.getId(),
-                            OrderActionConstants.ATTACH_MASTER
-                    )
-                    .enqueue(new Callback<SimpleOrderResponse>() {
-                        @Override
-                        public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
-                            if (!response.isSuccessful()) {
-                                return;
-                            }
-
-                            order.mergeSimpleResponse(response.body());
-                            loading.dismiss();
-                            reloadOrderUI();
-                        }
-
-                        @Override
-                        public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
-                            Log.d("Order update", "fuck you");
-                            loading.dismiss();
-                        }
-                    });
+            action = OrderActionConstants.ATTACH_MASTER;
+            successTitle = R.string.take_request_sent;
+            successMessage = R.string.take_request_sent_long;
         } else {
-            APIBuilder
-                    .getIdealAPI()
-                    .makeOrderAction(
-                            AppSettings.sharedSettings(this).getBearerToken(),
-                            order.getId(),
-                            OrderActionConstants.FINISH_REQUEST
-                    )
-                    .enqueue(new Callback<SimpleOrderResponse>() {
-                        @Override
-                        public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
-                            if (!response.isSuccessful()) {
-                                return;
-                            }
-                            loading.dismiss();
-
-                            order.mergeSimpleResponse(response.body());
-
-                            new MaterialDialog.Builder(OrderDetailsActivity.this)
-                                    .title(R.string.finish_request_sent)
-                                    .content(R.string.finish_request_sent_long)
-                                    .positiveText(R.string.ok)
-                                    .show();
-
-                            reloadOrderUI();
-                        }
-
-                        @Override
-                        public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
-                            Log.d("Order update", "fuck you");
-                            loading.dismiss();
-                        }
-                    });
+            action = OrderActionConstants.FINISH_REQUEST;
+            successTitle = R.string.finish_request_sent;
+            successMessage = R.string.finish_request_sent_long;
         }
+
+        APIBuilder
+                .getIdealAPI()
+                .makeOrderAction(
+                        AppSettings.sharedSettings(this).getBearerToken(),
+                        order.getId(),
+                        action
+
+                )
+                .enqueue(new Callback<SimpleOrderResponse>() {
+                    @Override
+                    public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
+                        if (!response.isSuccessful()) {
+                            return;
+                        }
+
+                        order.mergeSimpleResponse(response.body());
+                        loading.dismiss();
+
+                        Realm
+                                .getDefaultInstance()
+                                .executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        realm.insertOrUpdate(order);
+                                    }
+                                });
+
+                        new MaterialDialog.Builder(OrderDetailsActivity.this)
+                                .title(successTitle)
+                                .content(successMessage)
+                                .positiveText(R.string.ok)
+                                .show();
+
+                        reloadOrderUI();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
+                        Log.d("Order update", "fuck you");
+                        loading.dismiss();
+                    }
+                });
     }
 
     public String getOrderId() {
