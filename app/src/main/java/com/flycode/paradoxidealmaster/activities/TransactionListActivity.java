@@ -186,25 +186,36 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
 
     private class DividerItemDecoration extends RecyclerView.ItemDecoration {
         private Context context;
+        private Paint dividerPaint;
+        private Paint colorPaint;
 
         //___________must be edited this shitty magic_______________________________________________
         int verticalDividerX = new Integer(0);
-        int magicDigit = new Integer(0);
+        int colorDash = new Integer(0);
+        int colorWidth = new Integer(0);
+        int[] androidColors;
 
         public DividerItemDecoration(Context context) {
             this.context = context;
             verticalDividerX = (int) DeviceUtil.getPxForDp(context, 100);
-            magicDigit = (int) DeviceUtil.getPxForDp(context, 15);
+            colorDash = (int) DeviceUtil.getPxForDp(context, 15);
+            colorWidth = (int) DeviceUtil.getPxForDp(context, 5);
+
+            dividerPaint = new Paint();
+            dividerPaint.setStrokeWidth(1);
+            dividerPaint.setStyle(Paint.Style.STROKE);
+            dividerPaint.setColor(context.getResources().getColor(R.color.lighter_grey));
+
+            colorPaint = new Paint();
+            colorPaint.setStrokeWidth(colorWidth);
+            colorPaint.setStyle(Paint.Style.STROKE);
+            colorPaint.setColor(context.getResources().getColor(R.color.lighter_grey));
+
+            androidColors = getResources().getIntArray(R.array.transactions_right_colors);
         }
 
         @Override
         public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
-            Paint paint = new Paint();
-            paint.setStrokeWidth(1);
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(context.getResources().getColor(R.color.lighter_grey));
-
-
             int childCount = parent.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 View child = parent.getChildAt(i);
@@ -215,37 +226,26 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
                 int left = 0;
                 int right = parent.getWidth();
 
-                canvas.drawLine(left, top, right, top, paint);
+                canvas.drawLine(left, top, right, top, dividerPaint);
 
                 //_mid_divider_line_____________
 
                 int mid_top = child.getTop() + params.topMargin;
                 int mid_left = verticalDividerX;
-                int mid_bottom = child.getBottom() - magicDigit;
+                int mid_bottom = child.getBottom() - colorDash;
 
-                canvas.drawLine(mid_left, mid_top, mid_left, mid_bottom, paint);
-            }
-            //_right_color_lines_____________
+                canvas.drawLine(mid_left, mid_top, mid_left, mid_bottom, dividerPaint);
 
-            for (int i = 0; i < childCount; i++) {
-                View child = parent.getChildAt(i);
+                int realPosition = parent.getChildAdapterPosition(child);
+                int androidColor = androidColors[realPosition%androidColors.length];
 
-                int strokeWidth = 15;
-                paint.setStrokeWidth(strokeWidth);
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+                colorPaint.setColor(androidColor);
 
-                int[] androidColors = getResources().getIntArray(R.array.transactions_right_colors);
-               // int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
+                int right_top = child.getTop() + params.topMargin + colorDash;
+                int right_left = parent.getRight() - colorWidth / 2;
+                int right_bottom = child.getBottom() - colorDash;
 
-                int androidColor = androidColors[i%androidColors.length];
-
-                paint.setColor(androidColor);
-
-                int right_top = child.getTop() + params.topMargin + magicDigit;
-                int right_left = parent.getRight() - strokeWidth;
-                int right_bottom = child.getBottom() -  magicDigit;
-
-                canvas.drawLine(right_left, right_top, right_left, right_bottom, paint);
+                canvas.drawLine(right_left, right_top, right_left, right_bottom, colorPaint);
             }
         }
     }
