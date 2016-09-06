@@ -230,7 +230,7 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
 
                 //_mid_divider_line_____________
 
-                int mid_top = child.getTop() + params.topMargin;
+                int mid_top = child.getTop() + params.topMargin + colorDash;
                 int mid_left = verticalDividerX;
                 int mid_bottom = child.getBottom() - colorDash;
 
