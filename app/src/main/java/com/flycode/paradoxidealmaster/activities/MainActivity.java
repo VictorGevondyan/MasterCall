@@ -28,6 +28,7 @@ import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
 import java.io.IOException;
 
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -136,7 +137,7 @@ public class MainActivity extends SuperActivity {
                 .getUser(AppSettings.sharedSettings(this).getBearerToken())
                 .enqueue(new Callback<User>() {
                     @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
+                    public void onResponse(Call<User> call, final Response<User> response) {
                         if (!response.isSuccessful()) {
                             return;
                         }
@@ -144,6 +145,15 @@ public class MainActivity extends SuperActivity {
                         UserData
                                 .sharedData(MainActivity.this)
                                 .storeUser(response.body(), "master");
+
+                        Realm
+                                .getDefaultInstance()
+                                .executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        realm.insertOrUpdate(response.body().getServices());
+                                    }
+                                });
 
                         adapter.notifyDataSetChanged();
                     }
@@ -183,7 +193,9 @@ public class MainActivity extends SuperActivity {
             } else if (position == 3) {
                 startActivity(new Intent(MainActivity.this, TransactionListActivity.class));
                 overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
-
+            } else if (position == 4) {
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
             } else if (position == 5) {
                 AppSettings.sharedSettings(MainActivity.this).setIsUserLoggedIn(false);
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));

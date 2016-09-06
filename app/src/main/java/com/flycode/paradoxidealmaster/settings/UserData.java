@@ -28,6 +28,7 @@ public class UserData {
     private static final String USERNAME = "username";
     private static final String NAME = "name";
     private static final String SURNAME = "surname";
+    private static final String IMAGE = "image";
     private static final String DATE_OF_BIRTH = "dateOfBirth";
     private static final String BALANCE = "balance";
     private static final String SEX = "sex";
@@ -38,6 +39,7 @@ public class UserData {
     private String name;
     private String surname;
     private String username;
+    private String image;
     private Date dateOfBirth;
     private int balance;
     private boolean sex;
@@ -60,6 +62,7 @@ public class UserData {
         username = dataPreferences.getString(USERNAME, "");
         name = dataPreferences.getString(NAME, "");
         surname = dataPreferences.getString(SURNAME, "");
+        image = dataPreferences.getString(IMAGE, "");
         balance = dataPreferences.getInt(BALANCE, 0);
         sex = dataPreferences.getBoolean(SEX, true);
 
@@ -80,6 +83,7 @@ public class UserData {
         id = user.getId();
         name = user.getName();
         surname = user.getSurname();
+        image = user.getImage();
         balance = user.getBalance();
         sex = user.isSex();
         dateOfBirth = user.getDateOfBirth();
@@ -90,6 +94,7 @@ public class UserData {
                 .putString(USERNAME, username)
                 .putString(NAME, name)
                 .putString(SURNAME, surname)
+                .putString(IMAGE, image)
                 .putLong(DATE_OF_BIRTH, dateOfBirth == null ? -1 : dateOfBirth.getTime())
                 .putInt(BALANCE, balance)
                 .putBoolean(SEX, sex)
@@ -112,6 +117,10 @@ public class UserData {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public Date getDateOfBirth() {
