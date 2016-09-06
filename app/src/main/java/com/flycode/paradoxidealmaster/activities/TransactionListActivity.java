@@ -1,6 +1,7 @@
 package com.flycode.paradoxidealmaster.activities;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.AsyncTask;
@@ -22,10 +23,13 @@ import com.flycode.paradoxidealmaster.api.response.TransactionResponse;
 import com.flycode.paradoxidealmaster.api.response.TransactionsListResponse;
 import com.flycode.paradoxidealmaster.model.IdealTransaction;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
+import com.flycode.paradoxidealmaster.utils.DateUtils;
+import com.flycode.paradoxidealmaster.utils.DeviceUtil;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -95,14 +99,11 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
     }
 
 
-
-
-
     @Override
     public void onChange(RealmResults<IdealTransaction> transactionRealmResults) {
         ArrayList<IdealTransaction> transactions = new ArrayList<>();
 
-        for (int index = 0; index < transactionRealmResults.size(); index ++) {
+        for (int index = 0; index < transactionRealmResults.size(); index++) {
             transactions.add(transactionRealmResults.get(index));
         }
 
@@ -120,7 +121,7 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
         }
     }
 
-    private void loadTransactionsViaServer( Date startDate) {
+    private void loadTransactionsViaServer(Date startDate) {
         APIBuilder
                 .getIdealAPI()
                 .getTransactions(
@@ -183,26 +184,38 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
     }
 
 
-
-
-
-
-
     private class DividerItemDecoration extends RecyclerView.ItemDecoration {
         private Context context;
+        private Paint dividerPaint;
+        private Paint colorPaint;
+
+        //___________must be edited this shitty magic_______________________________________________
+        int verticalDividerX = new Integer(0);
+        int colorDash = new Integer(0);
+        int colorWidth = new Integer(0);
+        int[] androidColors;
 
         public DividerItemDecoration(Context context) {
             this.context = context;
+            verticalDividerX = (int) DeviceUtil.getPxForDp(context, 100);
+            colorDash = (int) DeviceUtil.getPxForDp(context, 15);
+            colorWidth = (int) DeviceUtil.getPxForDp(context, 5);
+
+            dividerPaint = new Paint();
+            dividerPaint.setStrokeWidth(1);
+            dividerPaint.setStyle(Paint.Style.STROKE);
+            dividerPaint.setColor(context.getResources().getColor(R.color.lighter_grey));
+
+            colorPaint = new Paint();
+            colorPaint.setStrokeWidth(colorWidth);
+            colorPaint.setStyle(Paint.Style.STROKE);
+            colorPaint.setColor(context.getResources().getColor(R.color.lighter_grey));
+
+            androidColors = getResources().getIntArray(R.array.transactions_right_colors);
         }
 
         @Override
         public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
-            Paint paint = new Paint();
-            paint.setStrokeWidth(1);
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(context.getResources().getColor(R.color.lighter_grey));
-
-
             int childCount = parent.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 View child = parent.getChildAt(i);
@@ -213,11 +226,28 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
                 int left = 0;
                 int right = parent.getWidth();
 
-                canvas.drawLine(left, top, right, top, paint);
+                canvas.drawLine(left, top, right, top, dividerPaint);
+
+                //_mid_divider_line_____________
+
+                int mid_top = child.getTop() + params.topMargin;
+                int mid_left = verticalDividerX;
+                int mid_bottom = child.getBottom() - colorDash;
+
+                canvas.drawLine(mid_left, mid_top, mid_left, mid_bottom, dividerPaint);
+
+                int realPosition = parent.getChildAdapterPosition(child);
+                int androidColor = androidColors[realPosition%androidColors.length];
+
+                colorPaint.setColor(androidColor);
+
+                int right_top = child.getTop() + params.topMargin + colorDash;
+                int right_left = parent.getRight() - colorWidth / 2;
+                int right_bottom = child.getBottom() - colorDash;
+
+                canvas.drawLine(right_left, right_top, right_left, right_bottom, colorPaint);
             }
         }
-
-
     }
 }
 

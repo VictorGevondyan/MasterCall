@@ -16,7 +16,6 @@ public class DeviceUtil {
         );
     }
 
-
     public static float getPxForDp(Context context, float dp) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics() ;
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
