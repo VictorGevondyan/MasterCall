@@ -84,7 +84,7 @@ public class MainActivity extends SuperActivity {
                 .getOrders(
                         AppSettings.sharedSettings(this).getBearerToken(),
                         null, null,
-                        new String[] {OrderStatusConstants.NOT_TAKEN},
+                        new String[] {OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED},
                         true
                 )
                 .enqueue(new Callback<OrdersListResponse>() {
