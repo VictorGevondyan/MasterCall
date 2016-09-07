@@ -136,6 +136,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                 .enqueue(new Callback<OrderResponse>() {
                     @Override
                     public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                        loading.dismiss();
+
                         if (order.getUpdated().after(response.body().getUpdated())) {
                             return;
                         }
@@ -156,7 +158,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
                     @Override
                     public void onFailure(Call<OrderResponse> call, Throwable t) {
-
+                        loading.dismiss();
                     }
                 });
     }
@@ -433,12 +435,13 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                 .enqueue(new Callback<SimpleOrderResponse>() {
                     @Override
                     public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
+                        loading.dismiss();
+
                         if (!response.isSuccessful()) {
                             return;
                         }
 
                         order.mergeSimpleResponse(response.body());
-                        loading.dismiss();
 
                         Realm
                                 .getDefaultInstance()
@@ -496,12 +499,13 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                 .enqueue(new Callback<SimpleOrderResponse>() {
                     @Override
                     public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
+                        loading.dismiss();
+
                         if (!response.isSuccessful()) {
                             return;
                         }
 
                         order.mergeSimpleResponse(response.body());
-                        loading.dismiss();
 
                         Realm
                                 .getDefaultInstance()

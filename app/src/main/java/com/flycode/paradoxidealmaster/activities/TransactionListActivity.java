@@ -45,7 +45,6 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
     private TransactionAdapter adapter;
     private static final String TAG = "myLogs";
     private boolean alreadyUpdated;
-    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,15 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context=".activities.TransactionListActivity">
-
-    
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
     <include layout="@layout/bar_action_simple"
         android:id="@+id/action_bar"/>
@@ -23,7 +16,5 @@
         android:overScrollMode="never">
 
     </android.support.v7.widget.RecyclerView>
-
-    </LinearLayout>
 
 </LinearLayout>
