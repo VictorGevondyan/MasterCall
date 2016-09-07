@@ -2,18 +2,16 @@ package com.flycode.paradoxidealmaster.activities;
 
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
@@ -51,7 +49,6 @@ import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class OrderDetailsActivity extends SuperActivity implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMyLocationChangeListener {
     private static final String HAS_SHOWN_PATH = "hasShownPath";
@@ -78,6 +75,9 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         setContentView(R.layout.activity_order_details);
 
         loading = new LoadinProgressDialog(this);
+        loading.setCancelable(false);
+        loading.setCanceledOnTouchOutside(false);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         order = getIntent().getParcelableExtra(IntentConstants.EXTRA_ORDER);
 

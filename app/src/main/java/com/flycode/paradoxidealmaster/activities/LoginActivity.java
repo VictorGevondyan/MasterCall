@@ -2,6 +2,7 @@ package com.flycode.paradoxidealmaster.activities;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,9 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
         setContentView(R.layout.activity_login);
 
         loading = new LoadinProgressDialog(this);
+        loading.setCancelable(false);
+        loading.setCanceledOnTouchOutside(false);
+        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         Typeface icomoonTypeface = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON);
         Typeface avenirLightTypeface = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT);
