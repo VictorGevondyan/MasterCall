@@ -5,6 +5,7 @@ package com.flycode.paradoxidealmaster.constants;
  */
 public class OrderStatusConstants {
     public static final String NOT_TAKEN = "not taken";
+    public static final String NOT_TAKEN_MASTER_ATTACHED = "not taken master attached";
     public static final String STARTED = "started";
     public static final String PAUSED = "paused";
     public static final String FINISHED = "finished";

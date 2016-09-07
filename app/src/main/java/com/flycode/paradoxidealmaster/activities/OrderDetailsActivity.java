@@ -341,7 +341,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     }
 
     private void setOrderStatus() {
-        if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)) {
+        if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)
+                || order.getStatus().equals(OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED)) {
             statusValueTextView.setText(R.string.not_taken);
         } else if (order.getStatus().equals(OrderStatusConstants.STARTED)) {
             statusValueTextView.setText(R.string.started);
@@ -380,7 +381,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                 || order.getStatus().equals(OrderStatusConstants.CANCELED)) {
             leftButton.setVisibility(View.GONE);
             rightButton.setVisibility(View.GONE);
-        } else if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)) {
+        } else if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)
+                || order.getStatus().equals(OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED)) {
             leftButton.setText("");
             rightButton.setText(R.string.take);
         } else if (order.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
@@ -472,7 +474,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         loading.show();
 
-        if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)) {
+        if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)
+                || order.getStatus().equals(OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED)) {
             action = OrderActionConstants.ATTACH_MASTER;
             successTitle = R.string.take_request_sent;
             successMessage = R.string.take_request_sent_long;

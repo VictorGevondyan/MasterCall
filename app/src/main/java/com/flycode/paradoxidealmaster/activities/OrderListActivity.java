@@ -86,7 +86,7 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         alreadyUpdated = false;
 
         if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
-            loadOrdersViaServer(new String[] {OrderStatusConstants.NOT_TAKEN});
+            loadOrdersViaServer(new String[] {OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED});
         } else {
             loadOrdersViaDatabase();
         }
