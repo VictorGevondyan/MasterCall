@@ -29,6 +29,7 @@ import com.flycode.paradoxidealmaster.dialogs.LoadinProgressDialog;
 import com.flycode.paradoxidealmaster.model.Order;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.utils.DateUtils;
+import com.flycode.paradoxidealmaster.utils.DeviceUtil;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 import com.flycode.paradoxidealmaster.views.CircleView;
 import com.google.android.gms.maps.CameraUpdate;
@@ -82,7 +83,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         order = getIntent().getParcelableExtra(IntentConstants.EXTRA_ORDER);
 
         Bundle mapViewBundle = new Bundle();
-
+        
         if (savedInstanceState != null) {
             order = savedInstanceState.getParcelable(IntentConstants.EXTRA_ORDER);
             hasShownPath = savedInstanceState.getBoolean(HAS_SHOWN_PATH);
@@ -214,8 +215,12 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             e.printStackTrace();
         }
 
+
+
+        int mapLocaterPadding = (int) DeviceUtil.getPxForDp(OrderDetailsActivity.this, 48);
+
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        googleMap.setPadding(0, 100, 0, 0);
+        googleMap.setPadding(0, mapLocaterPadding, 0, 0);
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(new LatLng(order.getLocationLatitude(), order.getLocationLongitude()));
@@ -408,8 +413,6 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         final int successTitle;
         final int successMessage;
 
-        loading.show();
-
         if (order.getStatus().equals(OrderStatusConstants.STARTED)
                 || order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)
                 || order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)) {
@@ -423,6 +426,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         } else {
             return;
         }
+
+        loading.show();
 
         APIBuilder
                 .getIdealAPI()

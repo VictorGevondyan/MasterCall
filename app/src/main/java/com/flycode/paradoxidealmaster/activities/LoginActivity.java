@@ -10,11 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.flycode.paradoxidealmaster.IdealMasterApplication;
 import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
 import com.flycode.paradoxidealmaster.api.body.LoginBody;
 import com.flycode.paradoxidealmaster.dialogs.LoadinProgressDialog;
 import com.flycode.paradoxidealmaster.model.AuthToken;
+import com.flycode.paradoxidealmaster.model.IdealMasterService;
 import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
@@ -88,12 +90,12 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                             appSettings.setIsUserLoggedIn(true);
 
                             loadUser();
+                            IdealMasterApplication.sharedApplication().updateServices();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<AuthToken> call, Throwable t) {
-                        Log.d("Logging", "Jogging");
                         loading.dismiss();
                     }
                 });

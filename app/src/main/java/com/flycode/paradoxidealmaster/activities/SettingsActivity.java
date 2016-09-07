@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -64,7 +65,9 @@ public class SettingsActivity extends SuperActivity implements ViewPager.OnPageC
                 .enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, final Response<User> response) {
+                        Log.i("TAG", "user response gained");
                         if (!response.isSuccessful()) {
+                            Log.i("TAG", "user response success");
                             return;
                         }
 
@@ -84,6 +87,7 @@ public class SettingsActivity extends SuperActivity implements ViewPager.OnPageC
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
+                        Log.i("TAG", "user response failed");
 
                     }
                 });
