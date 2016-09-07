@@ -7,6 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -18,6 +23,7 @@ import com.flycode.paradoxidealmaster.fragments.MasterServicesFragment;
 import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
+import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 import com.meg7.widget.SvgImageView;
 
 import io.realm.Realm;
@@ -25,13 +31,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SettingsActivity extends SuperActivity implements ViewPager.OnPageChangeListener {
+public class SettingsActivity extends SuperActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
     private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        Button backButton = (Button) findViewById(R.id.back);
+        backButton.setOnClickListener(this);
+        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
 
         SettingsViewPagerAdapter adapter = new SettingsViewPagerAdapter(getSupportFragmentManager());
 
@@ -154,6 +164,13 @@ public class SettingsActivity extends SuperActivity implements ViewPager.OnPageC
             } else {
                 return getString(R.string.pricing);
             }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.back) {
+            onBackPressed();
         }
     }
 }

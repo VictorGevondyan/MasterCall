@@ -48,6 +48,7 @@
     <string name="pricing">Pricing</string>
     <string name="profile">Profile</string>
     <string name="cost_formatted">%dAMD</string>
+    <string name="settings">Settings</string>
 
     <string name="icon_username">&#xe90a;</string>
     <string name="icon_lock">&#xe90b;</string>
