@@ -15,9 +15,7 @@
     <color name="divider_grey">#F4F4F4</color>
     <color name="info_title_grey">#A5AD88</color>
     <color name="info_text_grey">#808080</color>
-<<<<<<< HEAD
     <color name="service_name_grey">#AFAFAF</color>
-=======
     <color name="menu_blue">#2094FA</color>
     <color name="menu_purple">#8C88FF</color>
     <color name="menu_yellow">#FCAB53</color>
@@ -32,5 +30,5 @@
         <item>@color/menu_blue</item>
         <item>@color/menu_green</item>
     </integer-array>
->>>>>>> 6891319c24b32e3352be03ebe7f9995d3633903e
+
 </resources>
