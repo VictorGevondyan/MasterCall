@@ -41,6 +41,7 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
     private String type;
     private boolean alreadyUpdated;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +52,6 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         type = getIntent().getStringExtra(IntentConstants.EXTRA_ORDER_LIST_TYPE);
 
         ImageView actionBarBackgroundImageView = (ImageView) findViewById(R.id.action_background);
-       // actionBarBackgroundImageView.setImageResource(R.drawable.social_network_background);
 
         TextView titleTextView = (TextView) findViewById(R.id.title);
 
@@ -90,6 +90,8 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         } else {
             loadOrdersViaDatabase();
         }
+
+
     }
 
     @Override
@@ -108,6 +110,10 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
 
         for (int index = 0 ; index < orderRealmResults.size() ; index++) {
             orders.add(orderRealmResults.get(index));
+        }
+
+        if (orders.isEmpty()) {
+            findViewById(R.id.noOrdersTV).setVisibility(View.VISIBLE);
         }
 
         adapter.setOrders(orders);

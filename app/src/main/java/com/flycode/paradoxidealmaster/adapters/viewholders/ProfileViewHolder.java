@@ -1,6 +1,7 @@
 package com.flycode.paradoxidealmaster.adapters.viewholders;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.flycode.paradoxidealmaster.R;
+import com.flycode.paradoxidealmaster.adapters.ProfileAdapter;
 import com.flycode.paradoxidealmaster.layouts.RatingLayout;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
@@ -65,6 +67,8 @@ public class ProfileViewHolder extends SuperViewHolder implements View.OnClickLi
 
         iconTextView.setText(provider.getProfileIconForPosition(position));
         titleTextView.setText(provider.getProfileValueForPosition(position));
+
+        iconTextView.setTextColor(provider.getColor(position));
     }
 
     @Override
@@ -79,6 +83,7 @@ public class ProfileViewHolder extends SuperViewHolder implements View.OnClickLi
         boolean isExpended(int position);
         boolean showsRating(int position);
         double getProfileRating();
+        int getColor(int position);
     }
 
     public interface ProfileActionListener {

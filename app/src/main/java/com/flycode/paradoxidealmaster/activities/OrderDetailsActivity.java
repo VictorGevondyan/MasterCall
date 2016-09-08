@@ -83,7 +83,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         order = getIntent().getParcelableExtra(IntentConstants.EXTRA_ORDER);
 
         Bundle mapViewBundle = new Bundle();
-        
+
         if (savedInstanceState != null) {
             order = savedInstanceState.getParcelable(IntentConstants.EXTRA_ORDER);
             hasShownPath = savedInstanceState.getBoolean(HAS_SHOWN_PATH);
@@ -91,10 +91,16 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE);
         }
 
+
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(mapViewBundle);
         MapsInitializer.initialize(this);
-        mapView.getMapAsync(this);
+
+        if (order.getStatus().equals(OrderStatusConstants.FINISHED)) {
+            mapView.setVisibility(View.INVISIBLE);
+        } else {
+            mapView.getMapAsync(this);
+        }
 
         leftButton = (Button) findViewById(R.id.left_button);
         rightButton = (Button) findViewById(R.id.right_button);
@@ -406,6 +412,10 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         }
 
         setOrderStatus();
+
+         if (order.getStatus().equals(OrderStatusConstants.FINISHED)) {
+            mapView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void onLeftButtonClicked() {

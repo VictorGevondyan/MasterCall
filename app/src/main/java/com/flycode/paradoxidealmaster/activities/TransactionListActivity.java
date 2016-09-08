@@ -106,6 +106,10 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
             transactions.add(transactionRealmResults.get(index));
         }
 
+        if (transactions.isEmpty()) {
+            findViewById(R.id.noTransactionsTV).setVisibility(View.VISIBLE);
+        }
+
         Date startDate = null;
 
         if (!transactions.isEmpty()) {

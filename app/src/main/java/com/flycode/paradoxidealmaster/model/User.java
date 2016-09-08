@@ -20,6 +20,17 @@ public class User {
     private ArrayList<IdealMasterService> services;
     private int balance;
     private boolean sex;
+    private boolean sticker;
+
+    public boolean isSticker() {
+        return sticker;
+    }
+
+    public void setSticker(boolean sticker) {
+        this.sticker = sticker;
+    }
+
+
 
     public String getId() {
         return id;

@@ -7,12 +7,10 @@ import android.view.ViewGroup;
 import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.adapters.viewholders.ProfileViewHolder;
 import com.flycode.paradoxidealmaster.adapters.viewholders.SuperViewHolder;
-import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.UserData;
 import com.flycode.paradoxidealmaster.utils.DateUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by acerkinght on 9/3/16.
@@ -40,6 +38,10 @@ public class ProfileAdapter extends RecyclerView.Adapter<SuperViewHolder> implem
         }
 
         this.rows.add(ROW_TYPES.GENDER);
+
+        if (UserData.sharedData(context).getDateOfBirth() !=null) {
+            this.rows.add(ROW_TYPES.CERTIFICATE);
+        }
     }
 
     @Override
@@ -84,7 +86,26 @@ public class ProfileAdapter extends RecyclerView.Adapter<SuperViewHolder> implem
 
     @Override
     public String getProfileIconForPosition(int position) {
-        return null;
+        if (rows.get(position).equals(ROW_TYPES.FULL_NAME)) {
+            return context.getString(R.string.icon_username);
+        } else if (rows.get(position).equals(ROW_TYPES.BIRTHDAY)) {
+            return context.getString(R.string.icon_birthday);
+        } else if (rows.get(position).equals(ROW_TYPES.GENDER)) {
+            return context.getString(R.string.icon_gender);
+        } else if (rows.get(position).equals(ROW_TYPES.CERTIFICATE)) {
+            return context.getString(R.string.icon_certificate);
+        }
+
+        return "";
+    }
+
+    @Override
+    public int getColor(int position) {
+        if (rows.get(position).equals(ROW_TYPES.CERTIFICATE)) {
+            return context.getResources().getColor(R.color.ideal_red);
+        }
+
+        return context.getResources().getColor(R.color.darken_grey);
     }
 
     @Override
