@@ -29,6 +29,7 @@ import com.flycode.paradoxidealmaster.dialogs.LoadinProgressDialog;
 import com.flycode.paradoxidealmaster.model.Order;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.utils.DateUtils;
+import com.flycode.paradoxidealmaster.utils.DeviceUtil;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 import com.flycode.paradoxidealmaster.views.CircleView;
 import com.google.android.gms.maps.CameraUpdate;
@@ -90,10 +91,16 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE);
         }
 
+
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(mapViewBundle);
         MapsInitializer.initialize(this);
-        mapView.getMapAsync(this);
+
+        if (order.getStatus().equals(OrderStatusConstants.FINISHED)) {
+            mapView.setVisibility(View.INVISIBLE);
+        } else {
+            mapView.getMapAsync(this);
+        }
 
         leftButton = (Button) findViewById(R.id.left_button);
         rightButton = (Button) findViewById(R.id.right_button);
@@ -136,6 +143,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                 .enqueue(new Callback<OrderResponse>() {
                     @Override
                     public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                        loading.dismiss();
+
                         if (order.getUpdated().after(response.body().getUpdated())) {
                             return;
                         }
@@ -156,7 +165,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
                     @Override
                     public void onFailure(Call<OrderResponse> call, Throwable t) {
-
+                        loading.dismiss();
                     }
                 });
     }
@@ -212,8 +221,12 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             e.printStackTrace();
         }
 
+
+
+        int mapLocaterPadding = (int) DeviceUtil.getPxForDp(OrderDetailsActivity.this, 48);
+
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        googleMap.setPadding(0, 100, 0, 0);
+        googleMap.setPadding(0, mapLocaterPadding, 0, 0);
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(new LatLng(order.getLocationLatitude(), order.getLocationLongitude()));
@@ -399,14 +412,16 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         }
 
         setOrderStatus();
+
+         if (order.getStatus().equals(OrderStatusConstants.FINISHED)) {
+            mapView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void onLeftButtonClicked() {
         String action;
         final int successTitle;
         final int successMessage;
-
-        loading.show();
 
         if (order.getStatus().equals(OrderStatusConstants.STARTED)
                 || order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)
@@ -422,6 +437,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             return;
         }
 
+        loading.show();
+
         APIBuilder
                 .getIdealAPI()
                 .makeOrderAction(
@@ -433,12 +450,13 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                 .enqueue(new Callback<SimpleOrderResponse>() {
                     @Override
                     public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
+                        loading.dismiss();
+
                         if (!response.isSuccessful()) {
                             return;
                         }
 
                         order.mergeSimpleResponse(response.body());
-                        loading.dismiss();
 
                         Realm
                                 .getDefaultInstance()
@@ -496,12 +514,13 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                 .enqueue(new Callback<SimpleOrderResponse>() {
                     @Override
                     public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
+                        loading.dismiss();
+
                         if (!response.isSuccessful()) {
                             return;
                         }
 
                         order.mergeSimpleResponse(response.body());
-                        loading.dismiss();
 
                         Realm
                                 .getDefaultInstance()

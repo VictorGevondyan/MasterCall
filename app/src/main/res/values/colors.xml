@@ -21,6 +21,7 @@
     <color name="menu_yellow">#FCAB53</color>
     <color name="menu_green">#0DEC6D</color>
     <color name="menu_red">#FF3366</color>
+    <color name="transparent">#80000000</color>
 
     <integer-array name="transactions_right_colors">
         <item>@color/menu_yellow</item>

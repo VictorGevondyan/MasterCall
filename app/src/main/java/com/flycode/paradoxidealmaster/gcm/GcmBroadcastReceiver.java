@@ -48,6 +48,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                     .enqueue(new Callback<OrderResponse>() {
                         @Override
                         public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                            Log.i("TAG", "good");
                             if (!response.isSuccessful()) {
                                 return;
                             }
@@ -75,6 +76,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 
                         @Override
                         public void onFailure(Call<OrderResponse> call, Throwable t) {
+                            Log.i("TAG", "fail");
 
                         }
                     });

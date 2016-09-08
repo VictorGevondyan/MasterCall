@@ -32,6 +32,7 @@ public class UserData {
     private static final String DATE_OF_BIRTH = "dateOfBirth";
     private static final String BALANCE = "balance";
     private static final String SEX = "sex";
+    private static final String STICKER = "sticker";
 
     private final SharedPreferences dataPreferences;
 
@@ -43,6 +44,7 @@ public class UserData {
     private Date dateOfBirth;
     private int balance;
     private boolean sex;
+    private boolean sticker;
 
     public static UserData sharedData(Context context) {
         if (sharedData == null) {
@@ -65,6 +67,7 @@ public class UserData {
         image = dataPreferences.getString(IMAGE, "");
         balance = dataPreferences.getInt(BALANCE, 0);
         sex = dataPreferences.getBoolean(SEX, true);
+        sticker = dataPreferences.getBoolean(STICKER, false);
 
         long dateTime = dataPreferences.getLong(DATE_OF_BIRTH, -1);
 
@@ -87,6 +90,7 @@ public class UserData {
         balance = user.getBalance();
         sex = user.isSex();
         dateOfBirth = user.getDateOfBirth();
+        sticker = user.isSticker();
 
         dataPreferences
                 .edit()
@@ -98,6 +102,7 @@ public class UserData {
                 .putLong(DATE_OF_BIRTH, dateOfBirth == null ? -1 : dateOfBirth.getTime())
                 .putInt(BALANCE, balance)
                 .putBoolean(SEX, sex)
+                .putBoolean(STICKER, sticker)
                 .apply();
 
         return true;
@@ -133,6 +138,10 @@ public class UserData {
 
     public boolean isSex() {
         return sex;
+    }
+
+    public boolean isSticker() {
+        return sticker;
     }
 }
 

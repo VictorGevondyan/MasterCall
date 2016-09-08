@@ -50,6 +50,10 @@ public class IdealMasterApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
 
+        updateServices();
+    }
+
+    public void updateServices() {
         if (AppSettings.sharedSettings(this).isUserLoggedIn()) {
             APIBuilder
                     .getIdealAPI()
@@ -71,7 +75,6 @@ public class IdealMasterApplication extends Application {
 
                         @Override
                         public void onFailure(Call<ArrayList<IdealService>> call, Throwable t) {
-
                         }
                     });
         }
