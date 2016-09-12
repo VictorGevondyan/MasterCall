@@ -35,10 +35,14 @@ import retrofit2.Response;
 public class SettingsActivity extends SuperActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
     private TabLayout tabLayout;
 
+    ImageView fragmentBackground;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        fragmentBackground = (ImageView) findViewById(R.id.profile_fragments_background);
 
         Button backButton = (Button) findViewById(R.id.back);
         backButton.setOnClickListener(this);
@@ -53,10 +57,12 @@ public class SettingsActivity extends SuperActivity implements ViewPager.OnPageC
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager, true);
 
+
         if (viewPager.getCurrentItem() == 0) {
-            tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.green));
-        } else {
             tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.ideal_red));
+
+        } else {
+            tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.green));
         }
 
         APIBuilder
@@ -131,8 +137,10 @@ public class SettingsActivity extends SuperActivity implements ViewPager.OnPageC
     public void onPageSelected(int position) {
         if (position == 0) {
             tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.green));
+            fragmentBackground.setImageResource(R.drawable.fragment_profile_background);
         } else {
             tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.ideal_red));
+            fragmentBackground.setImageResource(R.drawable.fragment_pricing_background);
         }
     }
 

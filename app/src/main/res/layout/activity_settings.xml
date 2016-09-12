@@ -14,7 +14,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/user_profile_background"
+            android:id="@+id/profile_fragments_background"
+            android:src="@drawable/fragment_profile_background"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop" />
 
