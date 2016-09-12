@@ -52,8 +52,6 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
         balloonOutlineCircleView = (CircleView) itemView.findViewById(R.id.balloon_outline);
         titleTextView = (TextView) itemView.findViewById(R.id.title);
 
-        balloonCircleView.setBackgroundColor(Color.GREEN);
-        balloonOutlineCircleView.setBackgroundColor(Color.GREEN);
         balloonOutlineCircleView.setIsOutlineOnly(true);
 
         titleTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK));
@@ -69,6 +67,13 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
         titleTextView.setText(provider.getTitleForPosition(position));
         locationValueTextView.setText(location == null || location.isEmpty() ? "N/A" : location);
         dateValueTextView.setText(DateUtils.infoDateStringFromDate(provider.getDateForPosition(position)));
+
+        try {
+            balloonCircleView.setBackgroundColor(Color.parseColor(provider.getColorForPosition(position)));
+            balloonOutlineCircleView.setBackgroundColor(Color.parseColor(provider.getColorForPosition(position)));
+        } catch (Exception e) {
+
+        }
 
         balloonOutlineCircleView.setVisibility(View.INVISIBLE);
     }
@@ -115,6 +120,7 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
     public interface OrderProvider {
         String getLocationForPosition(int position);
         String getTitleForPosition(int position);
+        String getColorForPosition(int position);
         Date getDateForPosition(int position);
     }
 }

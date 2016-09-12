@@ -17,7 +17,7 @@ import java.util.HashMap;
 /**
  * Created by acerkinght on 8/30/16.
  */
-public class ServicesAdapter extends RecyclerView.Adapter<SuperViewHolder> implements OnItemClickListener, ServicesViewHolder.ServiceProvider, ServicesMasterViewHolder.MasterServiceProvider {
+public class MasterServicesAdapter extends RecyclerView.Adapter<SuperViewHolder> implements OnItemClickListener, ServicesViewHolder.ServiceProvider, ServicesMasterViewHolder.MasterServiceProvider {
     private static final int TYPE_SERVICE = 0;
     private static final int TYPE_DETAILED_SERVICE = 2;
 
@@ -29,7 +29,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<SuperViewHolder> imple
     private String currentExpendedServiceId;
     private int currentExpendedServiceIndex;
 
-    public ServicesAdapter(Context context) {
+    public MasterServicesAdapter(Context context) {
         this.context = context;
 
         rootServices = new ArrayList<>();
@@ -123,6 +123,11 @@ public class ServicesAdapter extends RecyclerView.Adapter<SuperViewHolder> imple
     @Override
     public IdealService getService(int position) {
         return (IdealService) getRealServiceForPosition(position);
+    }
+
+    @Override
+    public boolean isServiceExpended(int position) {
+        return ((IdealService) getRealServiceForPosition(position)).getId().equals(currentExpendedServiceId);
     }
 
     @Override

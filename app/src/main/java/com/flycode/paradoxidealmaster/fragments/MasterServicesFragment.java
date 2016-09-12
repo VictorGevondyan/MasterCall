@@ -11,10 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.flycode.paradoxidealmaster.R;
-import com.flycode.paradoxidealmaster.adapters.ServicesAdapter;
+import com.flycode.paradoxidealmaster.adapters.MasterServicesAdapter;
 import com.flycode.paradoxidealmaster.model.IdealMasterService;
 import com.flycode.paradoxidealmaster.model.IdealService;
 
@@ -28,14 +27,14 @@ import io.realm.RealmResults;
  * Created by acerkinght on 9/1/16.
  */
 public class MasterServicesFragment extends Fragment {
-    private ServicesAdapter adapter;
+    private MasterServicesAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View masterProfileView = inflater.inflate(R.layout.fragment_master_services, container, false);
 
-        adapter = new ServicesAdapter(getActivity());
+        adapter = new MasterServicesAdapter(getActivity());
         RecyclerView recyclerView = (RecyclerView) masterProfileView.findViewById(R.id.services_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);

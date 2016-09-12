@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ParadoxIdealMaster</string>
+    <string name="app_name">Ideal Master</string>
     <string name="sign_in">Sign In</string>
     <string name="imex_group">&#169; 2016 IMEX GROUP</string>
     <string name="all_right_reserved">ALL RIGHTS RESERVED</string>
@@ -55,6 +55,21 @@
     <string name="error">Error</string>
     <string name="no_orders">No orders to show</string>
     <string name="no_transactions">No transactions to show</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="rating">Rating</string>
+
+    <string name="network_issue">Network Issue. Please, check your connection.</string>
+    <string name="server_issue">Server Issue. If you keep getting this issue, please contact us.</string>
+    <string name="wrong_data">Wrong Data. If you keep getting this issue, please contact us.</string>
+    <string name="order_was_started_long">Your order has been started and you can begin your work. Good luck!</string>
+    <string name="order_was_paused_long">Your order has been paused and you can rest now. Cheers!</string>
+    <string name="accept_request_sent_long">You have accepted this invitation. Congratulation!</string>
+    <string name="order_was_finished_long">Your order has been finished. Congratulation!</string>
+    <string name="order_was_offered_long">Order was offered for you. Congratulation!</string>
+    <string name="pause_request_sent_long">Pause request was sent to client to approve. Please, be patient.</string>
+    <string name="finish_request_sent_long">Finish Request was sent to client. Please, wait until client approves the finish request.</string>
+    <string name="take_request_sent_long">Your offer was sent to client. Please, be patient and wait for response.</string>
+    <string name="username_password_not_empty">Both username and password must not be empty.</string>
 
     <string name="icon_username">&#xe90a;</string>
     <string name="icon_lock">&#xe90b;</string>
@@ -73,18 +88,6 @@
     <string name="icon_gender">&#xe908;</string>
     <string name="icon_certificate">&#xe907;</string>
     <string name="icon_triangle">&#xe941;</string>
-
-    <string name="order_was_started_long">Your order has been started and you can begin your work. Good luck!</string>
-    <string name="order_was_paused_long">Your order has been paused and you can rest now. Cheers!</string>
-    <string name="accept_request_sent_long">You have accepted this invitation. Congratulation!</string>
-    <string name="order_was_finished_long">Your order has been finished. Congratulation!</string>
-    <string name="order_was_offered_long">Order was offered for you. Congratulation!</string>
-    <string name="pause_request_sent_long">Pause request was sent to client to approve. Please, be patient.</string>
-    <string name="finish_request_sent_long">Finish Request was sent to client. Please, wait until client approves the finish request.</string>
-    <string name="take_request_sent_long">Your offer was sent to client. Please, be patient and wait for response.</string>
-    <string name="username_password_not_empty">Both username and password must not be empty.</string>
-    <string name="portfolio">Portfolio</string>
-    <string name="rating">Rating</string>
 
     <string-array name="menu_icons">
         <item>&#xe910;</item>

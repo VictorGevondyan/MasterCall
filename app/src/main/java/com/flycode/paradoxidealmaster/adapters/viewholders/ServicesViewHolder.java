@@ -1,6 +1,7 @@
 package com.flycode.paradoxidealmaster.adapters.viewholders;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +15,7 @@ import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
 import com.flycode.paradoxidealmaster.model.IdealService;
 import com.flycode.paradoxidealmaster.utils.DeviceUtil;
+import com.flycode.paradoxidealmaster.views.CircleView;
 
 /**
  * Created by acerkinght on 8/30/16.
@@ -27,6 +29,8 @@ public class ServicesViewHolder extends SuperViewHolder implements View.OnTouchL
 
     private ImageView imageView;
     private TextView titleTextView;
+    private CircleView balloonCircleView;
+    private CircleView balloonOutlineCircleView;
 
     private int imageSide;
 
@@ -45,8 +49,12 @@ public class ServicesViewHolder extends SuperViewHolder implements View.OnTouchL
         this.provider = provider;
         this.listener = listener;
 
+        balloonCircleView = (CircleView) itemView.findViewById(R.id.balloon);
+        balloonOutlineCircleView = (CircleView) itemView.findViewById(R.id.balloon_outline);
         this.imageView = (ImageView) itemView.findViewById(R.id.image);
         this.titleTextView = (TextView) itemView.findViewById(R.id.title);
+
+        balloonOutlineCircleView.setIsOutlineOnly(true);
 
         imageSide = (int) DeviceUtil.getPxForDp(context, 50);
     }
@@ -61,11 +69,19 @@ public class ServicesViewHolder extends SuperViewHolder implements View.OnTouchL
                 listener.onItemClicked(this, getAdapterPosition());
             }
 
+            if (provider.isServiceExpended(getAdapterPosition())) {
+                balloonOutlineCircleView.setVisibility(View.VISIBLE);
+            } else {
+                balloonOutlineCircleView.setVisibility(View.INVISIBLE);
+            }
+
             return true;
         }
 
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            balloonOutlineCircleView.setVisibility(View.VISIBLE);
         } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
+            balloonOutlineCircleView.setVisibility(View.INVISIBLE);
         }
 
         return true;
@@ -74,6 +90,19 @@ public class ServicesViewHolder extends SuperViewHolder implements View.OnTouchL
     @Override
     public void setupForPosition(int position) {
         IdealService service = provider.getService(position);
+
+        try {
+            balloonCircleView.setColor(Color.parseColor(service.getColor()));
+            balloonOutlineCircleView.setColor(Color.parseColor(service.getColor()));
+        } catch (Exception e) {
+
+        }
+
+        if (provider.isServiceExpended(getAdapterPosition())) {
+            balloonOutlineCircleView.setVisibility(View.VISIBLE);
+        } else {
+            balloonOutlineCircleView.setVisibility(View.INVISIBLE);
+        }
 
         titleTextView.setText(service.getName());
         Glide
@@ -85,5 +114,6 @@ public class ServicesViewHolder extends SuperViewHolder implements View.OnTouchL
 
     public interface ServiceProvider {
         IdealService getService(int position);
+        boolean isServiceExpended(int position);
     }
 }

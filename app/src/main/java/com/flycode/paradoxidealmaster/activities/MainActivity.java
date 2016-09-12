@@ -194,7 +194,7 @@ public class MainActivity extends SuperActivity {
                 startActivity(new Intent(MainActivity.this, TransactionListActivity.class));
                 overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
             } else if (position == 4) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                startActivity(new Intent(MainActivity.this, MasterSettingsActivity.class));
                 overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
             } else if (position == 5) {
                 AppSettings.sharedSettings(MainActivity.this).setIsUserLoggedIn(false);

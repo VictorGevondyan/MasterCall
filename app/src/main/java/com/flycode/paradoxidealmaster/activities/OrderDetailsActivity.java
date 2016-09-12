@@ -31,6 +31,7 @@ import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
 import com.flycode.paradoxidealmaster.utils.DateUtils;
 import com.flycode.paradoxidealmaster.utils.DeviceUtil;
+import com.flycode.paradoxidealmaster.utils.ErrorNotificationUtil;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 import com.flycode.paradoxidealmaster.views.CircleView;
 import com.google.android.gms.maps.CameraUpdate;
@@ -147,6 +148,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         loading.dismiss();
 
                         if (order.getUpdated().after(response.body().getUpdated())) {
+                            ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
+
                             return;
                         }
 
@@ -167,6 +170,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                     @Override
                     public void onFailure(Call<OrderResponse> call, Throwable t) {
                         loading.dismiss();
+                        ErrorNotificationUtil.showErrorForCode(0, OrderDetailsActivity.this);
                     }
                 });
     }
@@ -353,8 +357,13 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         CircleView balloonCircleView = (CircleView) orderDetailsView.findViewById(R.id.balloon);
         CircleView balloonOutlineCircleView = (CircleView) orderDetailsView.findViewById(R.id.balloon_outline);
 
-        balloonCircleView.setBackgroundColor(Color.GREEN);
-        balloonOutlineCircleView.setBackgroundColor(Color.GREEN);
+        try {
+            balloonCircleView.setBackgroundColor(Color.parseColor(order.getServiceColor()));
+            balloonOutlineCircleView.setBackgroundColor(Color.parseColor(order.getServiceColor()));
+        } catch (Exception e) {
+
+        }
+
         balloonOutlineCircleView.setIsOutlineOnly(true);
     }
 
@@ -463,6 +472,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         loading.dismiss();
 
                         if (!response.isSuccessful()) {
+                            ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
+
                             return;
                         }
 
@@ -489,7 +500,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
                     @Override
                     public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
-                        Log.d("Order update", "fuck you");
+                        ErrorNotificationUtil.showErrorForCode(0, OrderDetailsActivity.this);
                         loading.dismiss();
                     }
                 });
@@ -531,6 +542,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         loading.dismiss();
 
                         if (!response.isSuccessful()) {
+                            ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
+
                             return;
                         }
 
@@ -556,8 +569,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
                     @Override
                     public void onFailure(Call<SimpleOrderResponse> call, Throwable t) {
-                        Log.d("Order update", "fuck you");
                         loading.dismiss();
+                        ErrorNotificationUtil.showErrorForCode(0, OrderDetailsActivity.this);
                     }
                 });
     }

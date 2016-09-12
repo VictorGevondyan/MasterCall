@@ -57,6 +57,11 @@ public class OrderAdapter extends RecyclerView.Adapter<SuperViewHolder> implemen
     }
 
     @Override
+    public String getColorForPosition(int position) {
+        return orders.get(position).getServiceColor();
+    }
+
+    @Override
     public Date getDateForPosition(int position) {
         return orders.get(position).getOrderTime();
     }

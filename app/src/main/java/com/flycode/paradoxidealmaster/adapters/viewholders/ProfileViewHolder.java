@@ -1,7 +1,6 @@
 package com.flycode.paradoxidealmaster.adapters.viewholders;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.flycode.paradoxidealmaster.R;
-import com.flycode.paradoxidealmaster.adapters.ProfileAdapter;
 import com.flycode.paradoxidealmaster.layouts.RatingLayout;
-import com.flycode.paradoxidealmaster.model.IdealFeedback;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
-
-import java.util.ArrayList;
 
 /**
  * Created by acerkinght on 9/3/16.
@@ -30,7 +25,7 @@ public class ProfileViewHolder extends SuperViewHolder implements View.OnClickLi
 
     public static ProfileViewHolder getInstance(ViewGroup parent, Context context, ProfileProvider provider, ProfileActionListener listener) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = layoutInflater.inflate(R.layout.item_profile, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.item_master_profile, parent, false);
 
         return new ProfileViewHolder(itemView, context, provider, listener);
     }

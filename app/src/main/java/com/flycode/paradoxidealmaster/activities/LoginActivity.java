@@ -20,6 +20,7 @@ import com.flycode.paradoxidealmaster.model.AuthToken;
 import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
+import com.flycode.paradoxidealmaster.utils.ErrorNotificationUtil;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
 import retrofit2.Call;
@@ -93,19 +94,26 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                 .enqueue(new Callback<AuthToken>() {
                     @Override
                     public void onResponse(Call<AuthToken> call, Response<AuthToken> response) {
-                        if (response.isSuccessful()) {
-                            AppSettings appSettings = AppSettings.sharedSettings(LoginActivity.this);
-                            appSettings.setToken(response.body().getToken());
-                            appSettings.setIsUserLoggedIn(true);
+                        if (!response.isSuccessful()) {
+                            loading.dismiss();
 
-                            loadUser();
-                            IdealMasterApplication.sharedApplication().updateServices();
+                            ErrorNotificationUtil.showErrorForCode(response.code(), LoginActivity.this);
+
+                            return;
                         }
+
+                        AppSettings appSettings = AppSettings.sharedSettings(LoginActivity.this);
+                        appSettings.setToken(response.body().getToken());
+                        appSettings.setIsUserLoggedIn(true);
+
+                        loadUser();
+                        IdealMasterApplication.sharedApplication().updateServices();
                     }
 
                     @Override
                     public void onFailure(Call<AuthToken> call, Throwable t) {
                         loading.dismiss();
+                        ErrorNotificationUtil.showErrorForCode(0, LoginActivity.this);
                     }
                 });
     }
@@ -117,21 +125,25 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                 .enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.isSuccessful()) {
-                            boolean permittedUser = UserData.sharedData(LoginActivity.this).storeUser(response.body(), "master");
-                            loading.dismiss();
+                        loading.dismiss();
 
-                            if (permittedUser) {
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                                finish();
-                            }
+                        if (!response.isSuccessful()) {
+                            ErrorNotificationUtil.showErrorForCode(response.code(), LoginActivity.this);
+                            return;
+                        }
+
+                        boolean permittedUser = UserData.sharedData(LoginActivity.this).storeUser(response.body(), "master");
+
+                        if (permittedUser) {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                            finish();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Log.d("Bas Ass", "Very bad ass");
+                        ErrorNotificationUtil.showErrorForCode(0, LoginActivity.this);
                         loading.dismiss();
                     }
                 });

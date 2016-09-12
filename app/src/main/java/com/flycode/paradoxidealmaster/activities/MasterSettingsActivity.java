@@ -9,10 +9,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -32,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SettingsActivity extends SuperActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
+public class MasterSettingsActivity extends SuperActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
     private TabLayout tabLayout;
 
     ImageView fragmentBackground;
@@ -40,7 +38,7 @@ public class SettingsActivity extends SuperActivity implements ViewPager.OnPageC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_master_settings);
 
         fragmentBackground = (ImageView) findViewById(R.id.profile_fragments_background);
 
@@ -78,7 +76,7 @@ public class SettingsActivity extends SuperActivity implements ViewPager.OnPageC
                         }
 
                         UserData
-                                .sharedData(SettingsActivity.this)
+                                .sharedData(MasterSettingsActivity.this)
                                 .storeUser(response.body(), "master");
 
                         Realm

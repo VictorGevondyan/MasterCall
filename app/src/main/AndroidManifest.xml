@@ -35,7 +35,7 @@
         <activity android:name=".activities.LoginActivity"
             android:windowSoftInputMode="stateUnchanged|adjustResize"/>
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.MasterSettingsActivity" />
         <activity android:name=".activities.OrderListActivity" />
         <activity android:name=".activities.OrderDetailsActivity" />
         <activity android:name=".activities.TransactionListActivity" />
