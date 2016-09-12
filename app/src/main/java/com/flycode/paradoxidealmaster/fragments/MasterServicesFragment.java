@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.adapters.ServicesAdapter;
@@ -57,7 +58,7 @@ public class MasterServicesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        super.onResume();
+           super.onResume();
     }
 
     @Override
