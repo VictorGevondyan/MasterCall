@@ -69,6 +69,8 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
         titleTextView.setText(provider.getTitleForPosition(position));
         locationValueTextView.setText(location == null || location.isEmpty() ? "N/A" : location);
         dateValueTextView.setText(DateUtils.infoDateStringFromDate(provider.getDateForPosition(position)));
+
+        balloonOutlineCircleView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -81,11 +83,15 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
                 listener.onItemClicked(this, getAdapterPosition());
             }
 
+            balloonOutlineCircleView.setVisibility(View.INVISIBLE);
+
             return true;
         }
 
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            balloonOutlineCircleView.setVisibility(View.VISIBLE);
         } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
+            balloonOutlineCircleView.setVisibility(View.INVISIBLE);
         }
 
         return true;

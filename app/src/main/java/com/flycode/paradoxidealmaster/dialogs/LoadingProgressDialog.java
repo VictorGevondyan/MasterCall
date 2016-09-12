@@ -10,9 +10,9 @@ import com.flycode.paradoxidealmaster.R;
 /**
  * Created - Schumakher on 31-Aug-16.
  */
-public class LoadinProgressDialog extends ProgressDialog {
+public class LoadingProgressDialog extends ProgressDialog {
 
-    public LoadinProgressDialog(Context context) {
+    public LoadingProgressDialog(Context context) {
         super(context);
     }
 

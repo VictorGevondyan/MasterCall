@@ -4,6 +4,7 @@ import com.flycode.paradoxidealmaster.api.body.GCMBody;
 import com.flycode.paradoxidealmaster.api.body.LocationBody;
 import com.flycode.paradoxidealmaster.api.body.LoginBody;
 import com.flycode.paradoxidealmaster.api.body.ProfileBody;
+import com.flycode.paradoxidealmaster.api.response.IdealFeedbackListResponse;
 import com.flycode.paradoxidealmaster.api.response.OrderResponse;
 import com.flycode.paradoxidealmaster.api.response.OrdersListResponse;
 import com.flycode.paradoxidealmaster.api.response.SimpleOrderResponse;
@@ -60,4 +61,7 @@ public interface APIService {
 
     @GET("api/services?noPopulate=true")
     Call<ArrayList<IdealService>> getServices(@Header("Authorization") String authToken);
+
+    @GET("/api/comments/master/{masterId}?limit=3")
+    Call<IdealFeedbackListResponse> getFeedbackByMaster(@Header("Authorization") String authToken, @Path("masterId") String masterId);
 }

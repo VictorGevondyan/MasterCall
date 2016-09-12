@@ -84,7 +84,7 @@ public class MainActivity extends SuperActivity {
                 .getOrders(
                         AppSettings.sharedSettings(this).getBearerToken(),
                         null, null,
-                        new String[] {OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED},
+                        new String[] {OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED},
                         true
                 )
                 .enqueue(new Callback<OrdersListResponse>() {
@@ -111,7 +111,7 @@ public class MainActivity extends SuperActivity {
                         AppSettings.sharedSettings(this).getBearerToken(),
                         null, null,
                         new String[] {OrderStatusConstants.PAUSED, OrderStatusConstants.STARTED, OrderStatusConstants.WAITING_FINISHED,
-                                OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.WAITING_PAUSED},
+                                OrderStatusConstants.WAITING_PAUSED},
                         true
                 )
                 .enqueue(new Callback<OrdersListResponse>() {

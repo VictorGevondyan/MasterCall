@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.flycode.paradoxidealmaster.adapters.viewholders.OnItemClickListener;
-import com.flycode.paradoxidealmaster.adapters.viewholders.ServicesDetailedViewHolder;
+import com.flycode.paradoxidealmaster.adapters.viewholders.ServicesMasterViewHolder;
 import com.flycode.paradoxidealmaster.adapters.viewholders.ServicesViewHolder;
 import com.flycode.paradoxidealmaster.adapters.viewholders.SuperViewHolder;
 import com.flycode.paradoxidealmaster.model.IdealMasterService;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 /**
  * Created by acerkinght on 8/30/16.
  */
-public class ServicesAdapter extends RecyclerView.Adapter<SuperViewHolder> implements OnItemClickListener, ServicesViewHolder.ServiceProvider, ServicesDetailedViewHolder.DetailedServiceProvider {
+public class ServicesAdapter extends RecyclerView.Adapter<SuperViewHolder> implements OnItemClickListener, ServicesViewHolder.ServiceProvider, ServicesMasterViewHolder.MasterServiceProvider {
     private static final int TYPE_SERVICE = 0;
     private static final int TYPE_DETAILED_SERVICE = 2;
 
@@ -43,7 +43,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<SuperViewHolder> imple
         if (viewType == TYPE_SERVICE) {
             return ServicesViewHolder.initialize(context, parent, this, this);
         } else if (viewType == TYPE_DETAILED_SERVICE) {
-            return ServicesDetailedViewHolder.initialize(context, parent, this, this);
+            return ServicesMasterViewHolder.initialize(context, parent, this, this);
         }
 
         return null;
@@ -126,7 +126,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<SuperViewHolder> imple
     }
 
     @Override
-    public IdealMasterService getDetailedServiceForPosition(int position) {
+    public IdealMasterService getMasterServiceForPosition(int position) {
         return currentServices.get(position - currentExpendedServiceIndex);
     }
 

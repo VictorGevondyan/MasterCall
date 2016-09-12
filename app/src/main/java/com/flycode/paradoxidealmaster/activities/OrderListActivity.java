@@ -86,12 +86,10 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         alreadyUpdated = false;
 
         if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
-            loadOrdersViaServer(new String[] {OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED});
+            loadOrdersViaServer(new String[] {OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED});
         } else {
             loadOrdersViaDatabase();
         }
-
-
     }
 
     @Override
@@ -113,7 +111,9 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         }
 
         if (orders.isEmpty()) {
-            findViewById(R.id.noOrdersTV).setVisibility(View.VISIBLE);
+            findViewById(R.id.no_orders).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.no_orders).setVisibility(View.GONE);
         }
 
         adapter.setOrders(orders);
@@ -122,7 +122,7 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
             alreadyUpdated = true;
             loadOrdersViaServer(new String[] {OrderStatusConstants.STARTED, OrderStatusConstants.PAUSED,
                             OrderStatusConstants.CANCELED, OrderStatusConstants.FINISHED,
-                            OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.WAITING_PAUSED, OrderStatusConstants.WAITING_FINISHED});
+                            OrderStatusConstants.WAITING_PAUSED, OrderStatusConstants.WAITING_FINISHED});
         }
     }
 
@@ -147,8 +147,11 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
 
     @Override
     public void onNewOrderReceived(Order order) {
-        super.onNewOrderReceived(order);
+        adapter.insertOrder(order);
+    }
 
+    @Override
+    public void onOrderOfferedReceived(Order order) {
         adapter.insertOrder(order);
     }
 
@@ -188,6 +191,12 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
 
                                 if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
                                     adapter.setOrders(orders);
+
+                                    if (adapter.getItemCount() == 0) {
+                                        findViewById(R.id.no_orders).setVisibility(View.VISIBLE);
+                                    } else {
+                                        findViewById(R.id.no_orders).setVisibility(View.GONE);
+                                    }
                                 } else {
                                     Realm
                                             .getDefaultInstance()

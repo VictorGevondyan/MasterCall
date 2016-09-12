@@ -10,12 +10,13 @@
     <include layout="@layout/bar_action_simple"/>
 
     <TextView
+        android:id="@+id/no_orders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/noOrdersTV"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:text="@string/no_transactions"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:text="@string/no_orders"
         android:visibility="gone"
         android:textSize="16sp"/>
 

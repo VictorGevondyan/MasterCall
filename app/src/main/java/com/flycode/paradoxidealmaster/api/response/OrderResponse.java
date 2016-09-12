@@ -1,7 +1,6 @@
 package com.flycode.paradoxidealmaster.api.response;
 
 import com.flycode.paradoxidealmaster.model.IdealService;
-import com.flycode.paradoxidealmaster.model.User;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -19,6 +18,7 @@ public class OrderResponse {
     private Date updated;
     private int quantity;
     private String status;
+    private String chosenFavorite;
     private GeoResponse endPoint;
 
     public String getId() {
@@ -83,6 +83,14 @@ public class OrderResponse {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getChosenFavorite() {
+        return chosenFavorite;
+    }
+
+    public void setChosenFavorite(String chosenFavorite) {
+        this.chosenFavorite = chosenFavorite;
     }
 
     public GeoResponse getEndPoint() {

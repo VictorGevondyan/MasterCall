@@ -40,9 +40,17 @@ public class AppSettings {
     private AppSettings(Context context) {
         settingsPreferences = context.getSharedPreferences(PREFERENCES_NAME, 0);
 
+        String defaultLanguage = Locale.getDefault().getLanguage();
+
+        if (!defaultLanguage.equals(LANGUAGES.EN)
+                && !defaultLanguage.equals(LANGUAGES.HY)
+                && !defaultLanguage.equals(LANGUAGES.RU)) {
+            defaultLanguage = LANGUAGES.EN;
+        }
+
         isUserLoggedIn = settingsPreferences.getBoolean(IS_USER_LOGGED_IN, false);
         token = settingsPreferences.getString(TOKEN, "");
-        language = settingsPreferences.getString(LANGUAGE, Locale.getDefault().getLanguage());
+        language = settingsPreferences.getString(LANGUAGE, defaultLanguage);
     }
 
     public boolean isUserLoggedIn() {

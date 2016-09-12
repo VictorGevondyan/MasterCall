@@ -100,6 +100,13 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                     context.getString(R.string.order_was_finished),
                     IntentConstants.ACTION_ORDER_FINISHED
             );
+        } else if (title.equals("order_waiting favorite")) {
+            processOrder(
+                    context,
+                    intent.getStringExtra("message"),
+                    context.getString(R.string.order_was_offered),
+                    IntentConstants.ACTION_NEW_OFFER
+            );
         }
     }
 

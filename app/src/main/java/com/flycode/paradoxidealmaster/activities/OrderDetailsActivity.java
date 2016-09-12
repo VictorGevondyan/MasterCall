@@ -25,9 +25,10 @@ import com.flycode.paradoxidealmaster.api.response.SimpleOrderResponse;
 import com.flycode.paradoxidealmaster.constants.IntentConstants;
 import com.flycode.paradoxidealmaster.constants.OrderActionConstants;
 import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
-import com.flycode.paradoxidealmaster.dialogs.LoadinProgressDialog;
+import com.flycode.paradoxidealmaster.dialogs.LoadingProgressDialog;
 import com.flycode.paradoxidealmaster.model.Order;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
+import com.flycode.paradoxidealmaster.settings.UserData;
 import com.flycode.paradoxidealmaster.utils.DateUtils;
 import com.flycode.paradoxidealmaster.utils.DeviceUtil;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
@@ -56,7 +57,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     private static final String HAS_SHOWN_DESTINATION = "hasShownDestination";
     private static final String MAP_VIEW_BUNDLE = "mapViewBundle";
 
-    private LoadinProgressDialog loading;
+    private LoadingProgressDialog loading;
 
     private Order order;
     private MapView mapView;
@@ -75,7 +76,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
 
-        loading = new LoadinProgressDialog(this);
+        loading = new LoadingProgressDialog(this);
         loading.setCancelable(false);
         loading.setCanceledOnTouchOutside(false);
         loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -212,6 +213,12 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     }
 
     @Override
+    public void onOrderOfferedReceived(Order order) {
+        this.order = order;
+        reloadOrderUI();
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setOnMyLocationChangeListener(this);
 
@@ -221,12 +228,10 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             e.printStackTrace();
         }
 
-
-
-        int mapLocaterPadding = (int) DeviceUtil.getPxForDp(OrderDetailsActivity.this, 48);
+        int mapLocationPadding = (int) DeviceUtil.getPxForDp(OrderDetailsActivity.this, 48);
 
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        googleMap.setPadding(0, mapLocaterPadding, 0, 0);
+        googleMap.setPadding(0, mapLocationPadding, 0, 0);
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(new LatLng(order.getLocationLatitude(), order.getLocationLongitude()));
@@ -399,8 +404,13 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             leftButton.setText("");
             rightButton.setText(R.string.take);
         } else if (order.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
-            leftButton.setText(R.string.decline);
-            rightButton.setText(R.string.take);
+            leftButton.setText("");
+
+            if (order.getChosenFavorite() == null || order.getChosenFavorite().equals(UserData.sharedData(this).getId())) {
+                rightButton.setText(R.string.accept);
+            } else {
+                rightButton.setText(R.string.take);
+            }
         } else if (order.getStatus().equals(OrderStatusConstants.STARTED)
                 || order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)
                 || order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)) {
@@ -497,6 +507,10 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             action = OrderActionConstants.ATTACH_MASTER;
             successTitle = R.string.take_request_sent;
             successMessage = R.string.take_request_sent_long;
+        } else if (order.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
+            action = OrderActionConstants.ACCEPT_FAVORITE;
+            successTitle = R.string.accept_request_sent;
+            successMessage = R.string.accept_request_sent_long;
         } else {
             action = OrderActionConstants.FINISH_REQUEST;
             successTitle = R.string.finish_request_sent;
@@ -538,7 +552,6 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                                 .show();
 
                         reloadOrderUI();
-
                     }
 
                     @Override

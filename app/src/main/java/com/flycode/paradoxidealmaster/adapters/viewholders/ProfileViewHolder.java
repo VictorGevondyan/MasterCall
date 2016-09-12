@@ -11,7 +11,10 @@ import android.widget.TextView;
 import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.adapters.ProfileAdapter;
 import com.flycode.paradoxidealmaster.layouts.RatingLayout;
+import com.flycode.paradoxidealmaster.model.IdealFeedback;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
+
+import java.util.ArrayList;
 
 /**
  * Created by acerkinght on 9/3/16.
@@ -53,14 +56,22 @@ public class ProfileViewHolder extends SuperViewHolder implements View.OnClickLi
     @Override
     public void setupForPosition(int position) {
         if (provider.isExpendable(position)) {
+            actionButton.setText(R.string.icon_triangle);
             actionButton.setVisibility(View.VISIBLE);
+            actionButton.setOnClickListener(this);
+
+            if (provider.isExpended(getAdapterPosition())) {
+                actionButton.setRotation(180);
+            } else {
+                actionButton.setRotation(0);
+            }
         } else {
             actionButton.setVisibility(View.GONE);
         }
 
         if (provider.showsRating(position)) {
             ratingLayout.setVisibility(View.VISIBLE);
-            ratingLayout.setCurrentRating((int) Math.ceil(provider.getProfileRating()));
+            ratingLayout.setCurrentRating((int) Math.round(provider.getProfileRating()));
         } else {
             ratingLayout.setVisibility(View.GONE);
         }
@@ -69,11 +80,17 @@ public class ProfileViewHolder extends SuperViewHolder implements View.OnClickLi
         titleTextView.setText(provider.getProfileValueForPosition(position));
 
         iconTextView.setTextColor(provider.getColor(position));
+
+        actionButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.action) {
+            listener.onActionClicked(getAdapterPosition());
+        } else {
 
+        }
     }
 
     public interface ProfileProvider {
@@ -87,7 +104,6 @@ public class ProfileViewHolder extends SuperViewHolder implements View.OnClickLi
     }
 
     public interface ProfileActionListener {
-        void onExpendSection();
-        void onSuspendSection();
+        void onActionClicked(int position);
     }
 }

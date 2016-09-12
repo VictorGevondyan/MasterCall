@@ -17,7 +17,9 @@ public class User {
     private String role;
     private String image;
     private Date dateOfBirth;
+    private Feedback feedback;
     private ArrayList<IdealMasterService> services;
+    private ArrayList<String> portfolio;
     private int balance;
     private boolean sex;
     private boolean sticker;
@@ -30,7 +32,13 @@ public class User {
         this.sticker = sticker;
     }
 
+    public Feedback getFeedback() {
+        return feedback;
+    }
 
+    public void setFeedback(Feedback feedback) {
+        this.feedback = feedback;
+    }
 
     public String getId() {
         return id;
@@ -96,6 +104,14 @@ public class User {
         this.services = services;
     }
 
+    public ArrayList<String> getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(ArrayList<String> portfolio) {
+        this.portfolio = portfolio;
+    }
+
     public int getBalance() {
         return balance;
     }
@@ -110,5 +126,17 @@ public class User {
 
     public void setSex(boolean sex) {
         this.sex = sex;
+    }
+
+    public class Feedback {
+        private float stars;
+
+        public float getStars() {
+            return stars;
+        }
+
+        public void setStars(float stars) {
+            this.stars = stars;
+        }
     }
 }

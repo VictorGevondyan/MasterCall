@@ -28,7 +28,6 @@ public class FullScreenImageView extends ImageView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
 
         DisplayMetrics metrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metrics);

@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -13,12 +15,20 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.constants.IntentConstants;
 import com.flycode.paradoxidealmaster.model.Order;
+import com.flycode.paradoxidealmaster.settings.AppSettings;
+import com.flycode.paradoxidealmaster.utils.LocaleUtils;
 
 /**
  * Created by acerkinght on 8/18/16.
  */
 public class SuperActivity extends AppCompatActivity {
     private static int ACTIVE_COUNTER = 0;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LocaleUtils.setLocale(this, AppSettings.sharedSettings(this).getLanguage());
+    }
 
     @Override
     protected void onResume() {
@@ -81,6 +91,15 @@ public class SuperActivity extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver orderOfferBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final Order order = intent.getParcelableExtra(IntentConstants.EXTRA_ORDER);
+            showOrderDialog(R.string.order_was_offered, R.string.order_was_offered_long, order);
+            onOrderOfferedReceived(order);
+        }
+    };
+
     private void showOrderDialog(int title, int message, final Order order) {
         new MaterialDialog.Builder(SuperActivity.this)
                 .title(title)
@@ -122,4 +141,5 @@ public class SuperActivity extends AppCompatActivity {
     public void onNewOrderReceived(Order order) {}
     public void onOrderStartedReceived(Order order) {}
     public void onOrderFinishedReceived(Order order) {}
+    public void onOrderOfferedReceived(Order order) {}
 }

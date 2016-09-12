@@ -24,6 +24,8 @@ public class Order extends RealmObject implements Parcelable {
     private String userSurname;
     private String serviceId;
     private String serviceName;
+    private String serviceColor;
+    private String chosenFavorite;
     private boolean serviceIsCountable;
     private int serviceCost;
     private String locationName;
@@ -44,8 +46,10 @@ public class Order extends RealmObject implements Parcelable {
         userId = in.readString();
         userName = in.readString();
         userSurname = in.readString();
+        chosenFavorite = in.readString();
         serviceId = in.readString();
         serviceName = in.readString();
+        serviceColor = in.readString();
         serviceCost = in.readInt();
         serviceIsCountable = in.readInt() == 0;
         locationName = in.readString();
@@ -64,8 +68,10 @@ public class Order extends RealmObject implements Parcelable {
         dest.writeString(userId);
         dest.writeString(userName);
         dest.writeString(userSurname);
+        dest.writeString(chosenFavorite);
         dest.writeString(serviceId);
         dest.writeString(serviceName);
+        dest.writeString(serviceColor);
         dest.writeInt(serviceCost);
         dest.writeInt(serviceIsCountable ? 1 : 0);
         dest.writeString(locationName);
@@ -101,8 +107,10 @@ public class Order extends RealmObject implements Parcelable {
         order.userId = orderResponse.getUser().getId();
         order.userName = orderResponse.getUser().getName();
         order.userSurname = orderResponse.getUser().getSurname();
+        order.chosenFavorite = orderResponse.getChosenFavorite();
         order.serviceId = orderResponse.getService().getId();
         order.serviceName = orderResponse.getService().getName();
+        order.serviceColor = orderResponse.getService().getColor();
         order.serviceCost = orderResponse.getService().getCost();
         order.serviceIsCountable = orderResponse.getService().isCountable();
         order.locationName = orderResponse.getEndPoint().getName();
@@ -172,6 +180,14 @@ public class Order extends RealmObject implements Parcelable {
         this.userSurname = userSurname;
     }
 
+    public String getChosenFavorite() {
+        return chosenFavorite;
+    }
+
+    public void setChosenFavorite(String chosenFavorite) {
+        this.chosenFavorite = chosenFavorite;
+    }
+
     public String getServiceId() {
         return serviceId;
     }
@@ -186,6 +202,14 @@ public class Order extends RealmObject implements Parcelable {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public String getServiceColor() {
+        return serviceColor;
+    }
+
+    public void setServiceColor(String serviceColor) {
+        this.serviceColor = serviceColor;
     }
 
     public int getServiceCost() {
