@@ -225,7 +225,9 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
                 int left = 0;
                 int right = parent.getWidth();
 
-                canvas.drawLine(left, top, right, top, dividerPaint);
+                if (i != childCount-1) {
+                    canvas.drawLine(left, top, right, top, dividerPaint);
+                }
 
                 int midTop = child.getTop() + params.topMargin + colorDash;
                 int midLeft = verticalDividerX;

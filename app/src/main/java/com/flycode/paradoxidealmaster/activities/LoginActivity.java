@@ -77,7 +77,6 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                     .title(R.string.error)
                     .content(R.string.username_password_not_empty)
                     .positiveText(R.string.ok)
-
                     .show();
             return;
         }
