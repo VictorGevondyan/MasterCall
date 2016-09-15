@@ -252,6 +252,10 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
     @Override
     public void onMyLocationChange(Location location) {
+        if (location.getAccuracy() > 20) {
+            return;
+        }
+
         if (masterLocation != null
                 && masterLocation.distanceTo(location) < 30) {
             return;
