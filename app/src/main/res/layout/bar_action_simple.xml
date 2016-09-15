@@ -41,7 +41,8 @@
         android:background="@android:color/transparent"
         android:text="@string/icon_back"
         android:textColor="@color/black"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:padding="5dp"/>
 
     <View
         android:layout_width="match_parent"
