@@ -115,7 +115,9 @@ public class MasterServicesFragment extends Fragment {
                 int left = 0;
                 int right = parent.getWidth();
 
-                canvas.drawLine(left, top, right, top, paint);
+                if (i != childCount-1) {
+                    canvas.drawLine(left, top, right, top, paint);
+                }
             }
         }
     }
