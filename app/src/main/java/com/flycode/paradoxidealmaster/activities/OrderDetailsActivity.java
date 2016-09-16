@@ -331,6 +331,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         TextView titleTextView = (TextView) orderDetailsView.findViewById(R.id.title);
         TextView commentsTextView = (TextView) orderDetailsView.findViewById(R.id.details);
+        TextView commentsIconTextView = (TextView) orderDetailsView.findViewById(R.id.details_icon);
 
         TextView dateValueTextView = processSection(orderDetailsView.findViewById(R.id.date_section), R.string.icon_calendar, R.string.date);
         TextView locationValueTextView = processSection(orderDetailsView.findViewById(R.id.location_section), R.string.icon_marker, R.string.location);
@@ -341,7 +342,12 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         commentsTextView.setText(order.getDescription());
         dateValueTextView.setText(DateUtils.infoDateStringFromDate(order.getOrderTime()));
 
+        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK));
+        commentsTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT));
+        commentsIconTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
+
         if (order.getDescription() == null || order.getDescription().isEmpty()) {
+            commentsIconTextView.setVisibility(View.GONE);
             commentsTextView.setVisibility(View.GONE);
         }
 

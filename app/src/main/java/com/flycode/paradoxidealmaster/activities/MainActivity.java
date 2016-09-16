@@ -201,19 +201,23 @@ public class MainActivity extends SuperActivity {
             } else if (position == 5) {
                 Realm
                         .getDefaultInstance()
-                        .where(Order.class)
-                        .findAll()
-                        .deleteAllFromRealm();
-                Realm
-                        .getDefaultInstance()
-                        .where(IdealMasterService.class)
-                        .findAll()
-                        .deleteAllFromRealm();
-                Realm
-                        .getDefaultInstance()
-                        .where(IdealTransaction.class)
-                        .findAll()
-                        .deleteAllFromRealm();
+                        .executeTransactionAsync(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                realm
+                                        .where(Order.class)
+                                        .findAll()
+                                        .deleteAllFromRealm();
+                                realm
+                                        .where(IdealMasterService.class)
+                                        .findAll()
+                                        .deleteAllFromRealm();
+                                realm
+                                        .where(IdealTransaction.class)
+                                        .findAll()
+                                        .deleteAllFromRealm();
+                            }
+                        });
 
                 AppSettings.sharedSettings(MainActivity.this).setIsUserLoggedIn(false);
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
