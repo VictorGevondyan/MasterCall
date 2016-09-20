@@ -40,14 +40,15 @@
     <GridView
         android:id="@+id/menu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:listSelector="@android:color/transparent"
         android:numColumns="2"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="0dp"
-        android:horizontalSpacing="0dp"
+        android:verticalSpacing="1dp"
+        android:horizontalSpacing="1dp"
         android:scrollbars="none"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        android:background="@color/divider_grey">
 
     </GridView>
 
