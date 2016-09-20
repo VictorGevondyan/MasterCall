@@ -55,8 +55,16 @@ public class MasterProfileFragment extends Fragment {
                         }
 
                         ArrayList<IdealFeedback> idealFeedbackArrayList = new ArrayList<>();
+                        int index = 0;
 
                         for (IdealFeedbackResponse idealFeedbackResponse : response.body().getObjs()) {
+                            index++;
+
+                            if (index > 3) {
+                                adapter.setFeedbackArrayList(idealFeedbackArrayList);
+                                return;
+                            }
+
                             ArrayList<IdealFeedback.CommentItem> commentItems = new ArrayList<>();
                             commentItems.add(new IdealFeedback.CommentItem(
                                     idealFeedbackResponse.getUpdated(),

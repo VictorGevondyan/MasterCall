@@ -20,6 +20,8 @@ import com.flycode.paradoxidealmaster.api.response.OrdersListResponse;
 import com.flycode.paradoxidealmaster.constants.IntentConstants;
 import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
 import com.flycode.paradoxidealmaster.gcm.GCMSubscriber;
+import com.flycode.paradoxidealmaster.model.IdealMasterService;
+import com.flycode.paradoxidealmaster.model.IdealTransaction;
 import com.flycode.paradoxidealmaster.model.Order;
 import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
@@ -197,6 +199,26 @@ public class MainActivity extends SuperActivity {
                 startActivity(new Intent(MainActivity.this, MasterSettingsActivity.class));
                 overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
             } else if (position == 5) {
+                Realm
+                        .getDefaultInstance()
+                        .executeTransactionAsync(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                realm
+                                        .where(Order.class)
+                                        .findAll()
+                                        .deleteAllFromRealm();
+                                realm
+                                        .where(IdealMasterService.class)
+                                        .findAll()
+                                        .deleteAllFromRealm();
+                                realm
+                                        .where(IdealTransaction.class)
+                                        .findAll()
+                                        .deleteAllFromRealm();
+                            }
+                        });
+
                 AppSettings.sharedSettings(MainActivity.this).setIsUserLoggedIn(false);
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
