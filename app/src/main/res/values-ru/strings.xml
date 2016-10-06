@@ -57,6 +57,11 @@
     <string name="no_transactions">No transactions to show</string>
     <string name="portfolio">Portfolio</string>
     <string name="rating">Rating</string>
+    <string name="language">Русский</string>
+    <string name="english">English</string>
+    <string name="armenian">Հայերեն</string>
+    <string name="russian">Русский</string>
+    <string name="select_your_language">Select Your Language</string>
 
     <string name="network_issue">Network Issue. Please, check your connection.</string>
     <string name="server_issue">Server Issue. If you keep getting this issue, please contact us.</string>
@@ -89,11 +94,6 @@
     <string name="icon_gender">&#xe908;</string>
     <string name="icon_certificate">&#xe907;</string>
     <string name="icon_triangle">&#xe941;</string>
-    <string name="language">Language</string>
-    <string name="english">English</string>
-    <string name="armenian">Հայերեն</string>
-    <string name="russian">Русский</string>
-    <string name="select_your_language">Select Your Language</string>
 
     <string-array name="menu_icons">
         <item>&#xe910;</item>

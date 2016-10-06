@@ -179,7 +179,11 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
                                 final ArrayList<OrderResponse> orderResponses = response.body().getObjs();
 
                                 for (OrderResponse orderResponse : orderResponses) {
-                                    newOrders.add(Order.fromResponse(orderResponse));
+                                    Order order = Order.fromResponse(orderResponse);
+
+                                    if (order != null) {
+                                        newOrders.add(order);
+                                    }
                                 }
 
                                 return newOrders;

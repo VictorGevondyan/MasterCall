@@ -260,7 +260,7 @@ public class MainActivity extends SuperActivity {
             TextView smallCounterTextView = (TextView) convertView.findViewById(R.id.small_counter);
             TextView bigCounterTextView = (TextView) convertView.findViewById(R.id.big_counter);
             View dashView = convertView.findViewById(R.id.dash);
-            View bottomView = convertView.findViewById(R.id.bottom);
+            //View bottomView = convertView.findViewById(R.id.bottom);
             View rightView = convertView.findViewById(R.id.right);
 
             iconTextView.setTypeface(icomoon);
@@ -271,7 +271,7 @@ public class MainActivity extends SuperActivity {
             dashView.setBackgroundColor(Color.parseColor(dashes[position]));
 
             rightView.setVisibility(position % 2 == 0 ? View.VISIBLE : View.INVISIBLE);
-            bottomView.setVisibility(position < 4 ? View.VISIBLE : View.INVISIBLE);
+            //bottomView.setVisibility(position < 4 ? View.VISIBLE : View.INVISIBLE);
 
             if (position == 0) {
                 smallCounterTextView.setVisibility(View.VISIBLE);

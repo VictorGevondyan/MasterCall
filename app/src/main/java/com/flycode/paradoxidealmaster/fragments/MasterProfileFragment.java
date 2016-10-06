@@ -18,9 +18,11 @@ import com.flycode.paradoxidealmaster.adapters.ProfileAdapter;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
 import com.flycode.paradoxidealmaster.api.response.IdealFeedbackListResponse;
 import com.flycode.paradoxidealmaster.api.response.IdealFeedbackResponse;
+import com.flycode.paradoxidealmaster.dialogs.LanguageDialog;
 import com.flycode.paradoxidealmaster.model.IdealFeedback;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
+import com.flycode.paradoxidealmaster.utils.LocaleUtils;
 
 import java.util.ArrayList;
 
@@ -31,7 +33,8 @@ import retrofit2.Response;
 /**
  * Created by acerkinght on 9/1/16.
  */
-public class MasterProfileFragment extends Fragment {
+public class MasterProfileFragment extends Fragment implements ProfileAdapter.OnChangeLanguageListener, LanguageDialog.OnLanguageChosenListener {
+    private static final java.lang.String LANGUAGE_DIALOG = "LANGUAGE_DIALOG";
     private ProfileAdapter adapter;
 
     @Nullable
@@ -39,7 +42,7 @@ public class MasterProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View masterProfileView = inflater.inflate(R.layout.fragment_master_profile, container, false);
 
-        adapter = new ProfileAdapter(getActivity());
+        adapter = new ProfileAdapter(getActivity(), this);
 
         APIBuilder
                 .getIdealAPI()
@@ -94,6 +97,20 @@ public class MasterProfileFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
 
         return masterProfileView;
+    }
+
+    @Override
+    public void onChangeLanguage() {
+        LanguageDialog languageDialog = LanguageDialog.getInstance(AppSettings.sharedSettings(getActivity()).getLanguage());
+        languageDialog.setListener(this);
+        languageDialog.show(getActivity().getFragmentManager(), LANGUAGE_DIALOG);
+    }
+
+    @Override
+    public void onLanguageChosen(String language) {
+        AppSettings.sharedSettings(getActivity()).setLanguage(language);
+        LocaleUtils.setLocale(getActivity(), language);
+        getActivity().recreate();
     }
 
     private class DividerItemDecoration extends RecyclerView.ItemDecoration {

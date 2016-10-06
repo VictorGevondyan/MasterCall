@@ -20,17 +20,19 @@ import java.util.ArrayList;
  */
 public class ProfileAdapter extends RecyclerView.Adapter<SuperViewHolder> implements ProfileViewHolder.ProfileActionListener, ProfileViewHolder.ProfileProvider, MasterFeedbackViewHolder.MasterFeedbackProvider, MasterPortfolioViewHolder.PortfolioProvider {
     private enum ROW_TYPES {
-        FULL_NAME, GENDER, BIRTHDAY, CERTIFICATE, RATING, PORTFOLIO, PORTFOLIO_ITEM
+        FULL_NAME, GENDER, BIRTHDAY, CERTIFICATE, RATING, PORTFOLIO, LANGUAGE, PORTFOLIO_ITEM
     }
 
     private Context context;
     private ArrayList<Object> rows;
     private ArrayList<IdealFeedback> feedbackArrayList;
+    private OnChangeLanguageListener changeLanguageListener;
     private boolean isPortfolioExpended;
     private boolean isRatingExpended;
 
-    public  ProfileAdapter(Context context) {
+    public  ProfileAdapter(Context context, OnChangeLanguageListener changeLanguageListener) {
         this.context = context;
+        this.changeLanguageListener = changeLanguageListener;
         initRows();
     }
 
@@ -45,6 +47,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<SuperViewHolder> implem
         }
 
         this.rows.add(ROW_TYPES.GENDER);
+        this.rows.add(ROW_TYPES.LANGUAGE);
 
         if (UserData.sharedData(context).isSticker()) {
             this.rows.add(ROW_TYPES.CERTIFICATE);
@@ -57,7 +60,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<SuperViewHolder> implem
     @Override
     public SuperViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == 0) {
-            return ProfileViewHolder.getInstance(parent, context, this, this);
+            return ProfileViewHolder.getInstance(parent, context, changeLanguageListener, this, this);
         } else if (viewType == 2) {
             return MasterPortfolioViewHolder.getInstance(parent, context, this);
         } else {
@@ -140,6 +143,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<SuperViewHolder> implem
             return context.getString(R.string.portfolio);
         } else if (rows.get(position).equals(ROW_TYPES.RATING)) {
             return context.getString(R.string.rating);
+        } else if (rows.get(position).equals(ROW_TYPES.LANGUAGE)) {
+            return context.getString(R.string.language);
         }
 
         return "";
@@ -159,6 +164,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<SuperViewHolder> implem
             return context.getString(R.string.icon_portfolio);
         } else if (rows.get(position).equals(ROW_TYPES.RATING)) {
             return context.getString(R.string.icon_empty_star);
+        } else if (rows.get(position).equals(ROW_TYPES.LANGUAGE)) {
+            return context.getString(R.string.icon_world);
         }
 
         return "";
@@ -191,6 +198,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<SuperViewHolder> implem
     }
 
     @Override
+    public boolean isLanguage(int position) {
+        return rows.get(position).equals(ROW_TYPES.LANGUAGE);
+    }
+
+    @Override
     public boolean showsRating(int position) {
         return rows.get(position).equals(ROW_TYPES.RATING);
     }
@@ -212,5 +224,9 @@ public class ProfileAdapter extends RecyclerView.Adapter<SuperViewHolder> implem
 
     public void setFeedbackArrayList(ArrayList<IdealFeedback> feedbackArrayList) {
         this.feedbackArrayList = feedbackArrayList;
+    }
+
+    public interface OnChangeLanguageListener {
+        void onChangeLanguage();
     }
 }

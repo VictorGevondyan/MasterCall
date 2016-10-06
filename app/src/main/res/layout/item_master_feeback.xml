@@ -32,7 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp"
+        android:textSize="13sp"
+        android:textColor="@color/service_name_grey"/>
 
     <com.flycode.paradoxidealmaster.layouts.RatingLayout
         android:id="@+id/rating"

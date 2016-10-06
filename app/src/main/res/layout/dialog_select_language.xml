@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="32dp"
+    android:paddingLeft="32dp"
+    android:layout_gravity="center"
+    android:background="@drawable/rect_rounded_white">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_your_language"/>
+
+    <include layout="@layout/item_choice"
+        android:id="@+id/english"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <include layout="@layout/item_choice"
+        android:id="@+id/armenian" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <include layout="@layout/item_choice"
+        android:id="@+id/russian" />
+
+</LinearLayout>

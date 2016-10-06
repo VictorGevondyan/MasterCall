@@ -100,6 +100,10 @@ public class Order extends RealmObject implements Parcelable {
     };
 
     public static Order fromResponse(OrderResponse orderResponse) {
+        if (orderResponse.getService() == null) {
+            return null;
+        }
+
         Order order = new Order();
         order.id = orderResponse.getId();
         order.status = orderResponse.getStatus();

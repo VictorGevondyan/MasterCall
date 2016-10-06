@@ -88,6 +88,7 @@ public class MasterServicesAdapter extends RecyclerView.Adapter<SuperViewHolder>
             if (currentExpendedServiceId != null) {
                 String savedExpendedServiceId = currentExpendedServiceId;
                 currentExpendedServiceId = null;
+                notifyItemChanged(currentExpendedServiceIndex - 1);
                 notifyItemRangeRemoved(currentExpendedServiceIndex, currentServices.size());
 
                 if (savedExpendedServiceId.equals(service.getId())) {
@@ -101,6 +102,11 @@ public class MasterServicesAdapter extends RecyclerView.Adapter<SuperViewHolder>
             for (int index = 0 ; index < rootServices.size() ; index++) {
                 if (rootServices.get(index).getId().equals(currentExpendedServiceId)) {
                     currentExpendedServiceIndex = index + 1;
+
+                    if (!subServices.containsKey(service.getId())) {
+                        currentExpendedServiceId = null;
+                        return;
+                    }
 
                     for (IdealService subService : subServices.get(service.getId())) {
                         if (finalServices.containsKey(subService.getId())) {
