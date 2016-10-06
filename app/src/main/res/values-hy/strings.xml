@@ -1,125 +1,83 @@
 <resources>
-    <string name="app_name">Ideal Master</string>
-    <string name="sign_in">Sign In</string>
-    <string name="imex_group">&#169; 2016 IMEX GROUP</string>
-    <string name="all_right_reserved">ALL RIGHTS RESERVED</string>
-    <string name="welcome">WELCOME</string>
-    <string name="master">MASTER</string>
-    <string name="name">Name</string>
-    <string name="password">Password</string>
-    <string name="date">Date</string>
-    <string name="location">Location</string>
-    <string name="new_orders">New Orders</string>
-    <string name="my_orders">My Orders</string>
-    <string name="finished_orders">Finished Orders</string>
-    <string name="new_order">New Order</string>
-    <string name="order_was_started">Order was Started</string>
-    <string name="order_was_paused">Order was Paused</string>
-    <string name="order_was_finished">Order was Finished</string>
-    <string name="order_was_offered">Order was Offered</string>
-    <string name="pause_request_sent">Pause Request was sent</string>
-    <string name="take_request_sent">Your offer was sent to client</string>
-    <string name="accept_request_sent">You have accepted this invitation</string>
-    <string name="finish_request_sent">Finish Request was sent</string>
-    <string name="details">Details</string>
-    <string name="order">Order</string>
-    <string name="take">Take</string>
-    <string name="accept">Accept</string>
-    <string name="pause">Pause</string>
-    <string name="finish">Finish</string>
-    <string name="start">Start</string>
-    <string name="decline">Decline</string>
-    <string name="more">More</string>
-    <string name="ok">OK</string>
-    <string name="not_taken">Not Taken</string>
-    <string name="started">Started</string>
-    <string name="paused">Paused</string>
-    <string name="canceled">Canceled</string>
-    <string name="finished">Finished</string>
-    <string name="waiting_finished">Waiting Finished</string>
-    <string name="waiting_paused">Waiting Paused</string>
-    <string name="waiting_favorite">Waiting Favorite</string>
-    <string name="status">Status</string>
-    <string name="cost">Cost</string>
-    <string name="transactions_list">Transactions</string>
-    <string name="to">To</string>
-    <string name="time">Time</string>
-    <string name="transactions">Transactions</string>
-    <string name="certificate">Ideal Certificate</string>
-    <string name="female">Female</string>
-    <string name="male">Male</string>
-    <string name="pricing">Pricing</string>
-    <string name="profile">Profile</string>
-    <string name="cost_formatted">%dAMD</string>
-    <string name="settings">Settings</string>
-    <string name="error">Error</string>
-    <string name="no_orders">No orders to show</string>
-    <string name="no_transactions">No transactions to show</string>
-    <string name="portfolio">Portfolio</string>
-    <string name="rating">Rating</string>
+    <string name="sign_in">Մուտք գործել</string>
+    <string name="all_right_reserved">ԲՈԼՈՐ ԻՐԱՎՈՒՆՔՆԵՐԸ ՊԱՇՏՊԱՆՎԱԾ ԵՆ</string>
+    <string name="welcome">Բարի գալուստ</string>
+    <string name="master">Վարպետ</string>
+    <string name="name">Անուն</string>
+    <string name="password">Գաղտնաբառ</string>
+    <string name="date">Ամսաթիվ</string>
+    <string name="location">Գտնվելու վայր</string>
+    <string name="new_orders">Նոր պատվերներ</string>
+    <string name="my_orders">Իմ պատվերներ</string>
+    <string name="finished_orders">Ավարտված պատվերներ</string>
+    <string name="new_order">Նոր պատվեր</string>
+    <string name="order_was_started">Պատվերը սկսված է</string>
+    <string name="order_was_paused">Պատվերը կանգնեցված է</string>
+    <string name="order_was_finished">Պատվերը ավարտված է</string>
+    <string name="order_was_offered">Պատվերը առաջարկված է</string>
+    <string name="pause_request_sent">Կանգնեցման հարցումն ուղարկված է</string>
+    <string name="take_request_sent">Ձեր առաջարկը ուղարկված է հաճախորդին</string>
+    <string name="accept_request_sent">Դուք ընդունեցիք հրավերը</string>
+    <string name="finish_request_sent">Ավարտման հարցումն ուղարկված է</string>
+    <string name="details">Մանրամասներ</string>
+    <string name="order">Պատվեր</string>
+    <string name="take">Վերցնել</string>
+    <string name="accept">Ընդունել</string>
+    <string name="pause">Կանգնեցնել</string>
+    <string name="finish">Ավարտել</string>
+    <string name="start">Սկսել</string>
+    <string name="decline">Մերժել</string>
+    <string name="more">Ավելին</string>
+    <string name="ok">Հաստատել</string>
+    <string name="not_taken">Չվերցված</string>
+    <string name="started">Սկսված</string>
+    <string name="paused">Կանգնեցված</string>
+    <string name="canceled">Մերժված</string>
+    <string name="finished">Ավարտված</string>
+    <string name="waiting_finished">Ավարտվածի սպասում</string>
+    <string name="waiting_paused">Կանգնեցվածի սպասում</string>
+    <string name="waiting_favorite">Ընտրյալի սպասում</string>
+    <string name="status">Կարգավիճակ</string>
+    <string name="cost">Գին</string>
+    <string name="transactions_list">Գործարքներ</string>
+    <string name="to">Ում</string>
+    <string name="time">Ժամանակ</string>
+    <string name="transactions">Գործարքներ</string>
+    <string name="certificate">Վկայական</string>
+    <string name="female">Իգական</string>
+    <string name="male">Արական</string>
+    <string name="pricing">Գնացուցակ</string>
+    <string name="profile">Իմ էջ</string>
+    <string name="settings">Կարգավորումներ</string>
+    <string name="error">Սխալ</string>
+    <string name="no_orders">Չկան պատվերներ ցուցադրման համար</string>
+    <string name="no_transactions">Չկան փոխանցումներ ցուցադրման համար</string>
+    <string name="portfolio">Պորտֆոլիո</string>
+    <string name="rating">Գնահատական</string>
+
+    <string name="network_issue">Ցանցի խնդիր: Խնդրումենք ստուգել Ձեր կապը:</string>
+    <string name="server_issue">Սերվերի խնդիր: Եթե Դուք շարունակեք ստանալ նման սխալ խնդրում ենք կապնվել Մեզ հետ:</string>
+    <string name="wrong_data">Սխալ տվլայներ: Եթե Դուք շարունակեք ստանալ նման սխալ խնդրում ենք կապնվել Մեզ հետ:</string>
+    <string name="order_was_started_long">Ձեր պատվերը սկսված է և Դուք կարողեք սկսել աշխատանքները: Հաջողություն!</string>
+    <string name="order_was_paused_long">Ձեր պատվերը կանգնեցված է և այժմ Դուք կարողեք հանգստանալ:</string>
+    <string name="accept_request_sent_long">Դուք ընդունեցիք այս հրավերը: Շնորհավորում ենք:</string>
+    <string name="order_was_finished_long">Ձեր պատվերը ավարտված է: Շնորհավորում ենք:</string>
+    <string name="order_was_offered_long">Պատվերը առաջարկված է Ձեզ:</string>
+    <string name="pause_request_sent_long">Կանգնեցման հարցումը փոխանցվել է հաճախորդին հաստատման նպատակով: Խնդրում ենք համբերատար լինել:</string>
+    <string name="finish_request_sent_long">Ավարտման հարցումը փոխանցվել է հաճախորդին: Խնդրում ենք սպասել մինչ հարցման հաստատում նրա կողմից:</string>
+    <string name="take_request_sent_long">Ձեր առաջարկը ուղարկվել է հաճախորդին: Խնդրում ենք լինել համբերատար մինչ նրա արձագանքը:</string>
+    <string name="username_password_not_empty">Երկու ՛Օգտագործողի անուն՛ և ՛Գաղտնաբառ՛ դաշտերը պետք է լինեն լրացված:</string>
+
     <string name="language">Լեզու</string>
-    <string name="english">English</string>
-    <string name="armenian">Հայերեն</string>
-    <string name="russian">Русский</string>
-    <string name="select_your_language">Select Your Language</string>
-
-    <string name="network_issue">Network Issue. Please, check your connection.</string>
-    <string name="server_issue">Server Issue. If you keep getting this issue, please contact us.</string>
-    <string name="wrong_data">Wrong Data. If you keep getting this issue, please contact us.</string>
-    <string name="order_was_started_long">Your order has been started and you can begin your work. Good luck!</string>
-    <string name="order_was_paused_long">Your order has been paused and you can rest now. Cheers!</string>
-    <string name="accept_request_sent_long">You have accepted this invitation. Congratulation!</string>
-    <string name="order_was_finished_long">Your order has been finished. Congratulation!</string>
-    <string name="order_was_offered_long">Order was offered for you. Congratulation!</string>
-    <string name="pause_request_sent_long">Pause request was sent to client to approve. Please, be patient.</string>
-    <string name="finish_request_sent_long">Finish Request was sent to client. Please, wait until client approves the finish request.</string>
-    <string name="take_request_sent_long">Your offer was sent to client. Please, be patient and wait for response.</string>
-    <string name="username_password_not_empty">Both username and password must not be empty.</string>
-
-    <string name="icon_username">&#xe90a;</string>
-    <string name="icon_lock">&#xe90b;</string>
-    <string name="icon_back">&#xe91f;</string>
-    <string name="icon_calendar">&#xe906;</string>
-    <string name="icon_marker">&#xe905;</string>
-    <string name="icon_details">&#xe904;</string>
-    <string name="icon_cost">&#xe902;</string>
-    <string name="icon_person">&#xe903;</string>
-    <string name="icon_clock">&#xe901;</string>
-    <string name="icon_comment">&#xe900;</string>
-    <string name="icon_star">&#xe912;</string>
-    <string name="icon_empty_star">&#xe913;</string>
-    <string name="icon_world">&#xe929;</string>
-    <string name="icon_portfolio">&#xe940;</string>
-    <string name="icon_birthday">&#xe909;</string>
-    <string name="icon_gender">&#xe908;</string>
-    <string name="icon_certificate">&#xe907;</string>
-    <string name="icon_triangle">&#xe941;</string>
-
-    <string-array name="menu_icons">
-        <item>&#xe910;</item>
-        <item>&#xe911;</item>
-        <item>&#xe90f;</item>
-        <item>&#xe90E;</item>
-        <item>&#xe90C;</item>
-        <item>&#xe90D;</item>
-    </string-array>
+    <string name="select_your_language">Ընտրեք Ձեր լեզուն</string>
 
     <string-array name="menu_titles">
-        <item>New Orders</item>
-        <item>My Orders</item>
-        <item>Finished Orders</item>
-        <item>Transactions</item>
-        <item>Settings</item>
-        <item>Logout</item>
-    </string-array>
-
-    <string-array name="menu_dashes">
-        <item>#FFD801</item>
-        <item>#2094FA</item>
-        <item>#8C88FF</item>
-        <item>#FCAB53</item>
-        <item>#0DEC6D</item>
-        <item>#FF3366</item>
+        <item>Նոր պատվերներ</item>
+        <item>Իմ պատվերներ</item>
+        <item>Ավարտված պատվերներ</item>
+        <item>Գործարքներ</item>
+        <item>Կարգավորումներ</item>
+        <item>Ելք</item>
     </string-array>
 
 </resources>
