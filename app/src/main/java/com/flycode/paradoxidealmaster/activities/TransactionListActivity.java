@@ -203,12 +203,12 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
             dividerPaint = new Paint();
             dividerPaint.setStrokeWidth(1);
             dividerPaint.setStyle(Paint.Style.STROKE);
-            dividerPaint.setColor(context.getResources().getColor(R.color.lighter_grey));
+            dividerPaint.setColor(context.getResources().getColor(R.color.divider_grey));
 
             colorPaint = new Paint();
             colorPaint.setStrokeWidth(colorWidth);
             colorPaint.setStyle(Paint.Style.STROKE);
-            colorPaint.setColor(context.getResources().getColor(R.color.lighter_grey));
+            colorPaint.setColor(context.getResources().getColor(R.color.divider_grey));
 
             androidColors = getResources().getIntArray(R.array.transactions_right_colors);
         }

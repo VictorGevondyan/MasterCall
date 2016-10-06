@@ -125,7 +125,7 @@ public class MasterProfileFragment extends Fragment implements ProfileAdapter.On
             Paint paint = new Paint();
             paint.setStrokeWidth(1);
             paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(context.getResources().getColor(R.color.lighter_grey));
+            paint.setColor(context.getResources().getColor(R.color.divider_grey));
 
             int childCount = parent.getChildCount();
             for (int i = 0; i < childCount; i++) {
