@@ -54,7 +54,7 @@ public interface APIService {
     @PUT("/api/orders/{orderId}/{action}")
     Call<SimpleOrderResponse> makeOrderAction(@Header("Authorization") String authToken, @Path("orderId") String orderId, @Path("action") String action);
 
-    @GET ("/api/transactions")
+    @GET ("/api/transactions/own")
     Call<TransactionsListResponse> getTransactions(@Header("Authorization") String authToken,
                                                    @Query("date[start]") Date startDate,
                                                    @Query("date[end]") Date endDate);
