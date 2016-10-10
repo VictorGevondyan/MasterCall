@@ -29,6 +29,7 @@ public class IdealTransaction extends RealmObject {
         idealTransaction.setId(transactionResponse.getId());
         idealTransaction.setPaymentType(transactionResponse.getPaymentType());
         idealTransaction.setDescription(transactionResponse.getDescription());
+        idealTransaction.setMoneyAmount(transactionResponse.getMoneyAmount());
 
         if (transactionResponse.getFrom() == null) {
             idealTransaction.setFromId(null);

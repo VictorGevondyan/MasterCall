@@ -66,7 +66,7 @@
     <string name="pause_request_sent_long">Запрос приостановки был отправлен клиенту для подтверждения. Просба быть терпеливым.</string>
     <string name="finish_request_sent_long">Запрос завершения отправленно клиенту. Просим подождать его подтверждения.</string>
     <string name="take_request_sent_long">Ваше предложение было отправленно  клиенту. Просим проявить терпение до получения ответа.</string>
-    <string name="username_password_not_empty">Оба пункта 'Имя пользователя' и 'Пароль' должны быть заполненны.</string>
+    <string name="username_password_not_empty">Оба пункта \'Имя пользователя\' и \'Пароль\' должны быть заполненны.</string>
 
     <string name="language">Язык</string>
     <string name="select_your_language">Выберите ваш язык</string>

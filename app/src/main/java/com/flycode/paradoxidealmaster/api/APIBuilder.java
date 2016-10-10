@@ -28,7 +28,8 @@ public class APIBuilder {
 //   private static String BASE_URL = "http://192.168.0.111:1999";
 //   private static String BASE_URL = "http://192.168.0.107:1994";
 //    private static String BASE_URL = "http://192.168.0.110:1994";
-    private static String BASE_URL = "http://fly.co.de:1994";
+//    private static String BASE_URL = "http://fly.co.de:1994";
+    private static final String BASE_URL = "http://taxivip.am:1994";
     private static APIService idealAPI;
 
     public static APIService getIdealAPI() {
