@@ -359,7 +359,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         if (order.isServiceIsCountable()) {
             cost = order.getServiceCost() + "AMD";
         } else {
-            cost = order.getQuantity() + " / " + (order.getQuantity() * order.getServiceCost()) + "AMD";
+            cost = order.getQuantity() + " " + order.getServiceUnit() + " / " + (order.getQuantity() * order.getServiceCost()) + "AMD";
         }
 
         costValueTextView.setText(cost);

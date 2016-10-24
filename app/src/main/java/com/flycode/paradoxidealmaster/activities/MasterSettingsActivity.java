@@ -1,5 +1,6 @@
 package com.flycode.paradoxidealmaster.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -30,15 +31,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MasterSettingsActivity extends SuperActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
+public class MasterSettingsActivity extends SuperActivity implements ViewPager.OnPageChangeListener, View.OnClickListener, MasterProfileFragment.MasterProfileFragmentActionListener {
     private TabLayout tabLayout;
 
     ImageView fragmentBackground;
+    private boolean hasChangedLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_settings);
+
+        if (savedInstanceState != null) {
+            hasChangedLanguage = savedInstanceState.getBoolean("hasChangedLanguage");
+        }
 
         fragmentBackground = (ImageView) findViewById(R.id.profile_fragments_background);
 
@@ -54,7 +60,6 @@ public class MasterSettingsActivity extends SuperActivity implements ViewPager.O
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager, true);
-
 
         if (viewPager.getCurrentItem() == 0) {
             tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.ideal_red));
@@ -98,6 +103,13 @@ public class MasterSettingsActivity extends SuperActivity implements ViewPager.O
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean("hasChangedLanguage", hasChangedLanguage);
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
@@ -122,6 +134,7 @@ public class MasterSettingsActivity extends SuperActivity implements ViewPager.O
 
     @Override
     public void finish() {
+        setResult(RESULT_OK, new Intent().putExtra("hasChangedLanguage", hasChangedLanguage));
         super.finish();
         overridePendingTransition(0, R.anim.slide_down_out);
     }
@@ -145,6 +158,11 @@ public class MasterSettingsActivity extends SuperActivity implements ViewPager.O
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onHasChangedLanguage() {
+        hasChangedLanguage = true;
     }
 
     private class SettingsViewPagerAdapter extends FragmentStatePagerAdapter {

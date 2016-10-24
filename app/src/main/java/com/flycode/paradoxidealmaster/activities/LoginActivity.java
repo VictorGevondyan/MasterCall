@@ -1,6 +1,7 @@
 package com.flycode.paradoxidealmaster.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -28,13 +29,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends SuperActivity implements View.OnClickListener {
-
+    private static final String PASSWORD = "password";
+    private static final String LOGIN = "login";
     private LoadingProgressDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginPreferences", 0);
+        String password = sharedPreferences.getString(PASSWORD, "");
+        String login = sharedPreferences.getString(LOGIN, "");
+
+        if (savedInstanceState != null) {
+            password = savedInstanceState.getString(PASSWORD, "");
+            login = savedInstanceState.getString(LOGIN, "");
+        }
 
         loading = new LoadingProgressDialog(this);
         loading.setCancelable(false);
@@ -60,12 +71,26 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
         EditText nameEditText = (EditText) findViewById(R.id.name);
         EditText passwordEditText = (EditText) findViewById(R.id.password);
 
+        nameEditText.setText(login);
+        passwordEditText.setText(password);
+
         nameEditText.setTypeface(avenirLightTypeface);
         passwordEditText.setTypeface(avenirLightTypeface);
 
         Button signInButton = (Button) findViewById(R.id.sign_in);
         signInButton.setTypeface(avenirBlackTypeface);
         signInButton.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        EditText nameEditText = (EditText) findViewById(R.id.name);
+        EditText passwordEditText = (EditText) findViewById(R.id.password);
+
+        outState.putString(LOGIN, nameEditText.getText().toString());
+        outState.putString(PASSWORD, passwordEditText.getText().toString());
     }
 
     @Override
@@ -134,6 +159,16 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                         boolean permittedUser = UserData.sharedData(LoginActivity.this).storeUser(response.body(), "master");
 
                         if (permittedUser) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("LoginPreferences", 0);
+                            EditText nameEditText = (EditText) findViewById(R.id.name);
+                            EditText passwordEditText = (EditText) findViewById(R.id.password);
+
+                            sharedPreferences
+                                    .edit()
+                                    .putString(LOGIN, nameEditText.getText().toString())
+                                    .putString(PASSWORD, passwordEditText.getText().toString())
+                                    .apply();
+
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();

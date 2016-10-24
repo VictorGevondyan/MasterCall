@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.flycode.paradoxidealmaster.R;
+import com.flycode.paradoxidealmaster.activities.MasterSettingsActivity;
 import com.flycode.paradoxidealmaster.adapters.ProfileAdapter;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
 import com.flycode.paradoxidealmaster.api.response.IdealFeedbackListResponse;
@@ -36,6 +37,7 @@ import retrofit2.Response;
 public class MasterProfileFragment extends Fragment implements ProfileAdapter.OnChangeLanguageListener, LanguageDialog.OnLanguageChosenListener {
     private static final java.lang.String LANGUAGE_DIALOG = "LANGUAGE_DIALOG";
     private ProfileAdapter adapter;
+    private MasterProfileFragmentActionListener listener;
 
     @Nullable
     @Override
@@ -100,6 +102,21 @@ public class MasterProfileFragment extends Fragment implements ProfileAdapter.On
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (getActivity() instanceof MasterProfileFragmentActionListener) {
+            listener = (MasterProfileFragmentActionListener) getActivity();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    @Override
     public void onChangeLanguage() {
         LanguageDialog languageDialog = LanguageDialog.getInstance(AppSettings.sharedSettings(getActivity()).getLanguage());
         languageDialog.setListener(this);
@@ -108,9 +125,17 @@ public class MasterProfileFragment extends Fragment implements ProfileAdapter.On
 
     @Override
     public void onLanguageChosen(String language) {
+        if (listener != null) {
+            listener.onHasChangedLanguage();
+        }
+        
         AppSettings.sharedSettings(getActivity()).setLanguage(language);
         LocaleUtils.setLocale(getActivity(), language);
         getActivity().recreate();
+    }
+
+    public interface MasterProfileFragmentActionListener {
+        void onHasChangedLanguage();
     }
 
     private class DividerItemDecoration extends RecyclerView.ItemDecoration {

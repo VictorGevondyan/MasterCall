@@ -24,10 +24,11 @@ public class Order extends RealmObject implements Parcelable {
     private String userSurname;
     private String serviceId;
     private String serviceName;
+    private String serviceUnit;
     private String serviceColor;
-    private String chosenFavorite;
     private boolean serviceIsCountable;
     private int serviceCost;
+    private String chosenFavorite;
     private String locationName;
     private Double locationLatitude;
     private Double locationLongitude;
@@ -50,8 +51,9 @@ public class Order extends RealmObject implements Parcelable {
         serviceId = in.readString();
         serviceName = in.readString();
         serviceColor = in.readString();
+        serviceUnit = in.readString();
         serviceCost = in.readInt();
-        serviceIsCountable = in.readInt() == 0;
+        serviceIsCountable = in.readInt() == 1;
         locationName = in.readString();
         locationLatitude = in.readDouble();
         locationLongitude = in.readDouble();
@@ -72,6 +74,7 @@ public class Order extends RealmObject implements Parcelable {
         dest.writeString(serviceId);
         dest.writeString(serviceName);
         dest.writeString(serviceColor);
+        dest.writeString(serviceUnit);
         dest.writeInt(serviceCost);
         dest.writeInt(serviceIsCountable ? 1 : 0);
         dest.writeString(locationName);
@@ -115,6 +118,7 @@ public class Order extends RealmObject implements Parcelable {
         order.serviceId = orderResponse.getService().getId();
         order.serviceName = orderResponse.getService().getName();
         order.serviceColor = orderResponse.getService().getColor();
+        order.serviceUnit = orderResponse.getService().getUnit();
         order.serviceCost = orderResponse.getService().getCost();
         order.serviceIsCountable = orderResponse.getService().isCountable();
         order.locationName = orderResponse.getEndPoint().getName();
@@ -230,6 +234,14 @@ public class Order extends RealmObject implements Parcelable {
 
     public void setServiceIsCountable(boolean serviceIsCountable) {
         this.serviceIsCountable = serviceIsCountable;
+    }
+
+    public String getServiceUnit() {
+        return serviceUnit;
+    }
+
+    public void setServiceUnit(String serviceUnit) {
+        this.serviceUnit = serviceUnit;
     }
 
     public String getLocationName() {

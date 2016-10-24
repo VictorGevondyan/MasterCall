@@ -20,6 +20,7 @@ public class IdealService extends RealmObject implements Parcelable {
     private String superService;
     private String image;
     private String color;
+    private String unit;
     private int cost;
     private boolean countable;
     private boolean isFinal;
@@ -34,6 +35,7 @@ public class IdealService extends RealmObject implements Parcelable {
         superService = in.readString();
         image = in.readString();
         color = in.readString();
+        unit = in.readString();
         cost = in.readInt();
         countable = in.readByte() != 0;
         isFinal = in.readByte() != 0;
@@ -87,6 +89,14 @@ public class IdealService extends RealmObject implements Parcelable {
         return color;
     }
 
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     public void setColor(String color) {
         this.color = color;
     }
@@ -131,6 +141,7 @@ public class IdealService extends RealmObject implements Parcelable {
         parcel.writeString(superService);
         parcel.writeString(image);
         parcel.writeString(color);
+        parcel.writeString(unit);
         parcel.writeInt(cost);
         parcel.writeByte((byte) (countable ? 1 : 0));
         parcel.writeByte((byte) (isFinal ? 1 : 0));

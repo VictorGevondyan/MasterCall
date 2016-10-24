@@ -26,6 +26,7 @@ import com.flycode.paradoxidealmaster.model.Order;
 import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
+import com.flycode.paradoxidealmaster.utils.LocaleUtils;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
 import java.io.IOException;
@@ -74,6 +75,20 @@ public class MainActivity extends SuperActivity {
         if (order != null) {
             startActivity(new Intent(this, OrderDetailsActivity.class).putExtra(IntentConstants.EXTRA_ORDER, order));
             overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 9001 && resultCode == RESULT_OK) {
+            boolean hasChangedLanguage = data.getBooleanExtra("hasChangedLanguage", false);
+
+            if (hasChangedLanguage) {
+                LocaleUtils.setLocale(this, AppSettings.sharedSettings(this).getLanguage());
+                recreate();
+            }
         }
     }
 
@@ -196,7 +211,7 @@ public class MainActivity extends SuperActivity {
                 startActivity(new Intent(MainActivity.this, TransactionListActivity.class));
                 overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
             } else if (position == 4) {
-                startActivity(new Intent(MainActivity.this, MasterSettingsActivity.class));
+                startActivityForResult(new Intent(MainActivity.this, MasterSettingsActivity.class), 9001);
                 overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
             } else if (position == 5) {
                 Realm
