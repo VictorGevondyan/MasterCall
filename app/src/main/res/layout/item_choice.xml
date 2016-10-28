@@ -14,12 +14,13 @@
         android:layout_toStartOf="@+id/select_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="#999999"/>
+        android:textColor="#999999"
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/select_button"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:minWidth="0dp"

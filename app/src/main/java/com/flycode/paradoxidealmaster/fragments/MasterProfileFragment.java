@@ -32,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by acerkinght on 9/1/16.
+ * Created on 9/1/16 __ acerkinght .
  */
 public class MasterProfileFragment extends Fragment implements ProfileAdapter.OnChangeLanguageListener, LanguageDialog.OnLanguageChosenListener {
     private static final java.lang.String LANGUAGE_DIALOG = "LANGUAGE_DIALOG";
