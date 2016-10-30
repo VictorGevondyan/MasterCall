@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Ideal Master</string>
+    <string name="app_name" translatable="false">Ideal Master</string>
     <string name="sign_in">Sign In</string>
-    <string name="imex_group">&#169; 2016 IMEX GROUP</string>
+    <string name="imex_group" translatable="false">&#169; 2016 IMEX GROUP</string>
     <string name="all_right_reserved">ALL RIGHTS RESERVED</string>
     <string name="welcome">WELCOME</string>
     <string name="master">MASTER</string>
@@ -39,7 +39,6 @@
     <string name="waiting_finished">Waiting Finished</string>
     <string name="waiting_paused">Waiting Paused</string>
     <string name="waiting_favorite">Waiting Favorite</string>
-    <string name="status">Status</string>
     <string name="cost">Cost</string>
     <string name="transactions_list">Transactions</string>
     <string name="to">To</string>
@@ -50,7 +49,7 @@
     <string name="male">Male</string>
     <string name="pricing">Pricing</string>
     <string name="profile">Profile</string>
-    <string name="cost_formatted">%dAMD</string>
+    <string name="cost_formatted" translatable="false">%dAMD</string>
     <string name="settings">Settings</string>
     <string name="error">Error</string>
     <string name="no_orders">No orders to show</string>
@@ -71,28 +70,28 @@
     <string name="take_request_sent_long">Your offer was sent to client. Please, be patient and wait for response.</string>
     <string name="username_password_not_empty">Both username and password must not be empty.</string>
 
-    <string name="icon_username">&#xe90a;</string>
-    <string name="icon_lock">&#xe90b;</string>
-    <string name="icon_back">&#xe91f;</string>
-    <string name="icon_calendar">&#xe906;</string>
-    <string name="icon_marker">&#xe905;</string>
-    <string name="icon_details">&#xe904;</string>
-    <string name="icon_cost">&#xe902;</string>
-    <string name="icon_person">&#xe903;</string>
-    <string name="icon_clock">&#xe901;</string>
-    <string name="icon_comment">&#xe900;</string>
-    <string name="icon_star">&#xe912;</string>
-    <string name="icon_empty_star">&#xe913;</string>
-    <string name="icon_world">&#xe929;</string>
-    <string name="icon_portfolio">&#xe940;</string>
-    <string name="icon_birthday">&#xe909;</string>
-    <string name="icon_gender">&#xe908;</string>
-    <string name="icon_certificate">&#xe907;</string>
-    <string name="icon_triangle">&#xe941;</string>
+    <string name="icon_username" translatable="false">&#xe90a;</string>
+    <string name="icon_lock" translatable="false">&#xe90b;</string>
+    <string name="icon_back" translatable="false">&#xe91f;</string>
+    <string name="icon_calendar" translatable="false">&#xe906;</string>
+    <string name="icon_marker" translatable="false">&#xe905;</string>
+    <string name="icon_details" translatable="false">&#xe904;</string>
+    <string name="icon_cost" translatable="false">&#xe902;</string>
+    <string name="icon_person" translatable="false">&#xe903;</string>
+    <string name="icon_clock" translatable="false">&#xe901;</string>
+    <string name="icon_comment" translatable="false">&#xe900;</string>
+    <string name="icon_star" translatable="false">&#xe912;</string>
+    <string name="icon_empty_star" translatable="false">&#xe913;</string>
+    <string name="icon_world" translatable="false">&#xe929;</string>
+    <string name="icon_portfolio" translatable="false">&#xe940;</string>
+    <string name="icon_birthday" translatable="false">&#xe909;</string>
+    <string name="icon_gender" translatable="false">&#xe908;</string>
+    <string name="icon_certificate" translatable="false">&#xe907;</string>
+    <string name="icon_triangle" translatable="false">&#xe941;</string>
     <string name="language">Language</string>
-    <string name="english">English</string>
-    <string name="armenian">Հայերեն</string>
-    <string name="russian">Русский</string>
+    <string name="english" translatable="false">English</string>
+    <string name="armenian" translatable="false">Հայերեն</string>
+    <string name="russian" translatable="false">Русский</string>
     <string name="select_your_language">Select Your Language</string>
 
     <string-array name="menu_icons">
@@ -121,5 +120,8 @@
         <item>#0DEC6D</item>
         <item>#FF3366</item>
     </string-array>
+    <string name="payment_type">P.type</string>
+    <string name="status">Status</string>
+
 
 </resources>

@@ -6,7 +6,6 @@
     <string name="name">Անուն</string>
     <string name="password">Գաղտնաբառ</string>
     <string name="date">Ամսաթիվ</string>
-    <string name="location">Գտնվելու վայր</string>
     <string name="new_orders">Նոր պատվերներ</string>
     <string name="my_orders">Իմ պատվերներ</string>
     <string name="finished_orders">Ավարտված պատվերներ</string>
@@ -37,11 +36,10 @@
     <string name="waiting_finished">Ավարտվածի սպասում</string>
     <string name="waiting_paused">Կանգնեցվածի սպասում</string>
     <string name="waiting_favorite">Ընտրյալի սպասում</string>
-    <string name="status">Կարգավիճակ</string>
     <string name="cost">Գին</string>
     <string name="transactions_list">Գործարքներ</string>
     <string name="to">Ում</string>
-    <string name="time">Ժամանակ</string>
+    <string name="time">Ժամ.</string>
     <string name="transactions">Գործարքներ</string>
     <string name="certificate">Վկայական</string>
     <string name="female">Իգական</string>
@@ -53,11 +51,11 @@
     <string name="no_orders">Չկան պատվերներ ցուցադրման համար</string>
     <string name="no_transactions">Չկան փոխանցումներ ցուցադրման համար</string>
     <string name="portfolio">Պորտֆոլիո</string>
-    <string name="rating">Գնահատական</string>
+    <string name="rating">Գնահատ.</string>
 
-    <string name="network_issue">Ցանցի խնդիր: Խնդրումենք ստուգել Ձեր կապը:</string>
-    <string name="server_issue">Սերվերի խնդիր: Եթե Դուք շարունակեք ստանալ նման սխալ խնդրում ենք կապնվել Մեզ հետ:</string>
-    <string name="wrong_data">Սխալ տվլայներ: Եթե Դուք շարունակեք ստանալ նման սխալ խնդրում ենք կապնվել Մեզ հետ:</string>
+    <string name="network_issue">Ցանցի խնդիր: Խնդրում ենք ստուգել Ձեր կապը:</string>
+    <string name="server_issue">Սերվերի խնդիր: Եթե Դուք շարունակեք ստանալ վերջինս, խնդրում ենք կապնվել Մեզ հետ:</string>
+    <string name="wrong_data">Սխալ տվլայներ: Եթե Դուք շարունակեք ստանալ վերջինս, խնդրում ենք կապնվել Մեզ հետ:</string>
     <string name="order_was_started_long">Ձեր պատվերը սկսված է և Դուք կարողեք սկսել աշխատանքները: Հաջողություն!</string>
     <string name="order_was_paused_long">Ձեր պատվերը կանգնեցված է և այժմ Դուք կարողեք հանգստանալ:</string>
     <string name="accept_request_sent_long">Դուք ընդունեցիք այս հրավերը: Շնորհավորում ենք:</string>
@@ -66,7 +64,7 @@
     <string name="pause_request_sent_long">Կանգնեցման հարցումը փոխանցվել է հաճախորդին հաստատման նպատակով: Խնդրում ենք համբերատար լինել:</string>
     <string name="finish_request_sent_long">Ավարտման հարցումը փոխանցվել է հաճախորդին: Խնդրում ենք սպասել մինչ հարցման հաստատում նրա կողմից:</string>
     <string name="take_request_sent_long">Ձեր առաջարկը ուղարկվել է հաճախորդին: Խնդրում ենք լինել համբերատար մինչ նրա արձագանքը:</string>
-    <string name="username_password_not_empty">Երկու ՛Օգտագործողի անուն՛ և ՛Գաղտնաբառ՛ դաշտերը պետք է լինեն լրացված:</string>
+    <string name="username_password_not_empty">Երկու "Օգտագործողի անուն" և "Գաղտնաբառ" դաշտերը պետք է լինեն լրացված:</string>
 
     <string name="language">Լեզու</string>
     <string name="select_your_language">Ընտրեք Ձեր լեզուն</string>
@@ -74,10 +72,13 @@
     <string-array name="menu_titles">
         <item>Նոր պատվերներ</item>
         <item>Իմ պատվերներ</item>
-        <item>Ավարտված պատվերներ</item>
+        <item>Ավ. պատվերներ</item>
         <item>Գործարքներ</item>
         <item>Կարգավորումներ</item>
         <item>Ելք</item>
     </string-array>
+    <string name="location">Հասցե</string>
+    <string name="payment_type">Վճ.եղ.</string>
+    <string name="status">Վիճակ</string>
 
 </resources>

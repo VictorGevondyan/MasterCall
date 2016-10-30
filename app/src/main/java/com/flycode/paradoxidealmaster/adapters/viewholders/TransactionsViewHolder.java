@@ -41,7 +41,7 @@ public class TransactionsViewHolder extends SuperViewHolder {
         toTextView = processSection(itemView.findViewById(R.id.to_section), R.string.icon_person, R.string.to);
         timeTextView = processSection(itemView.findViewById(R.id.time_section), R.string.icon_clock, R.string.time);
         costTextView = processSection(itemView.findViewById(R.id.cost_section), R.string.icon_cost, R.string.cost);
-        statusTextView = processSection(itemView.findViewById(R.id.status_section), R.string.icon_comment, R.string.status);
+        statusTextView = processSection(itemView.findViewById(R.id.status_section), R.string.icon_comment, R.string.payment_type);
     }
 
     @Override

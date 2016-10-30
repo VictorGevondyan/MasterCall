@@ -6,7 +6,6 @@
     <string name="name">Имя</string>
     <string name="password">Пароль</string>
     <string name="date">Дата</string>
-    <string name="location">Местонахождение</string>
     <string name="new_orders">Новые заказы</string>
     <string name="my_orders">Мои заказы</string>
     <string name="finished_orders">Оконченные заказы</string>
@@ -37,7 +36,6 @@
     <string name="waiting_finished">Ожидание окончания</string>
     <string name="waiting_paused">Ожидание приостановки</string>
     <string name="waiting_favorite">Ожидание избранного</string>
-    <string name="status">Состояние</string>
     <string name="cost">Цена</string>
     <string name="transactions_list">Список операций</string>
     <string name="to">Кому</string>
@@ -79,5 +77,8 @@
         <item>Настройки</item>
         <item>Выход</item>
     </string-array>
+    <string name="location">Адрес</string>
+    <string name="payment_type">Платеж</string>
+    <string name="status">Статус</string>
 
 </resources>

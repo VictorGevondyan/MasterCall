@@ -24,7 +24,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 /**
- * Created by acerkinght on 9/1/16.
+ * Created on 9/1/16 __ acerkinght .
  */
 public class MasterServicesFragment extends Fragment {
     private MasterServicesAdapter adapter;
