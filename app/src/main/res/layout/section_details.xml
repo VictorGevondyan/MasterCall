@@ -8,6 +8,8 @@
         android:id="@+id/icon"
         android:layout_width="20dp"
         android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp"
         android:gravity="center_horizontal"
         android:textColor="@color/info_title_grey"
         android:textSize="16sp" />

@@ -18,15 +18,19 @@
         android:textSize="20sp"
         android:layout_marginBottom="17dp"/>
 
-    <include layout="@layout/item_choice"
-        android:id="@+id/english"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_grey"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"/>
 
-    <include layout="@layout/item_choice"
-        android:id="@+id/armenian" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_grey"/>
 
     <View
         android:layout_width="match_parent"
