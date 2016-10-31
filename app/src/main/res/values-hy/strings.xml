@@ -31,11 +31,11 @@
     <string name="not_taken">Չվերցված</string>
     <string name="started">Սկսված</string>
     <string name="paused">Կանգնեցված</string>
-    <string name="canceled">Մերժված</string>
+    <string name="canceled">Չեղարկված</string>
     <string name="finished">Ավարտված</string>
-    <string name="waiting_finished">Ավարտվածի սպասում</string>
-    <string name="waiting_paused">Կանգնեցվածի սպասում</string>
-    <string name="waiting_favorite">Ընտրյալի սպասում</string>
+    <string name="waiting_finished">Ավարտի Սպասում</string>
+    <string name="waiting_paused">Կանգնեցման Սպասում</string>
+    <string name="waiting_favorite">Ընտրության Սպասում</string>
     <string name="cost">Գին</string>
     <string name="transactions_list">Գործարքներ</string>
     <string name="to">Ում</string>
