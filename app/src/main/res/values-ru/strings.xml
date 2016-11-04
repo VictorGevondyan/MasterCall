@@ -17,13 +17,13 @@
     <string name="pause_request_sent">Запрос о приостановке отправлен</string>
     <string name="take_request_sent">Ваше предложение отправлено клиенту</string>
     <string name="accept_request_sent">Вы приняли приглашение</string>
-    <string name="finish_request_sent">Запрос оконьчания отправлен</string>
+    <string name="finish_request_sent">Запрос окончания отправлен</string>
     <string name="details">Подробнее</string>
     <string name="order">Заказ</string>
     <string name="take">Взять</string>
     <string name="accept">Принять</string>
     <string name="pause">Приостановить</string>
-    <string name="finish">Оконьчить</string>
+    <string name="finish">Закончить</string>
     <string name="start">Начать</string>
     <string name="decline">Отказать</string>
     <string name="more">Больше</string>
@@ -59,7 +59,7 @@
     <string name="order_was_started_long">Ваш заказ начат и Вы можете приступить к работе. Удачи.</string>
     <string name="order_was_paused_long">Ваш заказ приостановлен. Теперь Вы можете отдохнуть.</string>
     <string name="accept_request_sent_long">Вы приняли данное приглошение. Поздровляем.</string>
-    <string name="order_was_finished_long">Ваш заказ оконьчен. Поздровляем.</string>
+    <string name="order_was_finished_long">Ваш заказ окончен. Поздровляем.</string>
     <string name="order_was_offered_long">Заказ предложен Вам.</string>
     <string name="pause_request_sent_long">Запрос приостановки был отправлен клиенту для подтверждения. Просба быть терпеливым.</string>
     <string name="finish_request_sent_long">Запрос завершения отправленно клиенту. Просим подождать его подтверждения.</string>
@@ -72,7 +72,7 @@
     <string-array name="menu_titles">
         <item>Новые заказы</item>
         <item>Мои заказы</item>
-        <item>Оконьченные заказы</item>
+        <item>Оконченные заказы</item>
         <item>Операции</item>
         <item>Настройки</item>
         <item>Выход</item>

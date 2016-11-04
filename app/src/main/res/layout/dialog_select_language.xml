@@ -37,6 +37,12 @@
         android:layout_height="3dp"/>
 
     <include layout="@layout/item_choice"
+        android:id="@+id/english" />
+
+    <include layout="@layout/item_choice"
         android:id="@+id/russian" />
+
+    <include layout="@layout/item_choice"
+        android:id="@+id/armenian" />
 
 </LinearLayout>
