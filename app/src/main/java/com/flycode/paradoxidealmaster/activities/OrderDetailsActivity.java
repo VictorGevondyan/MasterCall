@@ -223,6 +223,12 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     }
 
     @Override
+    public void onOrderCanceledReceived(Order order) {
+        this.order = order;
+        reloadOrderUI();
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setOnMyLocationChangeListener(this);
 
@@ -418,6 +424,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                 || order.getStatus().equals(OrderStatusConstants.CANCELED)) {
             leftButton.setVisibility(View.GONE);
             rightButton.setVisibility(View.GONE);
+            mapView.setVisibility(View.GONE);
         } else if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)
                 || order.getStatus().equals(OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED)) {
             leftButton.setText("");

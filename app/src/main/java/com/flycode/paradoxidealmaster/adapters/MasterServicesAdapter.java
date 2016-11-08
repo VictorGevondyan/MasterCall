@@ -192,6 +192,26 @@ public class MasterServicesAdapter extends RecyclerView.Adapter<SuperViewHolder>
             }
         }
 
+        ArrayList<IdealService> rootServicesToRemove = new ArrayList<>();
+
+        for (IdealService rootService : rootServices) {
+            int count = 0;
+
+            if (subServices.get(rootService.getId()) != null) {
+                for (IdealService subService : subServices.get(rootService.getId())) {
+                    if (finalServices.get(subService.getId()) != null) {
+                        count = count + finalServices.get(subService.getId()).size();
+                    }
+                }
+            }
+
+            if (count == 0) {
+                rootServicesToRemove.add(rootService);
+            }
+        }
+
+        rootServices.removeAll(rootServicesToRemove);
+
         notifyDataSetChanged();
     }
 }

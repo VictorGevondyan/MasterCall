@@ -107,6 +107,13 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                     context.getString(R.string.order_was_offered),
                     IntentConstants.ACTION_NEW_OFFER
             );
+        } else if (title.equals("order_canceled")) {
+            processOrder(
+                    context,
+                    intent.getStringExtra("message"),
+                    context.getString(R.string.order_was_canceled),
+                    IntentConstants.ACTION_ORDER_CANCELED
+            );
         }
     }
 

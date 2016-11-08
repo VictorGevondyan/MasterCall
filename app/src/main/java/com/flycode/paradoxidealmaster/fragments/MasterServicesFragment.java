@@ -28,6 +28,8 @@ import io.realm.RealmResults;
  */
 public class MasterServicesFragment extends Fragment {
     private MasterServicesAdapter adapter;
+    private ArrayList<IdealMasterService> masterServices;
+    private ArrayList<IdealService> rootServices;
 
     @Nullable
     @Override
@@ -39,6 +41,8 @@ public class MasterServicesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
+
+        masterServices = new ArrayList<>();
 
         Realm
                 .getDefaultInstance()
@@ -74,7 +78,9 @@ public class MasterServicesFragment extends Fragment {
                 services.add(realmResults.get(index));
             }
 
+            rootServices = services;
             adapter.setServices(services);
+            adapter.setMasterServices(masterServices);
         }
     };
 
@@ -87,6 +93,8 @@ public class MasterServicesFragment extends Fragment {
                 services.add(realmResults.get(index));
             }
 
+            masterServices = services;
+            adapter.setServices(rootServices);
             adapter.setMasterServices(services);
         }
     };

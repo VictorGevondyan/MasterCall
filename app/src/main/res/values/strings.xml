@@ -17,6 +17,7 @@
     <string name="order_was_paused">Order was Paused</string>
     <string name="order_was_finished">Order was Finished</string>
     <string name="order_was_offered">Order was Offered</string>
+    <string name="order_was_canceled">Order was Canceled</string>
     <string name="pause_request_sent">Pause Request was sent</string>
     <string name="take_request_sent">Your offer was sent to client</string>
     <string name="accept_request_sent">You have accepted this invitation</string>
@@ -61,6 +62,7 @@
     <string name="server_issue">Server Issue. If you keep getting this issue, please contact us.</string>
     <string name="wrong_data">Wrong Data. If you keep getting this issue, please contact us.</string>
     <string name="order_was_started_long">Your order has been started and you can begin your work. Good luck!</string>
+    <string name="order_was_canceled_long">Your order has been canceled.</string>
     <string name="order_was_paused_long">Your order has been paused and you can rest now. Cheers!</string>
     <string name="accept_request_sent_long">You have accepted this invitation. Congratulation!</string>
     <string name="order_was_finished_long">Your order has been finished. Congratulation!</string>

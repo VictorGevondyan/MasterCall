@@ -30,6 +30,13 @@
                 android:textSize="14sp"
                 android:textColor="@color/info_text_grey"/>
 
+            <TextView
+                android:id="@+id/unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/black"/>
+
         </LinearLayout>
 
     </RelativeLayout>

@@ -20,6 +20,7 @@ public class ServicesMasterViewHolder extends SuperViewHolder implements View.On
     private OnItemClickListener listener;
 
     private TextView costTextView;
+    private TextView unitTextView;
     private TextView titleTextView;
     private View dash;
 
@@ -37,6 +38,7 @@ public class ServicesMasterViewHolder extends SuperViewHolder implements View.On
         this.listener = listener;
 
         costTextView = (TextView) itemView.findViewById(R.id.cost);
+        unitTextView = (TextView) itemView.findViewById(R.id.unit);
         titleTextView = (TextView) itemView.findViewById(R.id.title);
         dash = itemView.findViewById(R.id.dash);
 
@@ -49,6 +51,11 @@ public class ServicesMasterViewHolder extends SuperViewHolder implements View.On
         IdealMasterService service = provider.getMasterServiceForPosition(position);
 
         costTextView.setText(context.getString(R.string.cost_formatted, service.getCost()));
+
+        if (service.getUnit() != null && !service.getUnit().isEmpty()) {
+            unitTextView.setText("/" + service.getUnit());
+        }
+
         titleTextView.setText(service.getName());
 
         try {

@@ -149,10 +149,13 @@ public class MainActivity extends SuperActivity {
                     }
                 });
 
-        APIBuilder
-                .getIdealAPI()
-                .getUser(AppSettings.sharedSettings(this).getBearerToken())
-                .enqueue(new Callback<User>() {
+        try {
+            Call<User> userCall = APIBuilder
+                    .getIdealAPI()
+                    .getUser(AppSettings.sharedSettings(this).getBearerToken());
+
+            if (userCall != null) {
+                userCall.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, final Response<User> response) {
                         if (!response.isSuccessful()) {
@@ -180,6 +183,10 @@ public class MainActivity extends SuperActivity {
 
                     }
                 });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
