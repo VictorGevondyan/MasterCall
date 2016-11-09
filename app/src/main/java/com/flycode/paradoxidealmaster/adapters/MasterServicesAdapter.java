@@ -163,6 +163,10 @@ public class MasterServicesAdapter extends RecyclerView.Adapter<SuperViewHolder>
         rootServices.clear();
         subServices.clear();
 
+        if (idealServices == null) {
+            return;
+        }
+
         for (IdealService service : idealServices) {
             if (service.getSuperService() == null
                     || service.getSuperService().isEmpty()) {
