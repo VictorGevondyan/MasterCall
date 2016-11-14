@@ -265,9 +265,9 @@ public class MainActivity extends SuperActivity {
             this.titles = context.getResources().getStringArray(R.array.menu_titles);
             this.dashes = context.getResources().getStringArray(R.array.menu_dashes);
             this.icons = context.getResources().getStringArray(R.array.menu_icons);
-            this.icomoon = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON);
-            this.avenirRoman = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_ROMAN);
-            this.avenirLight = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT);
+            this.icomoon = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON, context);
+            this.avenirRoman = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_ROMAN, context);
+            this.avenirLight = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT, context);
         }
 
         @Override

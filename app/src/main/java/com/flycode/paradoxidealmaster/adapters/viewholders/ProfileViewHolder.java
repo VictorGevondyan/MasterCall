@@ -52,13 +52,13 @@ public class ProfileViewHolder extends SuperViewHolder implements View.OnClickLi
         ratingLayout = (RatingLayout) itemView.findViewById(R.id.rating);
         languageLayout = (LinearLayout) itemView.findViewById(R.id.language_container);
 
-        titleTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK));
-        iconTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.ICOMOON));
-        actionButton.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.ICOMOON));
-        languageTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK));
+        titleTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK, context));
+        iconTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.ICOMOON, context));
+        actionButton.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.ICOMOON, context));
+        languageTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK, context));
 
         TextView languageDropTextView = (TextView) itemView.findViewById(R.id.language_drop);
-        languageDropTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.ICOMOON));
+        languageDropTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.ICOMOON, context));
 
         actionButton.setOnClickListener(this);
     }

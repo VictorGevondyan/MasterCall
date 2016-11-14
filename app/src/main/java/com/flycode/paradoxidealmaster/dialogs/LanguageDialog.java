@@ -65,7 +65,7 @@ public class LanguageDialog extends DialogFragment implements View.OnClickListen
         View section = view.findViewById(sectionId);
 
         TextView textView = (TextView) section.findViewById(R.id.text);
-        textView.setTypeface(TypefaceLoader.loadTypeface(getActivity().getAssets(), TypefaceLoader.AVENIR_BOOK));
+        textView.setTypeface(TypefaceLoader.loadTypeface(getActivity().getAssets(), TypefaceLoader.AVENIR_BOOK, getActivity()));
         textView.setText(text);
 
         Button button = (Button) section.findViewById(R.id.select_button);

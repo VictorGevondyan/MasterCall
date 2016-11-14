@@ -57,9 +57,9 @@ public class TransactionsViewHolder extends SuperViewHolder {
         TextView titleTextView = (TextView) section.findViewById(R.id.title);
         TextView valueTextView = (TextView) section.findViewById(R.id.value);
 
-        iconTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.ICOMOON));
-        titleTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK));
-        valueTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK));
+        iconTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.ICOMOON, context));
+        titleTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK, context));
+        valueTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK, context));
 
         iconTextView.setText(icon);
         titleTextView.setText(title);

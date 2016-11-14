@@ -84,7 +84,7 @@ public class TransactionListActivity extends AppCompatActivity implements View.O
 
         Button backButton = (Button) actionBar.findViewById(R.id.back);
         backButton.setOnClickListener(this);
-        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
+        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON, this));
     }
 
     @Override

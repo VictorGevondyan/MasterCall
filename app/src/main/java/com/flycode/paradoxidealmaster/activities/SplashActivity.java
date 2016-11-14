@@ -26,7 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         TextView imexGroupTextView = (TextView) findViewById(R.id.imex_group);
         TextView allRightReservedTextView = (TextView) findViewById(R.id.all_right_reserved);
 
-        Typeface avenirBookTypeface = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK);
+        Typeface avenirBookTypeface = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK, this);
 
         assert imexGroupTextView != null;
         assert allRightReservedTextView != null;

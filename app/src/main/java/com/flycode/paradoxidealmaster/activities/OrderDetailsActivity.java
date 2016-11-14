@@ -325,11 +325,11 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         TextView titleTextView = (TextView) findViewById(R.id.title);
         titleTextView.setText(R.string.order);
-        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_MEDIUM));
+        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_MEDIUM, this));
 
         Button backButton = (Button) findViewById(R.id.back);
         backButton.setOnClickListener(this);
-        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
+        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON, this));
     }
 
     private void setupOrderDetails() {
@@ -348,9 +348,9 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         commentsTextView.setText(order.getDescription());
         dateValueTextView.setText(DateUtils.infoDateStringFromDate(order.getOrderTime()));
 
-        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK));
-        commentsTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT));
-        commentsIconTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
+        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK, this));
+        commentsTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT, this));
+        commentsIconTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON, this));
 
         if (order.getDescription() == null || order.getDescription().isEmpty()) {
             commentsIconTextView.setVisibility(View.GONE);
@@ -409,9 +409,9 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         TextView titleTextView = (TextView) section.findViewById(R.id.title);
         TextView valueTextView = (TextView) section.findViewById(R.id.value);
 
-        iconTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
-        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK));
-        valueTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK));
+        iconTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON, this));
+        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK, this));
+        valueTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK, this));
 
         iconTextView.setText(icon);
         titleTextView.setText(title);
