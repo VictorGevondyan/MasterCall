@@ -223,6 +223,12 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     }
 
     @Override
+    public void onOrderFinishedReceived(Order order) {
+        this.order = order;
+        reloadOrderUI();
+    }
+
+    @Override
     public void onOrderCanceledReceived(Order order) {
         this.order = order;
         reloadOrderUI();

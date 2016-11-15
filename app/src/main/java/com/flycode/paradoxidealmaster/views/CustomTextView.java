@@ -52,9 +52,14 @@ public class CustomTextView extends TextView {
     }
 
     public boolean armContains(CharSequence text) {
+
         String[] armArray = {"ա", "բ", "գ", "դ", "ե", "զ", "է", "ը", "թ", "ժ", "ի", "լ", "խ",
                 "ծ", "կ", "հ", "ձ", "ղ", "ճ", "մ", "յ", "ն", "շ", "ո", "չ", "պ", "ջ", "ռ", "ս",
                 "վ", "տ", "ր", "ց", "ու", "փ", "ք"};
+
+        if (text == null) {
+            return false;
+        }
 
         for (String anArmArray : armArray) {
             if (text.toString().contains(anArmArray)) {
@@ -65,7 +70,13 @@ public class CustomTextView extends TextView {
     }
 
     public boolean rusContains(CharSequence text) {
-        String[] rusArray = {"о", "е", "а", "и", "н", "т", "с", "р", "в", "л", "к", "м", "д", "п", "у", "я", "ы", "ь", "г", "з", "б", "ч", "й"};
+
+        String[] rusArray = {"о", "е", "а", "и", "н", "т", "с", "р", "в", "л", "к", "м", "д",
+                "п", "у", "я", "ы", "ь", "г", "з", "б", "ч", "й"};
+
+        if (text == null) {
+            return false;
+        }
 
         for (String aRusArray : rusArray) {
             if (text.toString().contains(aRusArray)) {
