@@ -298,21 +298,21 @@ public class MainActivity extends SuperActivity {
             if (position == 0) {
                 smallCounterTextView.setVisibility(View.VISIBLE);
                 smallCounterTextView.setBackgroundResource(R.drawable.rounded_rect_orange);
-                smallCounterTextView.setText(String.valueOf(newOrdersCount));
                 smallCounterTextView.setTypeface(avenirRoman);
+                smallCounterTextView.setText(String.valueOf(newOrdersCount));
             } else if (position == 1) {
                 smallCounterTextView.setVisibility(View.VISIBLE);
                 smallCounterTextView.setBackgroundResource(R.drawable.rounded_rect_blue);
-                smallCounterTextView.setText(String.valueOf(myOrdersCount));
                 smallCounterTextView.setTypeface(avenirRoman);
+                smallCounterTextView.setText(String.valueOf(myOrdersCount));
             } else {
                 smallCounterTextView.setVisibility(View.GONE);
             }
 
             if (position == 3) {
                 bigCounterTextView.setVisibility(View.VISIBLE);
-                bigCounterTextView.setText(String.valueOf(UserData.sharedData(MainActivity.this).getBalance()));
                 bigCounterTextView.setTypeface(avenirLight);
+                bigCounterTextView.setText(String.valueOf(UserData.sharedData(MainActivity.this).getBalance()));
             } else {
                 bigCounterTextView.setVisibility(View.GONE);
             }

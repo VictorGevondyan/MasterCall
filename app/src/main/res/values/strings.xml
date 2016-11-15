@@ -96,6 +96,9 @@
     <string name="russian" translatable="false">Русский</string>
     <string name="select_your_language">Select Your Language</string>
 
+    <string name="payment_type">P.type</string>
+    <string name="status">Status</string>
+
     <string-array name="menu_icons">
         <item>&#xe910;</item>
         <item>&#xe911;</item>
@@ -122,8 +125,5 @@
         <item>#0DEC6D</item>
         <item>#FF3366</item>
     </string-array>
-    <string name="payment_type">P.type</string>
-    <string name="status">Status</string>
-
 
 </resources>

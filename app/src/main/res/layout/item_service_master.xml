@@ -23,14 +23,14 @@
             android:layout_alignParentRight="true"
             android:orientation="horizontal">
 
-            <TextView
+            <com.flycode.paradoxidealmaster.views.CustomTextView
                 android:id="@+id/cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/info_text_grey"/>
 
-            <TextView
+            <com.flycode.paradoxidealmaster.views.CustomTextView
                 android:id="@+id/unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
 
     </RelativeLayout>
 
-    <TextView
+    <com.flycode.paradoxidealmaster.views.CustomTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
