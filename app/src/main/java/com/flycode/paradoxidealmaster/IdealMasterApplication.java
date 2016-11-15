@@ -34,6 +34,8 @@ import java.util.TimerTask;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 import io.realm.Sort;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,6 +67,7 @@ public class IdealMasterApplication extends Application implements LocationListe
 
         updateServices();
         updateLocations();
+        updateServices();
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -76,32 +79,104 @@ public class IdealMasterApplication extends Application implements LocationListe
     }
 
     public void updateServices() {
-        if (AppSettings.sharedSettings(this).isUserLoggedIn()) {
-            APIBuilder
-                    .getIdealAPI()
-                    .getServices(
-                            AppSettings.sharedSettings(this).getBearerToken()
-                    )
-                    .enqueue(new Callback<ArrayList<IdealService>>() {
-                        @Override
-                        public void onResponse(Call<ArrayList<IdealService>> call, final Response<ArrayList<IdealService>> response) {
+        APIBuilder
+                .getIdealAPI()
+                .getServices(AppSettings.sharedSettings(this).getBearerToken())
+                .enqueue(new Callback<ArrayList<IdealService>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<IdealService>> call, Response<ArrayList<IdealService>> response) {
+                        if (response.isSuccessful()) {
+                            final ArrayList<IdealService> idealServices = response.body();
+
                             Realm
                                     .getDefaultInstance()
                                     .executeTransactionAsync(new Realm.Transaction() {
                                         @Override
                                         public void execute(Realm realm) {
-                                            realm.insertOrUpdate(response.body());
+                                            ArrayList<IdealService> finalServices = new ArrayList<>();
+                                            ArrayList<IdealService> rootService = new ArrayList<>();
+                                            ArrayList<IdealService> subServices = new ArrayList<>();
+
+                                            for (int i = 0; i < idealServices.size(); i++) {
+                                                if (idealServices.get(i).isFinal()) {
+                                                    finalServices.add(idealServices.get(i));
+                                                } else if (idealServices.get(i).getSuperService() == null) {
+                                                    rootService.add(idealServices.get(i));
+                                                } else {
+                                                    subServices.add(idealServices.get(i));
+                                                }
+                                            }
+
+                                            for (int j = 0; j < rootService.size(); j++) {
+                                                for (int k = 0; k < subServices.size(); k++) {
+                                                    if ( rootService.get(j).getId().equals(subServices.get(k).getSuperService())) {
+                                                        subServices.get(k).setColor(rootService.get(j).getColor());
+                                                    }
+                                                }
+                                            }
+
+                                            for (int j = 0; j<subServices.size(); j++) {
+                                                for (int k = 0; k < finalServices.size(); k++) {
+                                                    if (subServices.get(j).getId().equals(finalServices.get(k).getSuperService())) {
+                                                        finalServices.get(k).setColor(subServices.get(j).getColor());
+                                                    }
+                                                }
+                                            }
+
+                                            RealmResults<IdealService> existingServices = realm
+                                                    .where(IdealService.class)
+                                                    .findAll();
+                                            ArrayList<IdealService> servicesToRemove = new ArrayList<>();
+
+                                            for (IdealService serviceToRemove : existingServices) {
+                                                boolean stillExists = false;
+
+                                                for (IdealService idealService : idealServices) {
+                                                    if (serviceToRemove.getId().equals(idealService.getId())) {
+                                                        stillExists = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (!stillExists) {
+                                                    servicesToRemove.add(serviceToRemove);
+                                                }
+                                            }
+
+                                            if (!servicesToRemove.isEmpty()) {
+                                                RealmQuery<Order> orderRealmQuery = realm
+                                                        .where(Order.class);
+
+                                                for (int index = 0; index < servicesToRemove.size(); index++) {
+                                                    orderRealmQuery = orderRealmQuery
+                                                            .equalTo("serviceId", servicesToRemove.get(index).getId());
+
+                                                    if (index < servicesToRemove.size() - 1) {
+                                                        orderRealmQuery = orderRealmQuery.or();
+                                                    }
+                                                }
+
+                                                orderRealmQuery
+                                                        .findAll()
+                                                        .deleteAllFromRealm();
+                                            }
+
+                                            for (IdealService serviceToRemove : servicesToRemove) {
+                                                serviceToRemove.deleteFromRealm();
+                                            }
+
+                                            realm.insertOrUpdate(idealServices);
                                         }
                                     });
                         }
+                    }
 
-                        @Override
-                        public void onFailure(Call<ArrayList<IdealService>> call, Throwable t) {
-                        }
-                    });
-        }
+                    @Override
+                    public void onFailure(Call<ArrayList<IdealService>> call, Throwable t) {
+                        Log.d("Failure", "No Service Loaded");
+                    }
+                });
     }
-
     public void updateLocations() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 

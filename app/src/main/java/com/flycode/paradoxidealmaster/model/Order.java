@@ -8,6 +8,7 @@ import com.flycode.paradoxidealmaster.api.response.SimpleOrderResponse;
 
 import java.util.Date;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -127,6 +128,16 @@ public class Order extends RealmObject implements Parcelable {
         order.quantity = orderResponse.getQuantity();
         order.orderTime = orderResponse.getOrderTime();
         order.updated = orderResponse.getUpdated();
+
+        IdealService idealService = Realm
+                .getDefaultInstance()
+                .where(IdealService.class)
+                .equalTo("id", order.serviceId)
+                .findFirst();
+
+        if (idealService != null) {
+            order.serviceColor = idealService.getColor();
+        }
 
         return order;
     }

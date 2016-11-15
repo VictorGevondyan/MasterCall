@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import com.flycode.paradoxidealmaster.adapters.viewholders.OnItemClickListener;
 import com.flycode.paradoxidealmaster.adapters.viewholders.OrderViewHolder;
 import com.flycode.paradoxidealmaster.adapters.viewholders.SuperViewHolder;
+import com.flycode.paradoxidealmaster.model.IdealService;
 import com.flycode.paradoxidealmaster.model.Order;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import io.realm.Realm;
 
 /**
  * Created by acerkinght on 8/22/16.
@@ -58,6 +61,19 @@ public class OrderAdapter extends RecyclerView.Adapter<SuperViewHolder> implemen
 
     @Override
     public String getColorForPosition(int position) {
+        if (orders.get(position).getServiceColor() == null
+                || orders.get(position).getServiceColor().equals("#FFFFFF")) {
+            IdealService idealService = Realm
+                    .getDefaultInstance()
+                    .where(IdealService.class)
+                    .equalTo("id", orders.get(position).getServiceId())
+                    .findFirst();
+
+            if (idealService != null) {
+                return idealService.getColor();
+            }
+        }
+
         return orders.get(position).getServiceColor();
     }
 
