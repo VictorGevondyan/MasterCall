@@ -3,6 +3,8 @@ package com.flycode.paradoxidealmaster.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.flycode.paradoxidealmaster.model.IdealMasterService;
+import com.flycode.paradoxidealmaster.model.IdealService;
 import com.flycode.paradoxidealmaster.model.User;
 
 import java.text.SimpleDateFormat;
@@ -11,6 +13,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by victor on 12/25/15.
@@ -83,7 +88,7 @@ public class UserData {
         }
     }
 
-    public boolean storeUser(User user, String requiredRole) {
+    public boolean storeUser(final User user, String requiredRole) {
         if (!user.getRole().equals(requiredRole)) {
             return false;
         }
@@ -114,6 +119,29 @@ public class UserData {
                 .putBoolean(SEX, sex)
                 .putBoolean(STICKER, sticker)
                 .apply();
+
+        Realm
+                .getDefaultInstance()
+                .executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        RealmResults<IdealService> rootServices = realm
+                                .where(IdealService.class)
+                                .findAll();
+
+                        for (IdealService service : rootServices) {
+                            if (service.isFinal()) {
+                                for (IdealMasterService masterService : user.getServices()) {
+                                    if (masterService.getId().equals(service.getId())) {
+                                        masterService.setColor(service.getColor());
+                                    }
+                                }
+                            }
+                        }
+
+                        realm.insertOrUpdate(user.getServices());
+                    }
+                });
 
         return true;
     }

@@ -122,7 +122,7 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
             alreadyUpdated = true;
             loadOrdersViaServer(new String[] {OrderStatusConstants.STARTED, OrderStatusConstants.PAUSED,
                             OrderStatusConstants.CANCELED, OrderStatusConstants.FINISHED,
-                            OrderStatusConstants.WAITING_PAUSED, OrderStatusConstants.WAITING_FINISHED});
+                            OrderStatusConstants.WAITING_PAUSED, OrderStatusConstants.WAITING_FINISHED, OrderStatusConstants.FINISHED_WAITING_PAYMENT});
         }
     }
 
@@ -242,7 +242,9 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
                     .or()
                     .equalTo("status", OrderStatusConstants.WAITING_FINISHED)
                     .or()
-                    .equalTo("status", OrderStatusConstants.WAITING_PAUSED);
+                    .equalTo("status", OrderStatusConstants.WAITING_PAUSED)
+                    .or()
+                    .equalTo("status", OrderStatusConstants.FINISHED_WAITING_PAYMENT);
         }
 
         query

@@ -395,7 +395,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             statusValueTextView.setText(R.string.canceled);
         } else if (order.getStatus().equals(OrderStatusConstants.FINISHED)) {
             statusValueTextView.setText(R.string.finished);
-        } else if (order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)) {
+        } else if (order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)
+                || order.getStatus().equals(OrderStatusConstants.FINISHED_WAITING_PAYMENT)) {
             statusValueTextView.setText(R.string.waiting_finished);
         } else if (order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)) {
             statusValueTextView.setText(R.string.waiting_paused);
@@ -439,7 +440,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             }
         } else if (order.getStatus().equals(OrderStatusConstants.STARTED)
                 || order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)
-                || order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)) {
+                || order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)
+                || order.getStatus().equals(OrderStatusConstants.FINISHED_WAITING_PAYMENT)) {
             leftButton.setText(R.string.pause);
             rightButton.setText(R.string.finish);
         } else if (order.getStatus().equals(OrderStatusConstants.PAUSED)) {
@@ -461,7 +463,8 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         if (order.getStatus().equals(OrderStatusConstants.STARTED)
                 || order.getStatus().equals(OrderStatusConstants.WAITING_PAUSED)
-                || order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)) {
+                || order.getStatus().equals(OrderStatusConstants.WAITING_FINISHED)
+                || order.getStatus().equals(OrderStatusConstants.FINISHED_WAITING_PAYMENT)) {
             action = OrderActionConstants.PAUSE_REQUEST;
             successTitle = R.string.pause_request_sent;
             successMessage = R.string.pause_request_sent_long;

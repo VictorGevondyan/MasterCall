@@ -13,4 +13,5 @@ public class OrderStatusConstants {
     public static final String WAITING_FAVORITE = "waiting favorite";
     public static final String WAITING_PAUSED = "waiting paused";
     public static final String WAITING_FINISHED = "waiting finished";
+    public static final String FINISHED_WAITING_PAYMENT = "finished waiting payment";
 }

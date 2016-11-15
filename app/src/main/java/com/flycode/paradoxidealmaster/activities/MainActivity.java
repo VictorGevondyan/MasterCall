@@ -128,7 +128,7 @@ public class MainActivity extends SuperActivity {
                         AppSettings.sharedSettings(this).getBearerToken(),
                         null, null,
                         new String[] {OrderStatusConstants.PAUSED, OrderStatusConstants.STARTED, OrderStatusConstants.WAITING_FINISHED,
-                                OrderStatusConstants.WAITING_PAUSED},
+                                OrderStatusConstants.WAITING_PAUSED, OrderStatusConstants.FINISHED_WAITING_PAYMENT},
                         true
                 )
                 .enqueue(new Callback<OrdersListResponse>() {
