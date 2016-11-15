@@ -66,11 +66,11 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
             titleTextView.setText(R.string.my_orders);
         }
 
-        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_MEDIUM));
+        titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_MEDIUM, this));
 
         Button backButton = (Button) findViewById(R.id.back);
         backButton.setOnClickListener(this);
-        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
+        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON, this));
 
         adapter = new OrderAdapter(this, new ArrayList<Order>(), this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.orders_list);

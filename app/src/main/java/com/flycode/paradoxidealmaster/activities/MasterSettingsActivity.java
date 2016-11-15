@@ -50,7 +50,7 @@ public class MasterSettingsActivity extends SuperActivity implements ViewPager.O
 
         Button backButton = (Button) findViewById(R.id.back);
         backButton.setOnClickListener(this);
-        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON));
+        backButton.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON, this));
 
         SettingsViewPagerAdapter adapter = new SettingsViewPagerAdapter(getSupportFragmentManager());
 

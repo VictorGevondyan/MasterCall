@@ -48,7 +48,7 @@ public class RatingLayout extends LinearLayout implements View.OnClickListener {
             Button button = (Button) layoutInflater.inflate(R.layout.section_rate, this, false);
             button.setTag(R.layout.section_rate, index);
             button.setTextSize(ratingSize);
-            button.setTypeface(TypefaceLoader.loadTypeface(getContext().getAssets(), TypefaceLoader.ICOMOON));
+            button.setTypeface(TypefaceLoader.loadTypeface(getContext().getAssets(), TypefaceLoader.ICOMOON, getContext()));
             button.setOnClickListener(this);
 
             if (currentRating > index) {

@@ -42,8 +42,8 @@ public class ServicesMasterViewHolder extends SuperViewHolder implements View.On
         titleTextView = (TextView) itemView.findViewById(R.id.title);
         dash = itemView.findViewById(R.id.dash);
 
-        costTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK));
-        titleTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK));
+        costTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK, context));
+        titleTextView.setTypeface(TypefaceLoader.loadTypeface(context.getAssets(), TypefaceLoader.AVENIR_BOOK, context));
     }
 
     @Override
