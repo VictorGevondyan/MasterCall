@@ -20,12 +20,14 @@ import com.flycode.paradoxidealmaster.api.response.OrdersListResponse;
 import com.flycode.paradoxidealmaster.constants.IntentConstants;
 import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
 import com.flycode.paradoxidealmaster.gcm.GCMSubscriber;
+import com.flycode.paradoxidealmaster.gcm.GCMUtils;
 import com.flycode.paradoxidealmaster.model.IdealMasterService;
 import com.flycode.paradoxidealmaster.model.IdealTransaction;
 import com.flycode.paradoxidealmaster.model.Order;
 import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
+import com.flycode.paradoxidealmaster.utils.ErrorNotificationUtil;
 import com.flycode.paradoxidealmaster.utils.LocaleUtils;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
@@ -221,30 +223,34 @@ public class MainActivity extends SuperActivity {
                 startActivityForResult(new Intent(MainActivity.this, MasterSettingsActivity.class), 9001);
                 overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
             } else if (position == 5) {
-                Realm
-                        .getDefaultInstance()
-                        .executeTransactionAsync(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                realm
-                                        .where(Order.class)
-                                        .findAll()
-                                        .deleteAllFromRealm();
-                                realm
-                                        .where(IdealMasterService.class)
-                                        .findAll()
-                                        .deleteAllFromRealm();
-                                realm
-                                        .where(IdealTransaction.class)
-                                        .findAll()
-                                        .deleteAllFromRealm();
-                            }
-                        });
 
-                AppSettings.sharedSettings(MainActivity.this).setIsUserLoggedIn(false);
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
+                if (GCMUtils.getRegistrationId(MainActivity.this) == null || GCMUtils.getRegistrationId(MainActivity.this).length() == 0 ) {
+
+                    logOutThings();
+
+                } else {
+                    APIBuilder
+                            .getIdealAPI()
+                            .deleteToken(
+                                    GCMUtils.getRegistrationId(MainActivity.this)
+
+                            )
+                            .enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.code() == 204) {
+                                        logOutThings();
+                                    } else {
+                                        ErrorNotificationUtil.showErrorForCode(0, MainActivity.this);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    ErrorNotificationUtil.showErrorForCode(0, MainActivity.this);
+                                }
+                            });
+                }
             }
         }
     };
@@ -324,5 +330,32 @@ public class MainActivity extends SuperActivity {
         public int getCount() {
             return 6;
         }
+    }
+
+    public void logOutThings() {
+        Realm
+                .getDefaultInstance()
+                .executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        realm
+                                .where(Order.class)
+                                .findAll()
+                                .deleteAllFromRealm();
+                        realm
+                                .where(IdealMasterService.class)
+                                .findAll()
+                                .deleteAllFromRealm();
+                        realm
+                                .where(IdealTransaction.class)
+                                .findAll()
+                                .deleteAllFromRealm();
+                    }
+                });
+
+        AppSettings.sharedSettings(MainActivity.this).setIsUserLoggedIn(false);
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        finish();
     }
 }

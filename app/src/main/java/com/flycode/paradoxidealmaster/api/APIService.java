@@ -18,6 +18,7 @@ import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -64,4 +65,7 @@ public interface APIService {
 
     @GET("/api/comments/master/{masterId}?limit=3")
     Call<IdealFeedbackListResponse> getFeedbackByMaster(@Header("Authorization") String authToken, @Path("masterId") String masterId);
+
+    @DELETE("/api/devices/{token}")
+    Call<Void> deleteToken(@Path("token") String tokenId);
 }
