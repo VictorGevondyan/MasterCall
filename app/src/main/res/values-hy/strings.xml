@@ -80,5 +80,7 @@
     <string name="location">Հասցե</string>
     <string name="payment_type">Վճ.եղ.</string>
     <string name="status">Վիճակ</string>
+    <string name="order_was_canceled">Պատվերը չեղարկվել է:</string>
+    <string name="order_was_canceled_long">Ձեր պատվերը չեղարկվել է:</string>
 
 </resources>

@@ -56,6 +56,11 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyD52VKzWslrDMH-6LOM5ALEYUaFMR-Ud4k"/>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="fbf365f1529c58fecde27b631cea757976793119"
+            />
     </application>
 
 </manifest>
