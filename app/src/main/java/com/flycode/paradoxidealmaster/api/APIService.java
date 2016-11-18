@@ -67,5 +67,5 @@ public interface APIService {
     Call<IdealFeedbackListResponse> getFeedbackByMaster(@Header("Authorization") String authToken, @Path("masterId") String masterId);
 
     @DELETE("/api/devices/{token}")
-    Call<Void> deleteToken(@Path("token") String tokenId);
+    Call<Void> deleteToken(@Header("Authorization") String authToken, @Path("token") String tokenId);
 }

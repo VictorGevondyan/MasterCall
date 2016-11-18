@@ -231,7 +231,7 @@ public class MainActivity extends SuperActivity {
                 } else {
                     APIBuilder
                             .getIdealAPI()
-                            .deleteToken(
+                            .deleteToken(AppSettings.sharedSettings(MainActivity.this).getBearerToken(),
                                     GCMUtils.getRegistrationId(MainActivity.this)
 
                             )
