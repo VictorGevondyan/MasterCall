@@ -16,7 +16,7 @@
 
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
 
     <application
         android:name=".IdealMasterApplication"
@@ -32,13 +32,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity"
-            android:windowSoftInputMode="stateUnchanged|adjustResize"/>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:windowSoftInputMode="stateUnchanged|adjustResize" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.MasterSettingsActivity" />
         <activity android:name=".activities.OrderListActivity" />
         <activity android:name=".activities.OrderDetailsActivity" />
         <activity android:name=".activities.TransactionListActivity" />
+        <activity android:name=".activities.PortfolioImageDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <receiver
             android:name=".gcm.GcmBroadcastReceiver"
@@ -55,12 +58,10 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyD52VKzWslrDMH-6LOM5ALEYUaFMR-Ud4k"/>
-
+            android:value="AIzaSyD52VKzWslrDMH-6LOM5ALEYUaFMR-Ud4k" />
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="fbf365f1529c58fecde27b631cea757976793119"
-            />
+            android:value="fbf365f1529c58fecde27b631cea757976793119" />
     </application>
 
 </manifest>
