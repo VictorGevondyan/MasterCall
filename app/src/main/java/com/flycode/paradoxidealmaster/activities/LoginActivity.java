@@ -17,12 +17,15 @@ import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
 import com.flycode.paradoxidealmaster.api.body.LoginBody;
 import com.flycode.paradoxidealmaster.dialogs.LoadingProgressDialog;
+import com.flycode.paradoxidealmaster.gcm.GCMSubscriber;
 import com.flycode.paradoxidealmaster.model.AuthToken;
 import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
 import com.flycode.paradoxidealmaster.utils.ErrorNotificationUtil;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -168,6 +171,12 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                                     .putString(LOGIN, nameEditText.getText().toString())
                                     .putString(PASSWORD, passwordEditText.getText().toString())
                                     .apply();
+
+                            try {
+                                GCMSubscriber.registerForGcm(LoginActivity.this);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

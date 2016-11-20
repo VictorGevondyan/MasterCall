@@ -1,7 +1,11 @@
 package com.flycode.paradoxidealmaster.adapters.viewholders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +18,28 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.flycode.paradoxidealmaster.R;
+import com.flycode.paradoxidealmaster.activities.MainActivity;
+import com.flycode.paradoxidealmaster.activities.MasterSettingsActivity;
+import com.flycode.paradoxidealmaster.activities.OrderDetailsActivity;
+import com.flycode.paradoxidealmaster.activities.PortfolioImageDetailsActivity;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
+import com.flycode.paradoxidealmaster.constants.IntentConstants;
+
 import java.util.ArrayList;
+
+import static android.R.attr.bitmap;
+import static android.R.attr.process;
 
 /**
  * Created by acerkinght on 9/12/16.
  */
-public class MasterPortfolioViewHolder extends SuperViewHolder {
+public class MasterPortfolioViewHolder extends SuperViewHolder implements View.OnClickListener{
     private ArrayList<ImageView> imageViews;
     private PortfolioProvider provider;
     private Context context;
-    int imageSize;
+    private int imageSize;
+    public final static String EXTRA_MESSAGE_POSITION = "com.flycode.paradoxidealmaster.MESSAGE_POSITION";
+    public final static String EXTRA_MESSAGE_PORTFOLIO = "com.flycode.paradoxidealmaster.MESSAGE_PORTFOLIO";
 
     public static MasterPortfolioViewHolder getInstance(ViewGroup parent, Context context, PortfolioProvider provider) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -47,7 +62,10 @@ public class MasterPortfolioViewHolder extends SuperViewHolder {
             LinearLayout linearLayout = (LinearLayout) container.getChildAt(layoutIndex);
 
             for (int imageIndex = 0 ; imageIndex < linearLayout.getChildCount() ; imageIndex++) {
-                imageViews.add((ImageView) linearLayout.getChildAt(imageIndex));
+                ImageView imageView = (ImageView) linearLayout.getChildAt(imageIndex);
+                imageView.setOnClickListener(this);
+                imageView.setClickable(true);
+                imageViews.add(imageView);
             }
         }
 
@@ -71,6 +89,22 @@ public class MasterPortfolioViewHolder extends SuperViewHolder {
                     .into(imageViews.get(index));
         }
     }
+
+
+    @Override
+    public void onClick(View view) {
+        for (int index = 0 ; index < imageViews.size() ; index++) {
+            if (imageViews.get(index).equals(view)
+                    && index < provider.getPortfolio().size()) {
+                Intent intent = new Intent(context, PortfolioImageDetailsActivity.class);
+                int portfolioImagePosition = index;
+                intent.putExtra(EXTRA_MESSAGE_POSITION, portfolioImagePosition);
+                intent.putStringArrayListExtra(EXTRA_MESSAGE_PORTFOLIO, provider.getPortfolio());
+                context.startActivity(intent);
+            }
+        }
+    }
+
 
     public interface PortfolioProvider {
         ArrayList<String> getPortfolio();
