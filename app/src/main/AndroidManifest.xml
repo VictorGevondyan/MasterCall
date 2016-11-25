@@ -34,14 +34,21 @@
         </activity>
         <activity
             android:name=".activities.LoginActivity"
-            android:windowSoftInputMode="stateUnchanged|adjustResize" />
-        <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.MasterSettingsActivity" />
-        <activity android:name=".activities.OrderListActivity" />
-        <activity android:name=".activities.OrderDetailsActivity" />
-        <activity android:name=".activities.TransactionListActivity" />
+            android:windowSoftInputMode="stateUnchanged|adjustResize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.MasterSettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.OrderListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.OrderDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.TransactionListActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.PortfolioImageDetailsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".gcm.GcmBroadcastReceiver"
