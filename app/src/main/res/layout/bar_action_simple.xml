@@ -23,7 +23,12 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:textColor="@color/black"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:maxLines="1"
+        android:layout_toRightOf="@+id/back"
+        android:layout_toEndOf="@+id/back"
+        android:ellipsize="end"
+        android:gravity="end"/>
 
     <Button
         android:id="@+id/back"
