@@ -243,7 +243,7 @@ public class MainActivity extends SuperActivity {
                             .enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if (response.code() == 204) {
+                                    if (response.code() == 204 || response.code() == 401) {
                                         logOutThings();
                                     } else {
                                         ErrorNotificationUtil.showErrorForCode(0, MainActivity.this);
