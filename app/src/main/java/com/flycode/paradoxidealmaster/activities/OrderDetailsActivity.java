@@ -244,6 +244,11 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             e.printStackTrace();
         }
 
+        if (order.getStatus().equals(OrderStatusConstants.FINISHED)
+                || order.getStatus().equals(OrderStatusConstants.CANCELED)) {
+            return;
+        }
+
         int mapLocationPadding = (int) DeviceUtil.getPxForDp(OrderDetailsActivity.this, 48);
 
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -256,7 +261,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         if (!hasShownDestination) {
             hasShownDestination = true;
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(order.getLocationLatitude(), order.getLocationLongitude())));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(order.getLocationLatitude(), order.getLocationLongitude()), 16));
         }
 
         this.googleMap = googleMap;
@@ -264,6 +269,11 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
     @Override
     public void onMyLocationChange(Location location) {
+        if (order.getStatus().equals(OrderStatusConstants.FINISHED)
+                || order.getStatus().equals(OrderStatusConstants.CANCELED)) {
+            return;
+        }
+
         if (location.getAccuracy() > 20) {
             return;
         }
@@ -368,7 +378,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         String cost;
 
-        if (order.isServiceIsCountable()) {
+        if (!order.isServiceIsCountable()) {
             cost = order.getServiceCost() + "AMD";
         } else {
             cost = order.getQuantity() + " " + order.getServiceUnit() + " / " + (order.getQuantity() * order.getServiceCost()) + "AMD";
@@ -456,10 +466,6 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         }
 
         setOrderStatus();
-
-         if (order.getStatus().equals(OrderStatusConstants.FINISHED)) {
-            mapView.setVisibility(View.VISIBLE);
-        }
     }
 
     private void onLeftButtonClicked() {

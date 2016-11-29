@@ -45,6 +45,7 @@ public class MainActivity extends SuperActivity {
     private MenuAdapter adapter;
     private int newOrdersCount;
     private int myOrdersCount;
+    private boolean alreadyShownOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +61,12 @@ public class MainActivity extends SuperActivity {
 
         newOrdersCount = 0;
         myOrdersCount = 0;
+        alreadyShownOrder = false;
 
         if (savedInstanceState != null) {
             newOrdersCount = savedInstanceState.getInt(NEW_ORDERS_COUNT);
             myOrdersCount = savedInstanceState.getInt(MY_ORDERS_COUNT);
+            alreadyShownOrder = savedInstanceState.getBoolean("alreadyShownOrder");
         }
 
         try {
@@ -74,9 +77,10 @@ public class MainActivity extends SuperActivity {
 
         Order order = getIntent().getParcelableExtra(IntentConstants.EXTRA_ORDER);
 
-        if (order != null) {
+        if (order != null && !alreadyShownOrder) {
             startActivity(new Intent(this, OrderDetailsActivity.class).putExtra(IntentConstants.EXTRA_ORDER, order));
             overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
+            alreadyShownOrder = true;
         }
     }
 
@@ -196,6 +200,7 @@ public class MainActivity extends SuperActivity {
         super.onSaveInstanceState(outState);
 
         outState.putInt(NEW_ORDERS_COUNT, newOrdersCount);
+        outState.putBoolean("alreadyShownOrder", alreadyShownOrder);
     }
 
     AdapterView.OnItemClickListener menuClickListener = new AdapterView.OnItemClickListener() {
@@ -357,5 +362,100 @@ public class MainActivity extends SuperActivity {
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
+    }
+
+    @Override
+    public void onNewOrderReceived(Order order) {
+        super.onNewOrderReceived(order);
+        APIBuilder
+                .getIdealAPI()
+                .getOrders(
+                        AppSettings.sharedSettings(this).getBearerToken(),
+                        null, null,
+                        new String[] {OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED},
+                        true
+                )
+                .enqueue(new Callback<OrdersListResponse>() {
+                    @Override
+                    public void onResponse(Call<OrdersListResponse> call, Response<OrdersListResponse> response) {
+                        if (!response.isSuccessful()) {
+                            return;
+                        }
+
+                        newOrdersCount = response.body().getCount();
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrdersListResponse> call, Throwable t) {
+                        Log.d("Failed", "to load count of new orders");
+                    }
+                });
+    }
+
+    @Override
+    public void onOrderCanceledReceived(Order order) {
+        super.onOrderCanceledReceived(order);
+        reloadMyOrdersCount();
+    }
+
+    @Override
+    public void onOrderFinishedReceived(Order order) {
+        super.onOrderFinishedReceived(order);
+        reloadMyOrdersCount();
+    }
+
+    @Override
+    public void onOrderOfferedReceived(Order order) {
+        super.onOrderOfferedReceived(order);
+        reloadMyOrdersCount();
+    }
+
+    @Override
+    public void onOrderStartedReceived(Order order) {
+        super.onOrderStartedReceived(order);
+        reloadMyOrdersCount();
+    }
+
+    private void reloadMyOrdersCount() {
+        try {
+            Call<User> userCall = APIBuilder
+                    .getIdealAPI()
+                    .getUser(AppSettings.sharedSettings(this).getBearerToken());
+
+            if (userCall != null) {
+                userCall.enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, final Response<User> response) {
+                        if (!response.isSuccessful()) {
+                            return;
+                        }
+
+                        UserData
+                                .sharedData(MainActivity.this)
+                                .storeUser(response.body(), "master");
+
+                        Realm
+                                .getDefaultInstance()
+                                .executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        realm.insertOrUpdate(response.body().getServices());
+                                    }
+                                });
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

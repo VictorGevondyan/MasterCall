@@ -63,6 +63,10 @@ public class IdealMasterApplication extends Application implements LocationListe
 
         application = this;
 
+        if (AppSettings.sharedSettings(this).isUserLoggedIn()) {
+            Crashlytics.setUserIdentifier(UserData.sharedData(this).getId());
+        }
+
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
                 .name("IdealRealm")
                 .schemaVersion(1)
