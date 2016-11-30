@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Ideal Master</string>
     <string name="sign_in">Sign In</string>
-    <string name="imex_group" translatable="false">&#169; 2016 IMEX GROUP</string>
+    <string name="imex_group" translatable="false">2016 IMEX Group CO LTD</string>
     <string name="all_right_reserved">ALL RIGHTS RESERVED</string>
     <string name="welcome">WELCOME</string>
     <string name="master">MASTER</string>
