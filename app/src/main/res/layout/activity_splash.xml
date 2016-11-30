@@ -41,6 +41,13 @@
             android:text="@string/all_right_reserved"
             android:textSize="8sp"/>
 
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="3dp"
+            android:background="@color/orange"
+            android:layout_marginTop="5dp"/>
+
     </LinearLayout>
 
 </RelativeLayout>
