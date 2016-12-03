@@ -2,6 +2,7 @@ package com.flycode.paradoxidealmaster.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.flycode.paradoxidealmaster.api.response.OrderResponse;
 import com.flycode.paradoxidealmaster.api.response.SimpleOrderResponse;
@@ -104,9 +105,12 @@ public class Order extends RealmObject implements Parcelable {
     };
 
     public static Order fromResponse(OrderResponse orderResponse) {
-        if (orderResponse.getService() == null) {
+        if (orderResponse.getService() == null
+                || orderResponse.getUser() == null) {
             return null;
         }
+
+        Log.d("ORDER_ID", orderResponse.getId());
 
         Order order = new Order();
         order.id = orderResponse.getId();

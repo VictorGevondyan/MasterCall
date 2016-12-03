@@ -1,6 +1,5 @@
 <resources>
     <string name="sign_in">Войти</string>
-    <string name="all_right_reserved">ВСЕ ПРАВА ЗАЩИЩЕНЫ</string>
     <string name="welcome">Добро пожаловать</string>
     <string name="master">Мастер</string>
     <string name="name">Имя</string>
