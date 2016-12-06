@@ -53,6 +53,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,6 +77,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     private Button leftButton;
     private Button rightButton;
     private TextView statusValueTextView;
+    private Timer timer;
     private boolean hasShownPath;
     private boolean hasShownDestination;
     private Button buttonPhoneOrderDetails;
@@ -141,50 +145,29 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(order.getId(), 0);
+        getOrderFromServer();
 
-        APIBuilder
-                .getIdealAPI()
-                .getOrder(
-                        AppSettings.sharedSettings(this).getBearerToken(),
-                        order.getId()
-                )
-                .enqueue(new Callback<OrderResponse>() {
-                    @Override
-                    public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
-                        loading.dismiss();
-
-                        if (order.getUpdated().after(response.body().getUpdated())) {
-                            ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
-
-                            return;
-                        }
-
-                        order = Order.fromResponse(response.body());
-
-                        Realm
-                                .getDefaultInstance()
-                                .executeTransaction(new Realm.Transaction() {
-                                    @Override
-                                    public void execute(Realm realm) {
-                                        realm.insertOrUpdate(order);
-                                    }
-                                });
-
-                        reloadOrderUI();
-                    }
-
-                    @Override
-                    public void onFailure(Call<OrderResponse> call, Throwable t) {
-                        loading.dismiss();
-                        ErrorNotificationUtil.showErrorForCode(0, OrderDetailsActivity.this);
-                    }
-                });
+        if (!order.getStatus().equals(OrderStatusConstants.FINISHED)
+                && !order.getStatus().equals(OrderStatusConstants.CANCELED)) {
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    getOrderFromServer();
+                }
+            }, 5000, 5000);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mapView.onPause();
+
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
     }
 
     @Override
@@ -359,6 +342,46 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                     @Override
                     public void onDirectionFailure(Throwable t) {
                         Log.d("Directions Failed", "YUHU!");
+                    }
+                });
+    }
+
+    private void getOrderFromServer() {
+        APIBuilder
+                .getIdealAPI()
+                .getOrder(
+                        AppSettings.sharedSettings(this).getBearerToken(),
+                        order.getId()
+                )
+                .enqueue(new Callback<OrderResponse>() {
+                    @Override
+                    public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                        loading.dismiss();
+
+                        if (order.getUpdated().after(response.body().getUpdated())) {
+                            ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
+
+                            return;
+                        }
+
+                        order = Order.fromResponse(response.body());
+
+                        Realm
+                                .getDefaultInstance()
+                                .executeTransaction(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        realm.insertOrUpdate(order);
+                                    }
+                                });
+
+                        reloadOrderUI();
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderResponse> call, Throwable t) {
+                        loading.dismiss();
+                        ErrorNotificationUtil.showErrorForCode(0, OrderDetailsActivity.this);
                     }
                 });
     }
