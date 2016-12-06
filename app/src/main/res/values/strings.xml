@@ -95,6 +95,7 @@
     <string name="armenian" translatable="false">Հայերեն</string>
     <string name="russian" translatable="false">Русский</string>
     <string name="select_your_language">Select Your Language</string>
+    <string name="user_has_no_phone">User has not provided a phone number</string>
 
     <string name="payment_type">P.type</string>
     <string name="status">Status</string>

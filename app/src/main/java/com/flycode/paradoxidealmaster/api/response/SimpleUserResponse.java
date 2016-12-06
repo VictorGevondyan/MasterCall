@@ -9,6 +9,7 @@ public class SimpleUserResponse {
     private String surname;
     private String name;
     private String role;
+    private String phone;
 
     public String getId() {
         return id;
@@ -48,5 +49,13 @@ public class SimpleUserResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

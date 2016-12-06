@@ -146,6 +146,16 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/button_phone_order_details"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:background="@drawable/phone"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
 </LinearLayout>

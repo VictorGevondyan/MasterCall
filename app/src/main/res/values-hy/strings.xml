@@ -81,5 +81,6 @@
     <string name="status">Վիճակ</string>
     <string name="order_was_canceled">Պատվերը չեղարկվել է:</string>
     <string name="order_was_canceled_long">Ձեր պատվերը չեղարկվել է:</string>
+    <string name="user_has_no_phone">Օգտագործողը հեռախոսահամար չի տրամադրել</string>
 
 </resources>

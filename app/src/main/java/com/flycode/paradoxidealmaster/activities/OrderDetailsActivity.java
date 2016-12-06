@@ -1,11 +1,16 @@
 package com.flycode.paradoxidealmaster.activities;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -71,6 +76,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     private TextView statusValueTextView;
     private boolean hasShownPath;
     private boolean hasShownDestination;
+    private Button buttonPhoneOrderDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,6 +213,28 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
             onLeftButtonClicked();
         } else if (view.getId() == R.id.right_button) {
             onRightButtonClicked();
+        } else if (view.getId() == R.id.button_phone_order_details) {
+            if (order.getUserPhone() == null || order.getUserPhone().length() == 0) {
+                new MaterialDialog.Builder(OrderDetailsActivity.this)
+                        .title(R.string.error)
+                        .content(R.string.user_has_no_phone)
+                        .positiveText(R.string.ok)
+                        .show();
+            } else {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + order.getUserPhone()));
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+
+                try {
+                    startActivity(callIntent);
+                } catch (Exception e) {
+                    Log.i("TAG", e.toString());
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -367,6 +395,20 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         titleTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_BOOK, this));
         commentsTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT, this));
         commentsIconTextView.setTypeface(TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON, this));
+
+        buttonPhoneOrderDetails = (Button) findViewById(R.id.button_phone_order_details);
+        buttonPhoneOrderDetails.setOnClickListener(this);
+
+
+        switch (order.getStatus()) {
+            default:buttonPhoneOrderDetails.setVisibility(View.GONE);
+            case OrderStatusConstants.PAUSED:
+            case OrderStatusConstants.STARTED:
+            case OrderStatusConstants.WAITING_PAUSED:
+            case OrderStatusConstants.FINISHED_WAITING_PAYMENT:
+            case OrderStatusConstants.WAITING_FINISHED:
+                buttonPhoneOrderDetails.setVisibility(View.VISIBLE);
+        }
 
         if (order.getDescription() == null || order.getDescription().isEmpty()) {
             commentsIconTextView.setVisibility(View.GONE);
