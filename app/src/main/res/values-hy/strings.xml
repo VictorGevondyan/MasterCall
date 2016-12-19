@@ -44,7 +44,7 @@
     <string name="female">Իգական</string>
     <string name="male">Արական</string>
     <string name="pricing">Գնացուցակ</string>
-    <string name="profile">Իմ էջ</string>
+    <string name="profile">Բնութագիր</string>
     <string name="settings">Կարգավորումներ</string>
     <string name="error">Սխալ</string>
     <string name="no_orders">Չկան պատվերներ ցուցադրման համար</string>
@@ -82,5 +82,10 @@
     <string name="order_was_canceled">Պատվերը չեղարկվել է:</string>
     <string name="order_was_canceled_long">Ձեր պատվերը չեղարկվել է:</string>
     <string name="user_has_no_phone">Օգտագործողը հեռախոսահամար չի տրամադրել</string>
+    <string name="cant_take_order">Հնարավոր չէ Պատվերը Վերցնել</string>
+    <string name="already_granted">Այս պատվերը արդեն տրված է այլ վարպետի</string>
+    <string name="already_taken">Դուք արդեն վերցրել եք այս պատվերը</string>
+    <string name="amd">դրամ</string>
+    <string name="cost_formatted" translatable="false">%d դրամ</string>
 
 </resources>

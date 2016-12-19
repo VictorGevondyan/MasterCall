@@ -28,6 +28,7 @@ public class Order extends RealmObject implements Parcelable {
     private String serviceName;
     private String serviceUnit;
     private String serviceColor;
+    private String masterId;
     private boolean serviceIsCountable;
     private int serviceCost;
     private String chosenFavorite;
@@ -64,6 +65,7 @@ public class Order extends RealmObject implements Parcelable {
         updated = new Date(in.readLong());
         orderTime = new Date(in.readLong());
         userPhone = in.readString();
+        masterId = in.readString();
     }
 
     @Override
@@ -88,6 +90,7 @@ public class Order extends RealmObject implements Parcelable {
         dest.writeLong(updated.getTime());
         dest.writeLong(orderTime.getTime());
         dest.writeString(userPhone);
+        dest.writeString(masterId);
     }
 
     @Override
@@ -145,6 +148,10 @@ public class Order extends RealmObject implements Parcelable {
 
         if (idealService != null) {
             order.serviceColor = idealService.getColor();
+        }
+
+        if (orderResponse.getMaster() != null) {
+            order.masterId = orderResponse.getMaster().getId();
         }
 
         return order;
@@ -317,5 +324,13 @@ public class Order extends RealmObject implements Parcelable {
 
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
     }
 }

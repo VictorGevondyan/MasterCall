@@ -204,10 +204,17 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         .positiveText(R.string.ok)
                         .show();
             } else {
+                String phoneNumber = order.getUserPhone();
+
+                if (!phoneNumber.startsWith("+")) {
+                    phoneNumber = "+" + phoneNumber;
+                }
+
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:" + order.getUserPhone()));
+                callIntent.setData(Uri.parse("tel:" + phoneNumber));
 
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CALL_PHONE}, 505);
                     return;
                 }
 
@@ -359,12 +366,23 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         loading.dismiss();
 
                         if (order.getUpdated().after(response.body().getUpdated())) {
-                            ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
-
+//                            ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
                             return;
                         }
 
+
                         order = Order.fromResponse(response.body());
+
+                        if (order != null
+                                && order.getMasterId() != null
+                                && !order.getMasterId().equals(UserData.sharedData(OrderDetailsActivity.this).getId())) {
+                            if (timer != null) {
+                                timer.cancel();
+                                timer.purge();
+                            }
+
+                            return;
+                        }
 
                         Realm
                                 .getDefaultInstance()
@@ -381,7 +399,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                     @Override
                     public void onFailure(Call<OrderResponse> call, Throwable t) {
                         loading.dismiss();
-                        ErrorNotificationUtil.showErrorForCode(0, OrderDetailsActivity.this);
+//                        ErrorNotificationUtil.showErrorForCode(0, OrderDetailsActivity.this);
                     }
                 });
     }
@@ -424,13 +442,16 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
 
         switch (order.getStatus()) {
-            default:buttonPhoneOrderDetails.setVisibility(View.GONE);
             case OrderStatusConstants.PAUSED:
             case OrderStatusConstants.STARTED:
             case OrderStatusConstants.WAITING_PAUSED:
             case OrderStatusConstants.FINISHED_WAITING_PAYMENT:
             case OrderStatusConstants.WAITING_FINISHED:
                 buttonPhoneOrderDetails.setVisibility(View.VISIBLE);
+                break;
+            default:
+                buttonPhoneOrderDetails.setVisibility(View.GONE);
+                break;
         }
 
         if (order.getDescription() == null || order.getDescription().isEmpty()) {
@@ -444,9 +465,9 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         String cost;
 
         if (!order.isServiceIsCountable()) {
-            cost = order.getServiceCost() + "AMD";
+            cost = order.getServiceCost() + " " + getString(R.string.amd);
         } else {
-            cost = order.getQuantity() + " " + order.getServiceUnit() + " / " + (order.getQuantity() * order.getServiceCost()) + "AMD";
+            cost = order.getQuantity() + " " + order.getServiceUnit() + " / " + (order.getQuantity() * order.getServiceCost()) + " " + getString(R.string.amd);
         }
 
         costValueTextView.setText(cost);
@@ -639,7 +660,21 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         loading.dismiss();
 
                         if (!response.isSuccessful()) {
-                            ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
+                            if (response.code() == 430) {
+                                new MaterialDialog.Builder(OrderDetailsActivity.this)
+                                        .title(R.string.cant_take_order)
+                                        .content(R.string.already_granted)
+                                        .positiveText(R.string.ok)
+                                        .show();
+                            } else if (response.code() == 431) {
+                                new MaterialDialog.Builder(OrderDetailsActivity.this)
+                                        .title(R.string.cant_take_order)
+                                        .content(R.string.already_taken)
+                                        .positiveText(R.string.ok)
+                                        .show();
+                            } else {
+                                ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
+                            }
 
                             return;
                         }

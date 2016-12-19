@@ -13,6 +13,7 @@ public class OrderResponse {
     private String id;
     private String description;
     private SimpleUserResponse user;
+    private SimpleUserResponse master;
     private IdealService service;
     private Date orderTime;
     private Date updated;
@@ -99,5 +100,13 @@ public class OrderResponse {
 
     public void setEndPoint(GeoResponse endPoint) {
         this.endPoint = endPoint;
+    }
+
+    public SimpleUserResponse getMaster() {
+        return master;
+    }
+
+    public void setMaster(SimpleUserResponse master) {
+        this.master = master;
     }
 }

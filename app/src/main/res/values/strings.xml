@@ -50,7 +50,7 @@
     <string name="male">Male</string>
     <string name="pricing">Pricing</string>
     <string name="profile">Profile</string>
-    <string name="cost_formatted" translatable="false">%dAMD</string>
+    <string name="cost_formatted">%d AMD</string>
     <string name="settings">Settings</string>
     <string name="error">Error</string>
     <string name="no_orders">No orders to show</string>
@@ -99,6 +99,10 @@
 
     <string name="payment_type">P.type</string>
     <string name="status">Status</string>
+    <string name="cant_take_order">Can\'t Take Order</string>
+    <string name="already_granted">This already is already granted to another master</string>
+    <string name="already_taken">You have already taken this order</string>
+    <string name="amd">AMD</string>
 
     <string-array name="menu_icons" translatable="false">
         <item>&#xe910;</item>
