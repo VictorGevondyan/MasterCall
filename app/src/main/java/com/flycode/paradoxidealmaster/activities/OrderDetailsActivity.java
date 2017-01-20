@@ -357,10 +357,6 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     }
 
     private void getOrderFromServer() {
-        if (!order.isValid()) {
-            return;
-        }
-
         APIBuilder
                 .getIdealAPI()
                 .getOrder(
