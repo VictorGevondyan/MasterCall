@@ -58,6 +58,10 @@ public class APIBuilder {
         return BASE_URL + "/api/images/" + width + "/" + height + "/" + image;
     }
 
+    public static String getImageUrl(String image) {
+        return BASE_URL + "/assets/images/upload/" + image;
+    }
+
     private static class GsonUTCDateAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {
         private final DateFormat dateFormat;
 

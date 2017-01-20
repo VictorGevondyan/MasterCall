@@ -100,7 +100,7 @@
     <string name="payment_type">P.type</string>
     <string name="status">Status</string>
     <string name="cant_take_order">Can\'t Take Order</string>
-    <string name="already_granted">This already is already granted to another master</string>
+    <string name="already_granted">This order is already granted to another master or canceled</string>
     <string name="already_taken">You have already taken this order</string>
     <string name="amd">AMD</string>
 
@@ -130,5 +130,8 @@
         <item>#0DEC6D</item>
         <item>#FF3366</item>
     </string-array>
+    <string name="account_blocked">Your profile has been blocked</string>
+    <string name="account_blocked_or_session_expired">Your session has been expired or your profile has been blocked</string>
+    <string name="order_is_canceled">This order is canceled</string>
 
 </resources>

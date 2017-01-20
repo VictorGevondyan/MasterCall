@@ -1,9 +1,12 @@
 package com.flycode.paradoxidealmaster.api.response;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by acerkinght on 8/26/16.
  */
 public class SimpleUserResponse {
+    @SerializedName("_id")
     private String id;
     private String username;
     private String surname;

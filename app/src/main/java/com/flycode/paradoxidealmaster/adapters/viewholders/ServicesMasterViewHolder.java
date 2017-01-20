@@ -53,10 +53,10 @@ public class ServicesMasterViewHolder extends SuperViewHolder implements View.On
         costTextView.setText(context.getString(R.string.cost_formatted, service.getCost()));
 
         if (service.getUnit() != null && !service.getUnit().isEmpty()) {
-            unitTextView.setText("/" + service.getUnit());
+            unitTextView.setText("/" + service.getTranslatedUnit(context));
         }
 
-        titleTextView.setText(service.getName());
+        titleTextView.setText(service.getTranslatedName(context));
 
         try {
             dash.setBackgroundColor(Color.parseColor(service.getColor()));

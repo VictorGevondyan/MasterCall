@@ -3,6 +3,7 @@ package com.flycode.paradoxidealmaster.api.body;
 import android.content.Context;
 import android.os.Build;
 
+import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.utils.DeviceUtil;
 
 /**
@@ -14,6 +15,7 @@ public class GCMBody {
     private String type;
     private String osVersion;
     private String deviceInfo;
+    private String language;
 
     public GCMBody(String token, Context context) {
         this.token = token;
@@ -21,6 +23,11 @@ public class GCMBody {
         this.type = "android";
         this.osVersion = Build.VERSION.RELEASE;
         this.deviceInfo = Build.MANUFACTURER + " " + Build.MODEL;
+        this.language = AppSettings.sharedSettings(context).getLanguage();
+
+        if (this.language.equals("hy")) {
+            language = "am";
+        }
     }
 
     public String getToken() {
@@ -61,5 +68,13 @@ public class GCMBody {
 
     public void setDeviceInfo(String deviceInfo) {
         this.deviceInfo = deviceInfo;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

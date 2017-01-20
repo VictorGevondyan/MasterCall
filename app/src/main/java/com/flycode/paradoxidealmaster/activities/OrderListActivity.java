@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.adapters.OrderAdapter;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
@@ -21,11 +22,16 @@ import com.flycode.paradoxidealmaster.api.response.OrderResponse;
 import com.flycode.paradoxidealmaster.api.response.OrdersListResponse;
 import com.flycode.paradoxidealmaster.constants.IntentConstants;
 import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
+import com.flycode.paradoxidealmaster.dialogs.LoadingProgressDialog;
 import com.flycode.paradoxidealmaster.model.Order;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
+import com.flycode.paradoxidealmaster.settings.UserData;
+import com.flycode.paradoxidealmaster.utils.ErrorNotificationUtil;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -40,7 +46,7 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
     private OrderAdapter adapter;
     private String type;
     private boolean alreadyUpdated;
-
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +92,15 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
         alreadyUpdated = false;
 
         if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+
+                @Override
+                public void run() {
+                    loadOrdersViaServer(new String[] {OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED});
+                }
+            }, 5000, 5000);
+
             loadOrdersViaServer(new String[] {OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED});
         } else {
             loadOrdersViaDatabase();
@@ -95,6 +110,11 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
     @Override
     protected void onPause() {
         super.onPause();
+
+        if (timer != null) {
+            timer.purge();
+            timer.cancel();
+        }
     }
 
     @Override
@@ -127,9 +147,76 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
     }
 
     @Override
-    public void onOrderItemClick(Order order, int position) {
-        startActivity(new Intent(this, OrderDetailsActivity.class).putExtra(IntentConstants.EXTRA_ORDER, order));
-        overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
+    public void onOrderItemClick(final Order order, int position) {
+        final LoadingProgressDialog progressDialog = new LoadingProgressDialog(this);
+        progressDialog.show();
+
+        APIBuilder
+                .getIdealAPI()
+                .getOrder(
+                        AppSettings.sharedSettings(this).getBearerToken(),
+                        order.getId()
+                )
+                .enqueue(new Callback<OrderResponse>() {
+                    @Override
+                    public void onResponse(Call<OrderResponse> call, final Response<OrderResponse> response) {
+                        progressDialog.dismiss();
+
+                        if (!response.isSuccessful()) {
+                            ErrorNotificationUtil.showErrorForCode(response.code(), OrderListActivity.this);
+                            return;
+                        }
+
+                        if (response.body().getMaster() != null
+                                && !response.body().getMaster().getId().equals(UserData.sharedData(OrderListActivity.this).getId())) {
+                            new MaterialDialog.Builder(OrderListActivity.this)
+                                    .title(R.string.error)
+                                    .content(R.string.already_granted)
+                                    .positiveText(R.string.ok)
+                                    .show();
+
+                            Realm
+                                    .getDefaultInstance()
+                                    .executeTransaction(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            Order realmOrder = realm.where(Order.class).equalTo("id", order.getId()).findFirst();
+
+                                            if (realmOrder != null) {
+                                                realmOrder.deleteFromRealm();
+                                            }
+                                        }
+                                    });
+
+                            return;
+                        }
+
+                        final Order responseOrder = Order.fromResponse(response.body());
+
+                        if (responseOrder != null
+                                && !responseOrder.getStatus().equals(OrderStatusConstants.NOT_TAKEN)
+                                && !responseOrder.getStatus().equals(OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED)
+                                && !responseOrder.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
+                            Realm
+                                    .getDefaultInstance()
+                                    .executeTransaction(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            realm.insertOrUpdate(responseOrder);
+                                        }
+                                    });
+                        }
+
+                        startActivity(new Intent(OrderListActivity.this, OrderDetailsActivity.class).putExtra(IntentConstants.EXTRA_ORDER, Order.fromResponse(response.body())));
+                        overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderResponse> call, Throwable t) {
+                        progressDialog.dismiss();
+                        ErrorNotificationUtil.showErrorForCode(0, OrderListActivity.this);
+                    }
+                });
     }
 
     @Override

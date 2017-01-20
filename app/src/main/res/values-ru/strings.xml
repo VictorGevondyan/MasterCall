@@ -79,13 +79,16 @@
     <string name="location">Адрес</string>
     <string name="payment_type">Платеж</string>
     <string name="status">Статус</string>
-    <string name="order_was_canceled">Заказ отменен.</string>
+    <string name="order_was_canceled">Заказ отменен</string>
     <string name="order_was_canceled_long">Ваш заказ был отменен.</string>
     <string name="user_has_no_phone">Пользователь не предоставил телефонного номера</string>
     <string name="cant_take_order">Невозможно Взять Заказ</string>
-    <string name="already_granted">Этот заказ уже дан другому мастеру</string>
+    <string name="already_granted">Этот заказ уже дан другому мастеру или отменен</string>
     <string name="already_taken">Вы уже взяли этот заказ</string>
     <string name="amd">драм</string>
     <string name="cost_formatted">%d драм</string>
+    <string name="account_blocked">Ваш профиль заблакирован</string>
+    <string name="account_blocked_or_session_expired">Ваша сессия истекла или профиль заблакирован</string>
+    <string name="order_is_canceled">День заказа</string>
 
 </resources>

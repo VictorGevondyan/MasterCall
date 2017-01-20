@@ -96,7 +96,7 @@ public class PortfolioImageDetailsActivity extends AppCompatActivity implements 
         loading.show();
         Glide
                 .with(this)
-                .load(APIBuilder.getImageUrl(imageSize, imageSize, portfolio.get(portfolioImagePosition)))
+                .load(APIBuilder.getImageUrl(portfolio.get(portfolioImagePosition)))
                 .asBitmap()
                 .listener(new RequestListener<String, Bitmap>() {
                     @Override

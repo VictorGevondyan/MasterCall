@@ -79,13 +79,16 @@
     <string name="location">Հասցե</string>
     <string name="payment_type">Վճ.եղ.</string>
     <string name="status">Վիճակ</string>
-    <string name="order_was_canceled">Պատվերը չեղարկվել է:</string>
+    <string name="order_was_canceled">Պատվերը չեղարկվել է</string>
     <string name="order_was_canceled_long">Ձեր պատվերը չեղարկվել է:</string>
     <string name="user_has_no_phone">Օգտագործողը հեռախոսահամար չի տրամադրել</string>
     <string name="cant_take_order">Հնարավոր չէ Պատվերը Վերցնել</string>
-    <string name="already_granted">Այս պատվերը արդեն տրված է այլ վարպետի</string>
+    <string name="already_granted">Այս պատվերը արդեն տրված է այլ վարպետի կամ չեղարկվել է</string>
     <string name="already_taken">Դուք արդեն վերցրել եք այս պատվերը</string>
     <string name="amd">դրամ</string>
-    <string name="cost_formatted" translatable="false">%d դրամ</string>
+    <string name="cost_formatted">%d դրամ</string>
+    <string name="account_blocked">Ձեր պրոֆիլը արգելափակված է</string>
+    <string name="account_blocked_or_session_expired">Ձեր սեսսիան ավարտված է կամ պրոֆիլը` արգելափակված</string>
+    <string name="order_is_canceled">Այս պատվերը չեղարկված է</string>
 
 </resources>

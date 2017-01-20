@@ -64,9 +64,9 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                             createStyleAndShowNotification(
                                     context,
                                     notificationIntent,
-                                    newOrderText + " - " + order.getServiceName(),
+                                    newOrderText + " - " + order.getTranslatedServiceName(context),
                                     newOrderText,
-                                    order.getServiceName(),
+                                    order.getTranslatedServiceName(context),
                                     order.getId());
 
                             LocalBroadcastManager
@@ -160,9 +160,9 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                         createStyleAndShowNotification(
                                 context,
                                 notificationIntent,
-                                title + " - " + order.getServiceName(),
+                                title + " - " + order.getTranslatedServiceName(context),
                                 title,
-                                order.getServiceName(),
+                                order.getTranslatedServiceName(context),
                                 order.getId());
 
                         LocalBroadcastManager

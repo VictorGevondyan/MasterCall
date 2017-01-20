@@ -1,5 +1,6 @@
 package com.flycode.paradoxidealmaster.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -21,6 +22,10 @@ public class IdealService extends RealmObject implements Parcelable {
     private String image;
     private String color;
     private String unit;
+    @SerializedName("translate")
+    private IdealTranslation translation;
+    @SerializedName("translateUnit")
+    private IdealTranslation unitTranslation;
     private int cost;
     private boolean countable;
     private boolean isFinal;
@@ -39,6 +44,28 @@ public class IdealService extends RealmObject implements Parcelable {
         cost = in.readInt();
         countable = in.readByte() != 0;
         isFinal = in.readByte() != 0;
+        translation = in.readParcelable(IdealTranslation.class.getClassLoader());
+        unitTranslation = in.readParcelable(IdealTranslation.class.getClassLoader());
+    }
+
+    public String getTranslatedName(Context context) {
+        String name = null;
+
+        if (getTranslation() != null) {
+            name = getTranslation().getTranslationForLocale(context);
+        }
+
+        return name != null ? name : getName();
+    }
+
+    public String getTranslatedUnit(Context context) {
+        String unit = null;
+
+        if (getUnitTranslation() != null) {
+            unit = getUnitTranslation().getTranslationForLocale(context);
+        }
+
+        return unit != null ? unit : getUnit();
     }
 
     public static final Creator<IdealService> CREATOR = new Creator<IdealService>() {
@@ -129,6 +156,22 @@ public class IdealService extends RealmObject implements Parcelable {
         isFinal = aFinal;
     }
 
+    public IdealTranslation getTranslation() {
+        return translation;
+    }
+
+    public void setTranslation(IdealTranslation translation) {
+        this.translation = translation;
+    }
+
+    public IdealTranslation getUnitTranslation() {
+        return unitTranslation;
+    }
+
+    public void setUnitTranslation(IdealTranslation unitTranslation) {
+        this.unitTranslation = unitTranslation;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -145,5 +188,7 @@ public class IdealService extends RealmObject implements Parcelable {
         parcel.writeInt(cost);
         parcel.writeByte((byte) (countable ? 1 : 0));
         parcel.writeByte((byte) (isFinal ? 1 : 0));
+        parcel.writeParcelable(getTranslation(), 0);
+        parcel.writeParcelable(getUnitTranslation(), 0);
     }
 }

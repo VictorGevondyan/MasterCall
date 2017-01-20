@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
@@ -354,6 +356,10 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
     }
 
     private void getOrderFromServer() {
+        if (!order.isValid()) {
+            return;
+        }
+
         APIBuilder
                 .getIdealAPI()
                 .getOrder(
@@ -371,7 +377,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         }
 
 
-                        order = Order.fromResponse(response.body());
+                        final Order order = Order.fromResponse(response.body());
 
                         if (order != null
                                 && order.getMasterId() != null
@@ -381,17 +387,49 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                                 timer.purge();
                             }
 
+                            new MaterialDialog.Builder(OrderDetailsActivity.this)
+                                    .title(R.string.error)
+                                    .content(R.string.already_granted)
+                                    .positiveText(R.string.ok)
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            Realm
+                                                    .getDefaultInstance()
+                                                    .executeTransaction(new Realm.Transaction() {
+                                                        @Override
+                                                        public void execute(Realm realm) {
+                                                            Order realmOrder = realm.where(Order.class).equalTo("id", order.getId()).findFirst();
+
+                                                            if (realmOrder != null) {
+                                                                realmOrder.deleteFromRealm();
+                                                            }
+                                                        }
+                                                    });
+
+                                            finish();
+                                        }
+                                    })
+                                    .show();
+
                             return;
                         }
 
-                        Realm
-                                .getDefaultInstance()
-                                .executeTransaction(new Realm.Transaction() {
-                                    @Override
-                                    public void execute(Realm realm) {
-                                        realm.insertOrUpdate(order);
-                                    }
-                                });
+                        OrderDetailsActivity.this.order = order;
+
+                        if (OrderDetailsActivity.this.order != null
+                                && !OrderDetailsActivity.this.order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)
+                                && !OrderDetailsActivity.this.order.getStatus().equals(OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED)
+                                && !OrderDetailsActivity.this.order.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
+                            Realm
+                                    .getDefaultInstance()
+                                    .executeTransaction(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            realm.insertOrUpdate(OrderDetailsActivity.this.order);
+                                        }
+                                    });
+                        }
 
                         reloadOrderUI();
                     }
@@ -429,7 +467,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         statusValueTextView = processSection(orderDetailsView.findViewById(R.id.status_section), R.string.icon_details, R.string.status);
         TextView costValueTextView = processSection(orderDetailsView.findViewById(R.id.cost_section), R.string.icon_cost, R.string.cost);
 
-        titleTextView.setText(order.getServiceName());
+        titleTextView.setText(order.getTranslatedServiceName(this));
         commentsTextView.setText(order.getDescription());
         dateValueTextView.setText(DateUtils.infoDateStringFromDate(order.getOrderTime()));
 
@@ -467,7 +505,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         if (!order.isServiceIsCountable()) {
             cost = order.getServiceCost() + " " + getString(R.string.amd);
         } else {
-            cost = order.getQuantity() + " " + order.getServiceUnit() + " / " + (order.getQuantity() * order.getServiceCost()) + " " + getString(R.string.amd);
+            cost = order.getQuantity() + " " + order.getTranslatedServiceUnit(this) + " / " + (order.getQuantity() * order.getServiceCost()) + " " + getString(R.string.amd);
         }
 
         costValueTextView.setText(cost);
@@ -582,7 +620,6 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         AppSettings.sharedSettings(this).getBearerToken(),
                         order.getId(),
                         action
-
                 )
                 .enqueue(new Callback<SimpleOrderResponse>() {
                     @Override
@@ -590,6 +627,16 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                         loading.dismiss();
 
                         if (!response.isSuccessful()) {
+                            if (response.code() == 430) {
+                                new MaterialDialog.Builder(OrderDetailsActivity.this)
+                                        .title(R.string.error)
+                                        .content(R.string.order_is_canceled)
+                                        .positiveText(R.string.ok)
+                                        .show();
+
+                                return;
+                            }
+
                             ErrorNotificationUtil.showErrorForCode(response.code(), OrderDetailsActivity.this);
 
                             return;

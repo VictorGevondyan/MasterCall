@@ -20,6 +20,8 @@ import com.flycode.paradoxidealmaster.api.APIBuilder;
 import com.flycode.paradoxidealmaster.api.response.IdealFeedbackListResponse;
 import com.flycode.paradoxidealmaster.api.response.IdealFeedbackResponse;
 import com.flycode.paradoxidealmaster.dialogs.LanguageDialog;
+import com.flycode.paradoxidealmaster.gcm.GCMSubscriber;
+import com.flycode.paradoxidealmaster.gcm.GCMUtils;
 import com.flycode.paradoxidealmaster.model.IdealFeedback;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
@@ -130,6 +132,7 @@ public class MasterProfileFragment extends Fragment implements ProfileAdapter.On
         }
         
         AppSettings.sharedSettings(getActivity()).setLanguage(language);
+        GCMSubscriber.sendingToServer(GCMUtils.getRegistrationId(getActivity()), getActivity().getApplicationContext());
         LocaleUtils.setLocale(getActivity(), language);
         getActivity().recreate();
     }

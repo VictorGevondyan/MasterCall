@@ -1,5 +1,6 @@
 package com.flycode.paradoxidealmaster.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -30,6 +31,8 @@ public class Order extends RealmObject implements Parcelable {
     private String serviceColor;
     private String masterId;
     private boolean serviceIsCountable;
+    private IdealTranslation serviceTranslation;
+    private IdealTranslation serviceUnitTranslation;
     private int serviceCost;
     private String chosenFavorite;
     private String locationName;
@@ -66,6 +69,8 @@ public class Order extends RealmObject implements Parcelable {
         orderTime = new Date(in.readLong());
         userPhone = in.readString();
         masterId = in.readString();
+        serviceTranslation = in.readParcelable(IdealTranslation.class.getClassLoader());
+        serviceUnitTranslation = in.readParcelable(IdealTranslation.class.getClassLoader());
     }
 
     @Override
@@ -91,6 +96,8 @@ public class Order extends RealmObject implements Parcelable {
         dest.writeLong(orderTime.getTime());
         dest.writeString(userPhone);
         dest.writeString(masterId);
+        dest.writeParcelable(getServiceTranslation(), 0);
+        dest.writeParcelable(getServiceUnitTranslation(), 0);
     }
 
     @Override
@@ -109,6 +116,26 @@ public class Order extends RealmObject implements Parcelable {
             return new Order[size];
         }
     };
+
+    public String getTranslatedServiceName(Context context) {
+        String name = null;
+
+        if (getServiceTranslation() != null) {
+            name = getServiceTranslation().getTranslationForLocale(context);
+        }
+
+        return name != null ? name : getServiceName();
+    }
+
+    public String getTranslatedServiceUnit(Context context) {
+        String unit = null;
+
+        if (getServiceUnitTranslation() != null) {
+            unit = getServiceUnitTranslation().getTranslationForLocale(context);
+        }
+
+        return unit != null ? unit : getServiceUnit();
+    }
 
     public static Order fromResponse(OrderResponse orderResponse) {
         if (orderResponse.getService() == null
@@ -139,6 +166,19 @@ public class Order extends RealmObject implements Parcelable {
         order.quantity = orderResponse.getQuantity();
         order.orderTime = orderResponse.getOrderTime();
         order.updated = orderResponse.getUpdated();
+
+        order.serviceTranslation = orderResponse.getService().getTranslation();
+        order.serviceUnitTranslation = orderResponse.getService().getUnitTranslation();
+
+        if (orderResponse.getService().getTranslation() == null) {
+            order.serviceTranslation = new IdealTranslation();
+            order.serviceTranslation.setBase(order.getServiceName());
+        }
+
+        if (orderResponse.getService().getUnitTranslation() == null) {
+            order.serviceUnitTranslation = new IdealTranslation();
+            order.serviceUnitTranslation.setBase(order.getServiceUnit());
+        }
 
         IdealService idealService = Realm
                 .getDefaultInstance()
@@ -332,5 +372,21 @@ public class Order extends RealmObject implements Parcelable {
 
     public void setMasterId(String masterId) {
         this.masterId = masterId;
+    }
+
+    public IdealTranslation getServiceTranslation() {
+        return serviceTranslation;
+    }
+
+    public void setServiceTranslation(IdealTranslation serviceTranslation) {
+        this.serviceTranslation = serviceTranslation;
+    }
+
+    public IdealTranslation getServiceUnitTranslation() {
+        return serviceUnitTranslation;
+    }
+
+    public void setServiceUnitTranslation(IdealTranslation serviceUnitTranslation) {
+        this.serviceUnitTranslation = serviceUnitTranslation;
     }
 }

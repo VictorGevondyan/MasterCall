@@ -104,7 +104,7 @@ public class ServicesViewHolder extends SuperViewHolder implements View.OnTouchL
             balloonOutlineCircleView.setVisibility(View.INVISIBLE);
         }
 
-        titleTextView.setText(service.getName());
+        titleTextView.setText(service.getTranslatedName(context));
         Glide
                 .with(context)
                 .load(APIBuilder.getImageUrl(imageSide, imageSide, service.getImage()))

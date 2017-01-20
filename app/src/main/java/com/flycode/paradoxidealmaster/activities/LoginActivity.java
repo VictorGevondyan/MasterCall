@@ -16,6 +16,7 @@ import com.flycode.paradoxidealmaster.IdealMasterApplication;
 import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
 import com.flycode.paradoxidealmaster.api.body.LoginBody;
+import com.flycode.paradoxidealmaster.constants.IntentConstants;
 import com.flycode.paradoxidealmaster.dialogs.LoadingProgressDialog;
 import com.flycode.paradoxidealmaster.gcm.GCMSubscriber;
 import com.flycode.paradoxidealmaster.model.AuthToken;
@@ -35,6 +36,7 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
     private static final String PASSWORD = "password";
     private static final String LOGIN = "login";
     private LoadingProgressDialog loading;
+    private boolean endsSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +47,12 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
         String password = sharedPreferences.getString(PASSWORD, "");
         String login = sharedPreferences.getString(LOGIN, "");
 
+        endsSession = getIntent().getBooleanExtra(IntentConstants.EXTRA_ENDS_SESSION, false);
+
         if (savedInstanceState != null) {
             password = savedInstanceState.getString(PASSWORD, "");
             login = savedInstanceState.getString(LOGIN, "");
+            endsSession = savedInstanceState.getBoolean(IntentConstants.EXTRA_ENDS_SESSION, false);
         }
 
         loading = new LoadingProgressDialog(this);
@@ -86,6 +91,21 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (endsSession) {
+            endsSession = false;
+
+            new MaterialDialog.Builder(LoginActivity.this)
+                    .title(R.string.error)
+                    .content(R.string.account_blocked_or_session_expired)
+                    .positiveText(R.string.ok)
+                    .show();
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -94,6 +114,7 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
 
         outState.putString(LOGIN, nameEditText.getText().toString());
         outState.putString(PASSWORD, passwordEditText.getText().toString());
+        outState.putBoolean(IntentConstants.EXTRA_ENDS_SESSION, endsSession);
     }
 
     @Override
@@ -121,8 +142,18 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
                 .enqueue(new Callback<AuthToken>() {
                     @Override
                     public void onResponse(Call<AuthToken> call, Response<AuthToken> response) {
+                        loading.dismiss();
+
                         if (!response.isSuccessful()) {
-                            loading.dismiss();
+                            if (response.code() == 402) {
+                                new MaterialDialog.Builder(LoginActivity.this)
+                                        .title(R.string.error)
+                                        .content(R.string.account_blocked)
+                                        .positiveText(R.string.ok)
+                                        .show();
+
+                                return;
+                            }
 
                             ErrorNotificationUtil.showErrorForCode(response.code(), LoginActivity.this);
 

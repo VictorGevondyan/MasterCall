@@ -17,7 +17,7 @@ public class AppSettings {
 
     private static AppSettings sharedSettings;
 
-    private final String PREFERENCES_NAME = "appSettingsPreferences";
+    private final String PREFERENCES_NAME = "appSettingsPreferencesMaster";
     private final String IS_USER_LOGGED_IN = "isUserLoggedIn";
     private final String TOKEN = "token";
     private final String LANGUAGE = "language";
@@ -63,10 +63,6 @@ public class AppSettings {
                 .edit()
                 .putBoolean(IS_USER_LOGGED_IN, isUserLoggedIn)
                 .commit();
-    }
-
-    public String getToken() {
-        return token;
     }
 
     public String getBearerToken() {

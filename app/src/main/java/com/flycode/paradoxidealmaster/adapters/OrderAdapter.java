@@ -56,7 +56,7 @@ public class OrderAdapter extends RecyclerView.Adapter<SuperViewHolder> implemen
 
     @Override
     public String getTitleForPosition(int position) {
-        return orders.get(position).getServiceName();
+        return orders.get(position).getTranslatedServiceName(context);
     }
 
     @Override

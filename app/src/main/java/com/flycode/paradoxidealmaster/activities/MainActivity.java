@@ -14,11 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.flycode.paradoxidealmaster.R;
 import com.flycode.paradoxidealmaster.api.APIBuilder;
+import com.flycode.paradoxidealmaster.api.response.OrderResponse;
 import com.flycode.paradoxidealmaster.api.response.OrdersListResponse;
 import com.flycode.paradoxidealmaster.constants.IntentConstants;
 import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
+import com.flycode.paradoxidealmaster.dialogs.LoadingProgressDialog;
 import com.flycode.paradoxidealmaster.gcm.GCMSubscriber;
 import com.flycode.paradoxidealmaster.gcm.GCMUtils;
 import com.flycode.paradoxidealmaster.model.IdealMasterService;
@@ -32,6 +35,8 @@ import com.flycode.paradoxidealmaster.utils.LocaleUtils;
 import com.flycode.paradoxidealmaster.utils.TypefaceLoader;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.realm.Realm;
 import retrofit2.Call;
@@ -46,6 +51,7 @@ public class MainActivity extends SuperActivity {
     private int newOrdersCount;
     private int myOrdersCount;
     private boolean alreadyShownOrder;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +81,79 @@ public class MainActivity extends SuperActivity {
             e.printStackTrace();
         }
 
-        Order order = getIntent().getParcelableExtra(IntentConstants.EXTRA_ORDER);
+        final Order order = getIntent().getParcelableExtra(IntentConstants.EXTRA_ORDER);
 
         if (order != null && !alreadyShownOrder) {
-            startActivity(new Intent(this, OrderDetailsActivity.class).putExtra(IntentConstants.EXTRA_ORDER, order));
-            overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
+            final LoadingProgressDialog progressDialog = new LoadingProgressDialog(this);
+            progressDialog.show();
             alreadyShownOrder = true;
+
+            APIBuilder
+                    .getIdealAPI()
+                    .getOrder(
+                            AppSettings.sharedSettings(this).getBearerToken(),
+                            order.getId()
+                    )
+                    .enqueue(new Callback<OrderResponse>() {
+                        @Override
+                        public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                            progressDialog.dismiss();
+
+                            if (!response.isSuccessful()) {
+                                ErrorNotificationUtil.showErrorForCode(response.code(), MainActivity.this);
+                                return;
+                            }
+
+                            if (response.body().getMaster() != null
+                                    && !response.body().getMaster().getId().equals(UserData.sharedData(MainActivity.this).getId())) {
+                                new MaterialDialog.Builder(MainActivity.this)
+                                        .title(R.string.error)
+                                        .content(R.string.already_granted)
+                                        .positiveText(R.string.ok)
+                                        .show();
+
+                                Realm
+                                        .getDefaultInstance()
+                                        .executeTransaction(new Realm.Transaction() {
+                                            @Override
+                                            public void execute(Realm realm) {
+                                                Order realmOrder = realm.where(Order.class).equalTo("id", order.getId()).findFirst();
+
+                                                if (realmOrder != null) {
+                                                    realmOrder.deleteFromRealm();
+                                                }
+                                            }
+                                        });
+
+                                return;
+                            }
+
+                            final Order responseOrder = Order.fromResponse(response.body());
+
+                            if (responseOrder != null
+                                    && !responseOrder.getStatus().equals(OrderStatusConstants.NOT_TAKEN)
+                                    && !responseOrder.getStatus().equals(OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED)
+                                    && !responseOrder.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
+                                Realm
+                                        .getDefaultInstance()
+                                        .executeTransaction(new Realm.Transaction() {
+                                            @Override
+                                            public void execute(Realm realm) {
+                                                realm.insertOrUpdate(responseOrder);
+                                            }
+                                        });
+                            }
+
+                            startActivity(new Intent(MainActivity.this, OrderDetailsActivity.class).putExtra(IntentConstants.EXTRA_ORDER, Order.fromResponse(response.body())));
+                            overridePendingTransition(R.anim.slide_up_in, R.anim.hold);
+                        }
+
+                        @Override
+                        public void onFailure(Call<OrderResponse> call, Throwable t) {
+                            progressDialog.dismiss();
+                            ErrorNotificationUtil.showErrorForCode(0, MainActivity.this);
+                        }
+                    });
         }
     }
 
@@ -99,34 +172,29 @@ public class MainActivity extends SuperActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (timer != null) {
+            timer.purge();
+            timer.cancel();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
-        APIBuilder
-                .getIdealAPI()
-                .getOrders(
-                        AppSettings.sharedSettings(this).getBearerToken(),
-                        null, null,
-                        new String[] {OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED},
-                        true
-                )
-                .enqueue(new Callback<OrdersListResponse>() {
-                    @Override
-                    public void onResponse(Call<OrdersListResponse> call, Response<OrdersListResponse> response) {
-                        if (!response.isSuccessful()) {
-                            return;
-                        }
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
 
-                        newOrdersCount = response.body().getCount();
+            @Override
+            public void run() {
+                getNewOrdersNumber();
+            }
+        }, 5000, 5000);
 
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onFailure(Call<OrdersListResponse> call, Throwable t) {
-                        Log.d("Failed", "to load count of new orders");
-                    }
-                });
+        getNewOrdersNumber();
 
         APIBuilder
                 .getIdealAPI()
@@ -193,6 +261,34 @@ public class MainActivity extends SuperActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void getNewOrdersNumber() {
+        APIBuilder
+                .getIdealAPI()
+                .getOrders(
+                        AppSettings.sharedSettings(this).getBearerToken(),
+                        null, null,
+                        new String[] {OrderStatusConstants.WAITING_FAVORITE, OrderStatusConstants.NOT_TAKEN, OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED},
+                        true
+                )
+                .enqueue(new Callback<OrdersListResponse>() {
+                    @Override
+                    public void onResponse(Call<OrdersListResponse> call, Response<OrdersListResponse> response) {
+                        if (!response.isSuccessful()) {
+                            return;
+                        }
+
+                        newOrdersCount = response.body().getCount();
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrdersListResponse> call, Throwable t) {
+                        Log.d("Failed", "to load count of new orders");
+                    }
+                });
     }
 
     @Override
