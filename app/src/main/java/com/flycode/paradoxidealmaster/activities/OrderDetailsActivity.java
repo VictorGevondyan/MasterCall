@@ -34,6 +34,7 @@ import com.flycode.paradoxidealmaster.constants.OrderActionConstants;
 import com.flycode.paradoxidealmaster.constants.OrderStatusConstants;
 import com.flycode.paradoxidealmaster.dialogs.LoadingProgressDialog;
 import com.flycode.paradoxidealmaster.model.Order;
+import com.flycode.paradoxidealmaster.model.User;
 import com.flycode.paradoxidealmaster.settings.AppSettings;
 import com.flycode.paradoxidealmaster.settings.UserData;
 import com.flycode.paradoxidealmaster.utils.DateUtils;
@@ -678,15 +679,17 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
         loading.show();
 
-        if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)
-                || order.getStatus().equals(OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED)) {
-            action = OrderActionConstants.ATTACH_MASTER;
-            successTitle = R.string.take_request_sent;
-            successMessage = R.string.take_request_sent_long;
-        } else if (order.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
+        if (order.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)
+                && order.getChosenFavorite() != null && order.getChosenFavorite().equals(UserData.sharedData(this).getId())) {
             action = OrderActionConstants.ACCEPT_FAVORITE;
             successTitle = R.string.accept_request_sent;
             successMessage = R.string.accept_request_sent_long;
+        } else if (order.getStatus().equals(OrderStatusConstants.NOT_TAKEN)
+                || order.getStatus().equals(OrderStatusConstants.NOT_TAKEN_MASTER_ATTACHED)
+                || order.getStatus().equals(OrderStatusConstants.WAITING_FAVORITE)) {
+            action = OrderActionConstants.ATTACH_MASTER;
+            successTitle = R.string.take_request_sent;
+            successMessage = R.string.take_request_sent_long;
         } else {
             action = OrderActionConstants.FINISH_REQUEST;
             successTitle = R.string.finish_request_sent;
