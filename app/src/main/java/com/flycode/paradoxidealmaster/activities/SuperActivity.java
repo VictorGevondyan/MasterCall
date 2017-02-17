@@ -114,6 +114,14 @@ public class SuperActivity extends AppCompatActivity {
     };
 
     private void showOrderDialog(int title, int message, final Order order) {
+        if (this instanceof OrderDetailsActivity) {
+            OrderDetailsActivity thisActivity = (OrderDetailsActivity) this;
+
+            if (order.getId().equals(thisActivity.getOrderId())) {
+                return;
+            }
+        }
+
         new MaterialDialog.Builder(SuperActivity.this)
                 .title(title)
                 .content(message)

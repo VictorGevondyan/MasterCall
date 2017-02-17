@@ -90,5 +90,6 @@
     <string name="account_blocked">Ձեր պրոֆիլը արգելափակված է</string>
     <string name="account_blocked_or_session_expired">Ձեր սեսսիան ավարտված է կամ պրոֆիլը` արգելափակված</string>
     <string name="order_is_canceled">Այս պատվերը չեղարկված է</string>
+    <string name="turn_on_gps">GPS֊ն անջատված է։ Խնդրում ենք այն միացնել։</string>
 
 </resources>

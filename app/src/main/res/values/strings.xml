@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Ideal Master</string>
     <string name="sign_in">Sign In</string>
-    <string name="imex_group" translatable="false">2016 IMEX Group CO LTD</string>
+    <string name="imex_group" translatable="false">2017 IMEX Group CO LTD</string>
     <string name="all_right_reserved" translatable="false">All rights reserved</string>
     <string name="welcome">WELCOME</string>
     <string name="master">MASTER</string>
@@ -133,5 +133,6 @@
     <string name="account_blocked">Your profile has been blocked</string>
     <string name="account_blocked_or_session_expired">Your session has been expired or your profile has been blocked</string>
     <string name="order_is_canceled">This order is canceled</string>
+    <string name="turn_on_gps">GPS is off. Please, turn it on.</string>
 
 </resources>

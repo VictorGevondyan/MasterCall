@@ -90,5 +90,6 @@
     <string name="account_blocked">Ваш профиль заблакирован</string>
     <string name="account_blocked_or_session_expired">Ваша сессия истекла или профиль заблакирован</string>
     <string name="order_is_canceled">День заказа</string>
+    <string name="turn_on_gps">GPS отключен. Просим включить его.</string>
 
 </resources>

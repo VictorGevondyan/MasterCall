@@ -242,7 +242,10 @@ public class OrderListActivity extends SuperActivity implements RealmChangeListe
 
     @Override
     public void onOrderOfferedReceived(Order order) {
-        adapter.insertOrder(order);
+        if (type.equals(IntentConstants.VALUE_ORDER_LIST_NEW)) {
+            adapter.insertOrder(order);
+            findViewById(R.id.no_orders).setVisibility(View.GONE);
+        }
     }
 
     private void loadOrdersViaServer(final String[] statuses) {

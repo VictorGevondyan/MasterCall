@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -64,7 +65,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderDetailsActivity extends SuperActivity implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMyLocationChangeListener {
+public class OrderDetailsActivity extends SuperActivity implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMyLocationChangeListener, GoogleMap.OnMyLocationButtonClickListener {
     private static final String HAS_SHOWN_PATH = "hasShownPath";
     private static final String HAS_SHOWN_DESTINATION = "hasShownDestination";
     private static final String MAP_VIEW_BUNDLE = "mapViewBundle";
@@ -159,6 +160,38 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                     getOrderFromServer();
                 }
             }, 5000, 5000);
+        }
+
+        // Check for GPS permission and availability
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 506);
+        }
+
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.error)
+                    .content(R.string.turn_on_gps)
+                    .positiveText(R.string.settings)
+                    .negativeText(R.string.ok)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(callGPSSettingIntent);
+
+                            dialog.dismiss();
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
         }
     }
 
@@ -273,6 +306,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         int mapLocationPadding = (int) DeviceUtil.getPxForDp(OrderDetailsActivity.this, 48);
 
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        googleMap.setOnMyLocationButtonClickListener(this);
         googleMap.setPadding(0, mapLocationPadding, 0, 0);
 
         MarkerOptions markerOptions = new MarkerOptions();
@@ -755,5 +789,49 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
 
     public String getOrderId() {
         return order.getId();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 506 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                googleMap.setMyLocationEnabled(true);
+            }
+        }
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        if (googleMap.getMyLocation() == null) {
+            final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                new MaterialDialog.Builder(this)
+                        .title(R.string.error)
+                        .content(R.string.turn_on_gps)
+                        .positiveText(R.string.settings)
+                        .negativeText(R.string.ok)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
