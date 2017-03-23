@@ -6,7 +6,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp">
 
-    <com.flycode.paradoxidealmaster.views.CustomTextView
+    <com.idealsystems.idealmaster.views.CustomTextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textColor="#999999"
         android:textSize="14sp"/>
 
-    <com.flycode.paradoxidealmaster.views.CustomButton
+    <com.idealsystems.idealmaster.views.CustomButton
         android:id="@+id/select_button"
         android:layout_width="21dp"
         android:layout_height="21dp"

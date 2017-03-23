@@ -4,7 +4,7 @@
     android:id="@+id/activity_portfolio_image_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.flycode.paradoxidealmaster.activities.PortfolioImageDetailsActivity"
+    tools:context="com.idealsystems.idealmaster.activities.PortfolioImageDetailsActivity"
     android:orientation="vertical">
 
     <include layout="@layout/bar_action_simple"

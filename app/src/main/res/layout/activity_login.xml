@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.flycode.paradoxidealmaster.activities.LoginActivity">
+    tools:context="com.idealsystems.idealmaster.activities.LoginActivity">
 
-    <com.flycode.paradoxidealmaster.views.FullScreenImageView
+    <com.idealsystems.idealmaster.views.FullScreenImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/login_background"
@@ -36,7 +36,7 @@
                 android:layout_marginStart="100dp"
                 android:src="@drawable/big_logo"/>
 
-            <com.flycode.paradoxidealmaster.views.CustomTextView
+            <com.idealsystems.idealmaster.views.CustomTextView
                 android:id="@+id/welcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                 android:textSize="22sp"
                 android:textColor="@color/black"/>
 
-            <com.flycode.paradoxidealmaster.views.CustomTextView
+            <com.idealsystems.idealmaster.views.CustomTextView
                 android:id="@+id/master"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.flycode.paradoxidealmaster.views.CustomTextView
+                        <com.idealsystems.idealmaster.views.CustomTextView
                             android:id="@+id/icon_username"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                             android:textColor="@color/darken_grey"
                             android:textSize="15sp"/>
 
-                        <com.flycode.paradoxidealmaster.views.CustomEditText
+                        <com.idealsystems.idealmaster.views.CustomEditText
                             android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
                             android:textColor="@color/darken_grey"
                             android:textSize="15sp"/>
 
-                        <com.flycode.paradoxidealmaster.views.CustomEditText
+                        <com.idealsystems.idealmaster.views.CustomEditText
                             android:id="@+id/password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
 
                     </RelativeLayout>
 
-                    <com.flycode.paradoxidealmaster.views.CustomButton
+                    <com.idealsystems.idealmaster.views.CustomButton
                         android:id="@+id/sign_in"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp">
 
-            <com.flycode.paradoxidealmaster.views.CustomTextView
+            <com.idealsystems.idealmaster.views.CustomTextView
                 android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
 
         </RelativeLayout>
 
-        <com.flycode.paradoxidealmaster.views.CustomTextView
+        <com.idealsystems.idealmaster.views.CustomTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

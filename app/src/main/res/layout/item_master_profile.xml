@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <com.flycode.paradoxidealmaster.views.CustomTextView
+        <com.idealsystems.idealmaster.views.CustomTextView
             android:id="@+id/icon"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:textColor="@color/darken_grey"
             android:textSize="20sp"/>
 
-        <com.flycode.paradoxidealmaster.views.CustomTextView
+        <com.idealsystems.idealmaster.views.CustomTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
 
     </LinearLayout>
 
-    <com.flycode.paradoxidealmaster.layouts.RatingLayout
+    <com.idealsystems.idealmaster.layouts.RatingLayout
         android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,9 +45,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true">
-    </com.flycode.paradoxidealmaster.layouts.RatingLayout>
+    </com.idealsystems.idealmaster.layouts.RatingLayout>
 
-    <com.flycode.paradoxidealmaster.views.CustomButton
+    <com.idealsystems.idealmaster.views.CustomButton
         android:id="@+id/action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
         android:gravity="center_horizontal"
         android:background="@drawable/rect_language">
 
-        <com.flycode.paradoxidealmaster.views.CustomTextView
+        <com.idealsystems.idealmaster.views.CustomTextView
             android:id="@+id/language_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

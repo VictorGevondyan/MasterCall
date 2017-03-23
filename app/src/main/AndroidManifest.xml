@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.flycode.paradoxidealmaster">
+    package="com.idealsystems.idealmaster">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.flycode.paradoxidealmaster.gcm.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.idealsystems.idealmaster.gcm.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <permission
-        android:name="com.flycode.paradoxidealmaster.gcm.permission.C2D_MESSAGE"
+        android:name="com.idealsystems.idealmaster.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
     <uses-feature
@@ -20,13 +20,13 @@
         android:required="true" />
 
     <application
-        android:name=".IdealMasterApplication"
+        android:name="com.idealsystems.idealmaster.IdealMasterApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SplashActivity"
+        <activity android:name="com.idealsystems.idealmaster.activities.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,25 +35,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.idealsystems.idealmaster.activities.LoginActivity"
             android:windowSoftInputMode="stateUnchanged|adjustResize"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.MainActivity"
+        <activity android:name="com.idealsystems.idealmaster.activities.MainActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.MasterSettingsActivity"
+        <activity android:name="com.idealsystems.idealmaster.activities.MasterSettingsActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.OrderListActivity"
+        <activity android:name="com.idealsystems.idealmaster.activities.OrderListActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.OrderDetailsActivity"
+        <activity android:name="com.idealsystems.idealmaster.activities.OrderDetailsActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.TransactionListActivity"
+        <activity android:name="com.idealsystems.idealmaster.activities.TransactionListActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.PortfolioImageDetailsActivity"
+        <activity android:name="com.idealsystems.idealmaster.activities.PortfolioImageDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"/>
 
         <receiver
-            android:name=".gcm.GcmBroadcastReceiver"
+            android:name="com.idealsystems.idealmaster.gcm.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />

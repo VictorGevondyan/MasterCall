@@ -9,14 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.flycode.paradoxidealmaster.views.CustomTextView
+        <com.idealsystems.idealmaster.views.CustomTextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/black"/>
 
-        <com.flycode.paradoxidealmaster.views.CustomTextView
+        <com.idealsystems.idealmaster.views.CustomTextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
 
     </RelativeLayout>
 
-    <com.flycode.paradoxidealmaster.views.CustomTextView
+    <com.idealsystems.idealmaster.views.CustomTextView
         android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,10 +36,10 @@
         android:textSize="13sp"
         android:textColor="@color/service_name_grey"/>
 
-    <com.flycode.paradoxidealmaster.layouts.RatingLayout
+    <com.idealsystems.idealmaster.layouts.RatingLayout
         android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </com.flycode.paradoxidealmaster.layouts.RatingLayout>
+    </com.idealsystems.idealmaster.layouts.RatingLayout>
 
 </LinearLayout>

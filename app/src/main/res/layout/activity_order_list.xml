@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context="com.flycode.paradoxidealmaster.activities.OrderListActivity">
+    tools:context="com.idealsystems.idealmaster.activities.OrderListActivity">
 
     <include layout="@layout/bar_action_simple"/>
 
-    <com.flycode.paradoxidealmaster.views.CustomTextView
+    <com.idealsystems.idealmaster.views.CustomTextView
         android:id="@+id/no_orders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

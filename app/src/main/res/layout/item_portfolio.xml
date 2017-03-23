@@ -10,7 +10,7 @@
         android:weightSum="3"
         android:layout_marginTop="7dp">
 
-        <com.flycode.paradoxidealmaster.views.SquareImageView
+        <com.idealsystems.idealmaster.views.SquareImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -19,14 +19,14 @@
             android:scaleType="centerCrop"
             android:cropToPadding="true"/>
 
-        <com.flycode.paradoxidealmaster.views.SquareImageView
+        <com.idealsystems.idealmaster.views.SquareImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scaleType="centerCrop"
             android:cropToPadding="true"/>
 
-        <com.flycode.paradoxidealmaster.views.SquareImageView
+        <com.idealsystems.idealmaster.views.SquareImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -43,7 +43,7 @@
         android:weightSum="3"
         android:layout_marginTop="10dp">
 
-        <com.flycode.paradoxidealmaster.views.SquareImageView
+        <com.idealsystems.idealmaster.views.SquareImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -52,14 +52,14 @@
             android:scaleType="centerCrop"
             android:cropToPadding="true"/>
 
-        <com.flycode.paradoxidealmaster.views.SquareImageView
+        <com.idealsystems.idealmaster.views.SquareImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scaleType="centerCrop"
             android:cropToPadding="true"/>
 
-        <com.flycode.paradoxidealmaster.views.SquareImageView
+        <com.idealsystems.idealmaster.views.SquareImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

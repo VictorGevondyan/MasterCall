@@ -25,7 +25,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"/>
 
-        <com.flycode.paradoxidealmaster.views.CustomTextView
+        <com.idealsystems.idealmaster.views.CustomTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,13 +46,13 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true">
 
-        <com.flycode.paradoxidealmaster.views.CircleView
+        <com.idealsystems.idealmaster.views.CircleView
             android:id="@+id/balloon_outline"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:visibility="gone"/>
 
-        <com.flycode.paradoxidealmaster.views.CircleView
+        <com.idealsystems.idealmaster.views.CircleView
             android:id="@+id/balloon"
             android:layout_width="10dp"
             android:layout_height="10dp"

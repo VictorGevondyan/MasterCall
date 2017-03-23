@@ -9,7 +9,7 @@
     <include layout="@layout/bar_action_simple"
         android:id="@+id/action_bar"/>
 
-    <com.flycode.paradoxidealmaster.views.CustomTextView
+    <com.idealsystems.idealmaster.views.CustomTextView
         android:id="@+id/no_transactions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

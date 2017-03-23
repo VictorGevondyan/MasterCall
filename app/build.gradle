@@ -19,7 +19,7 @@ android {
 
     useLibrary  'org.apache.http.legacy'
     defaultConfig {
-        applicationId "com.flycode.paradoxidealmaster"
+        applicationId "com.idealsystems.idealmaster"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
