@@ -354,7 +354,7 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
                     .include(new LatLng(location.getLatitude(), location.getLongitude()))
                     .include(new LatLng(order.getLocationLatitude(), order.getLocationLongitude()))
                     .build();
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(latLngBounds, 200);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(latLngBounds, 50);
             googleMap.moveCamera(cameraUpdate);
         }
 
