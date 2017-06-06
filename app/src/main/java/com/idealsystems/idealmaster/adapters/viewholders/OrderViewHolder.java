@@ -25,6 +25,7 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
     private TextView titleTextView;
     private TextView dateValueTextView;
     private TextView locationValueTextView;
+    private TextView statusValueTextView;
 
     private Context context;
     private Rect rect;
@@ -58,6 +59,7 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
 
         dateValueTextView = processSection(itemView.findViewById(R.id.date_section), R.string.icon_calendar, R.string.date);
         locationValueTextView = processSection(itemView.findViewById(R.id.location_section), R.string.icon_marker, R.string.location);
+        statusValueTextView = processSection(itemView.findViewById(R.id.status_section), R.string.icon_details, R.string.status);
     }
 
     @Override
@@ -66,12 +68,13 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
 
         titleTextView.setText(provider.getTitleForPosition(position));
         locationValueTextView.setText(location == null || location.isEmpty() ? "N/A" : location);
+        statusValueTextView.setText(provider.getStatusForPosition(position));
         dateValueTextView.setText(DateUtils.infoDateStringFromDate(provider.getDateForPosition(position)));
 
         try {
             balloonCircleView.setBackgroundColor(Color.parseColor(provider.getColorForPosition(position)));
             balloonOutlineCircleView.setBackgroundColor(Color.parseColor(provider.getColorForPosition(position)));
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 
@@ -121,6 +124,7 @@ public class OrderViewHolder extends SuperViewHolder implements View.OnTouchList
         String getLocationForPosition(int position);
         String getTitleForPosition(int position);
         String getColorForPosition(int position);
+        String getStatusForPosition(int position);
         Date getDateForPosition(int position);
     }
 }

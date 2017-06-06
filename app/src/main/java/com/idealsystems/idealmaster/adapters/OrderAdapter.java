@@ -60,6 +60,11 @@ public class OrderAdapter extends RecyclerView.Adapter<SuperViewHolder> implemen
     }
 
     @Override
+    public String getStatusForPosition(int position) {
+        return orders.get(position).getStatus();
+    }
+
+    @Override
     public String getColorForPosition(int position) {
         if (orders.get(position).getServiceColor() == null
                 || orders.get(position).getServiceColor().equals("#FFFFFF")) {

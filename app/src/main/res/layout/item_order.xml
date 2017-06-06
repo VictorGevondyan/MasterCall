@@ -52,6 +52,12 @@
         android:layout_marginBottom="5dp" />
 
     <include layout="@layout/section_details"
-        android:id="@+id/location_section"/>
+        android:id="@+id/location_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"/>
+
+    <include layout="@layout/section_details"
+        android:id="@+id/status_section"/>
 
 </LinearLayout>
