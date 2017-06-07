@@ -36,9 +36,6 @@ public class PortfolioImageDetailsActivity extends AppCompatActivity implements 
         setContentView(R.layout.activity_portfolio_image_detailes);
 
         loading = new LoadingProgressDialog(this);
-        loading.setCanceledOnTouchOutside(false);
-        loading.setCancelable(false);
-        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         setupActionBar();
 

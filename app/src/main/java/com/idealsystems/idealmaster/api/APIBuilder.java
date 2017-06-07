@@ -26,11 +26,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class APIBuilder {
 //   private static String BASE_URL = "http://192.168.0.111:1999";
-//   private static String BASE_URL = "http://192.168.0.111:1994";
+   private static String BASE_URL = "http://192.168.0.111:1994";
 //   private static String BASE_URL = "http://192.168.0.101:1994";
 //    private static String BASE_URL = "http://192.168.0.110:1994";
 //    private static String BASE_URL = "http://fly.co.de:1994";
-    public static final String BASE_URL = "http://services.idealsystem.am";
+//    public static final String BASE_URL = "http://services.idealsystem.am";
 //    private static final String BASE_URL = "http://31.187.70.102:1994";
 //    private static final String BASE_URL = "http://109.75.45.248:1999";
 //    private static final String BASE_URL = "http://37.252.85.80:1999";

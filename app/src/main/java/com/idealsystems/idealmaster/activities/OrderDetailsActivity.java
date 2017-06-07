@@ -91,9 +91,6 @@ public class OrderDetailsActivity extends SuperActivity implements View.OnClickL
         setContentView(R.layout.activity_order_details);
 
         loading = new LoadingProgressDialog(this);
-        loading.setCancelable(false);
-        loading.setCanceledOnTouchOutside(false);
-        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         order = getIntent().getParcelableExtra(IntentConstants.EXTRA_ORDER);
 

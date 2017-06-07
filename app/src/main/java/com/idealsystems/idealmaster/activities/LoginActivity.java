@@ -56,9 +56,6 @@ public class LoginActivity extends SuperActivity implements View.OnClickListener
         }
 
         loading = new LoadingProgressDialog(this);
-        loading.setCancelable(false);
-        loading.setCanceledOnTouchOutside(false);
-        loading.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         Typeface icomoonTypeface = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.ICOMOON, this);
         Typeface avenirLightTypeface = TypefaceLoader.loadTypeface(getAssets(), TypefaceLoader.AVENIR_LIGHT, this);
