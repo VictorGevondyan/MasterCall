@@ -35,6 +35,8 @@ import com.idealsystems.idealmaster.utils.LocaleUtils;
 import com.idealsystems.idealmaster.utils.TypefaceLoader;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -219,6 +221,30 @@ public class MainActivity extends SuperActivity {
 
                     @Override
                     public void onFailure(Call<OrdersListResponse> call, Throwable t) {
+                        Realm
+                                .getDefaultInstance()
+                                .executeTransaction(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        String status = "status";
+
+                                        List<Order> activeOrdersList = realm
+                                                .where(Order.class)
+                                                .equalTo(status, OrderStatusConstants.PAUSED )
+                                                .or()
+                                                .equalTo(status, OrderStatusConstants.STARTED)
+                                                .or()
+                                                .equalTo(status, OrderStatusConstants.WAITING_FINISHED)
+                                                .or()
+                                                .equalTo(status, OrderStatusConstants.WAITING_PAUSED)
+                                                .or()
+                                                .equalTo(status, OrderStatusConstants.FINISHED_WAITING_PAYMENT)
+                                                .findAll();
+
+                                        myOrdersCount = activeOrdersList.size();
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                });
 
                     }
                 });
